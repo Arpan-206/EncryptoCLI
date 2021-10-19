@@ -7,7 +7,7 @@ Encrypto CLI is a command line program that provide you with a intuitive and eas
 ## Technologies Used
 * Python3
 * Cryptography Module (Fernet Encryption)
-* Python's Hashing Module
+* Hashing Module
 * Termcolor
 * PyInquirer
 * Scrypt
@@ -64,3 +64,4 @@ OR
 This project is licensed under the MIT License.
 
 #### Thank You!
+Thanks a lot to the team at CS50 for teaching me so much about the fascinating world of computer science and programming.
