@@ -1,0 +1,11 @@
+cffi==1.15.0
+cryptography==35.0.0
+prompt-toolkit==1.0.14
+pycparser==2.20
+pyfiglet==0.8.post1
+Pygments==2.10.0
+PyInquirer==1.0.3
+regex==2021.10.8
+six==1.16.0
+termcolor==1.1.0
+wcwidth==0.2.5
