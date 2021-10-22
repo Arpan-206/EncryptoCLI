@@ -2,7 +2,7 @@
 ![EncryptoCLI Thumbnail](./docs-files/EncryptoCLI-Thumbnail.png)
 
 ## 📚 Description
-Encrypto CLI is a command line program that provide you with a intuitive and easy-to-use program that allows for a highly efficient and customisable interface to generate hashes of files or encrypt them. This allows you to encrypt and decrypt files or text data. This is all powered by the [Fernet](https://cryptography.io/en/latest/fernet/) Encryption.    
+Encrypto CLI is a command-line program that provides you with an intuitive and easy-to-use program that allows for a highly efficient and customizable interface to generate hashes of files or encrypt them. This allows you to encrypt and decrypt files or text data. This is all powered by the [Fernet](https://cryptography.io/en/latest/fernet/) Encryption.    
 
 ## Technologies Used
 * Python3
@@ -18,14 +18,14 @@ The idea is very simple. The program first asks you about which operation do you
 ## Hashing
 You can generate hashes for text or file data by selecting the algorithm from the 5 options provided: 
 ![Hashing Image](./docs-files/screenshots/3.png)
-The five algoritms supported are:
+The five algorithms supported are:
 * MD5
 * SHA256
 * SHA512
 * BLAKE2
 * BLAKE2b
 
-Also, if you are interested in an analysis of these algoritms or implementing them by yourself you can head over to this article that I wrote on [hashing](https://hackersreboot.tech/articles/Cryptography/hashing).
+Also, if you are interested in an analysis of these algorithms or implementing them by yourself you can head over to this article that I wrote on [hashing](https://hackersreboot.tech/articles/Cryptography/hashing).
 
 ## Encrypting 
 You can encrypt data by going through these steps.
@@ -64,7 +64,10 @@ OR
 This project is licensed under the MIT License.
 
 ### Video Demo
-You can access the video demo at: [https://youtu.be/Zmf2EK9jPCw](https://youtu.be/Zmf2EK9jPCw)
+You can access the video demo at [https://youtu.be/Zmf2EK9jPCw](https://youtu.be/Zmf2EK9jPCw)
+
 
 #### Thank You!
 Thanks a lot to the team at CS50 for teaching me so much about the fascinating world of computer science and programming.
+
+
