@@ -3,6 +3,7 @@ import os
 from cryptography.fernet import Fernet
 from PyInquirer import Separator, prompt
 from termcolor import colored
+from stegano import lsb 
 
 from key_gen import key_gen
 
@@ -25,6 +26,9 @@ def decrypt_func():
                 {
                     'name': 'File',
                 },
+                {
+                    'name': 'Image',
+                },
             ],
         },
 
@@ -37,6 +41,8 @@ def decrypt_func():
     # Calling the appropriate function as per data
     if type_of_data == 'File':
         handle_file_dec()
+    elif type_of_data == 'Image':
+        handle_image_dec()
     else:
         handle_text_dec()
 
@@ -159,3 +165,54 @@ def handle_file_dec():
     except Exception as e:
         # Handling file not found or similar exceptions
         print(colored('Sorry! Can\'t get to the file or ran into an error.', 'red'))
+
+
+def handle_image_dec():
+    # Using decryption information
+    decrypt_info = prompt([
+        {
+            'type': 'input',
+            'qmark': '>',
+            'name': 'image_path',
+            'message': 'Enter the path of the image to decrypt.',
+        },
+        {
+            'type': 'password',
+            'qmark': '>',
+            'name': 'password',
+            'message': 'Enter password:',
+        },
+    ])
+
+    # Storing data in variables
+    passW = decrypt_info['password']
+
+    # Making sure that the password is not empty
+    if passW == '':
+        print(colored('Please enter a password', 'red'))
+        return None
+
+    # Key Generation
+    key = key_gen(passW)
+
+    try:
+        # Generating cipher
+        cipher = Fernet(key)
+    except Exception as e:
+        # Handling exceptions
+        print(colored('Key Error!', 'red'))
+        return None
+
+    try:
+        # Trying to decrypt text
+        data = lsb.reveal(decrypt_info['image_path'])
+        decrypted_text = cipher.decrypt(data.encode()).decode()
+    
+    except Exception as e:
+        # Handling wrong key or data
+        print(colored('Either the key or the input data is wrong.', 'red'))
+        return None
+
+    # Printing the text on the console
+    print(colored('The decrypted text is: ', 'white') +
+          colored(decrypted_text, 'green'))
