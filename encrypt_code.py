@@ -8,7 +8,7 @@ from key_gen import key_gen
 
 
 # Defining the encryption function
-def encrypt_func():
+def encrypt_func() -> None:
     # Get user prompt
     enc_info = prompt([
         {
@@ -31,7 +31,7 @@ def encrypt_func():
     ])
 
     # Store the type of data in a variable.
-    type_of_data = enc_info['type_of_data']
+    type_of_data: str = enc_info['type_of_data']
 
     # Calling the appropriate functions according to the type of the value.
     if type_of_data == 'File':
@@ -40,7 +40,7 @@ def encrypt_func():
         handle_text_enc()
 
 
-def handle_text_enc():
+def handle_text_enc() -> None:
     # Asking the user for data to encrypt
     encrypt_info = prompt([
         {
@@ -58,8 +58,8 @@ def handle_text_enc():
     ])
 
     # Storing the data into variables
-    data = encrypt_info['data']
-    passW = encrypt_info['password']
+    data: str = encrypt_info['data']
+    passW: str = encrypt_info['password']
 
     # Checking if the user entered a password
     if passW == '':
@@ -86,7 +86,7 @@ def handle_text_enc():
     return None
 
 
-def handle_file_enc():
+def handle_file_enc() -> None:
     # Asking the user for the file to encrypt
     file_info = prompt([
         {
@@ -104,7 +104,7 @@ def handle_file_enc():
     ])
 
     # Storing it as a variable
-    passW = file_info['password']
+    passW: str = file_info['password']
 
     # Making sure that the password isn't empty
     if passW == '':

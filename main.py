@@ -27,7 +27,7 @@ description = colored(
 print(colored(f.renderText('Encrypto CLI'), 'green'), credit, description, '\n')
 
 # Asking the user about which operation do they want to perform
-operation = prompt([
+operation: str = prompt([
     {
         'type': 'list',
         'qmark': '🔘',

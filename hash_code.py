@@ -8,7 +8,7 @@ from termcolor import colored
 # Defining the hash function.
 
 
-def hash_func():
+def hash_func() -> None:
     # Asking the user for further data regarding algoritms
     hash_info = prompt([
         {
@@ -55,8 +55,8 @@ def hash_func():
     ])
 
     # Storing the data into seperate variables
-    algorithm = hash_info['algorithm']
-    type_of_data = hash_info['type_of_data']
+    algorithm: str = hash_info['algorithm']
+    type_of_data: str = hash_info['type_of_data']
 
     # Determining the type of data to hash and calling the appropriate functions
     if type_of_data == 'File':
@@ -65,7 +65,7 @@ def hash_func():
         handle_text_hashing(algorithm)
 
 
-def handle_text_hashing(algorithm):
+def handle_text_hashing(algorithm: str) -> None:
     # Asking the user for the data
     data_info = prompt([
         {
@@ -99,7 +99,7 @@ def handle_text_hashing(algorithm):
     return None
 
 
-def handle_file_hashing(algorithm):
+def handle_file_hashing(algorithm: str) -> None:
     # Asking the user for the path to the file
     file_info = prompt([
         {

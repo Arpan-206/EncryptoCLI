@@ -9,7 +9,7 @@ from key_gen import key_gen
 # Defining the decryption function
 
 
-def decrypt_func():
+def decrypt_func() -> None:
     # Asking the user for a prompt
     enc_info = prompt([
         {
@@ -32,7 +32,7 @@ def decrypt_func():
     ])
 
     # Storing the type of data in a variable
-    type_of_data = enc_info['type_of_data']
+    type_of_data: str = enc_info['type_of_data']
 
     # Calling the appropriate function as per data
     if type_of_data == 'File':
@@ -41,7 +41,7 @@ def decrypt_func():
         handle_text_dec()
 
 
-def handle_text_dec():
+def handle_text_dec() -> None:
     # Using decryption information
     decrypt_info = prompt([
         {
@@ -59,8 +59,8 @@ def handle_text_dec():
     ])
 
     # Storing data in variables
-    data = decrypt_info['data']
-    passW = decrypt_info['password']
+    data: str = decrypt_info['data']
+    passW: str = decrypt_info['password']
 
     # Making sure that the password is not empty
     if passW == '':
@@ -91,7 +91,7 @@ def handle_text_dec():
           colored(decrypted_text, 'green'))
 
 
-def handle_file_dec():
+def handle_file_dec() -> None:
     # Getting the file info
     file_info = prompt([
         {
@@ -109,7 +109,7 @@ def handle_file_dec():
     ])
 
     # Storing the password in a variable
-    passW = file_info['password']
+    passW: str = file_info['password']
 
     # Making sure that the password is not empty
     if passW == '':
