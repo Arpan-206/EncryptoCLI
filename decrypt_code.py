@@ -73,7 +73,7 @@ def handle_text_dec() -> None:
     try:
         # Generating cipher
         cipher = Fernet(key)
-    except Exception as e:
+    except Exception:
         # Handling exceptions
         print(colored('Key Error!', 'red'))
         return None
@@ -81,7 +81,7 @@ def handle_text_dec() -> None:
     try:
         # Trying to decrypt text
         decrypted_text = cipher.decrypt(data.encode()).decode()
-    except Exception as e:
+    except Exception:
         # Handling wrong key or data
         print(colored('Either the key or the input data is wrong.', 'red'))
         return None
@@ -122,7 +122,7 @@ def handle_file_dec() -> None:
     try:
         # Generating cipher
         cipher = Fernet(key)
-    except Exception as e:
+    except Exception:
         # Handling exceptions
         print(colored('Key Error!', 'red'))
         return None
@@ -151,11 +151,11 @@ def handle_file_dec() -> None:
                     write_file.write(encrypted_data)
                     print(colored('File decrypted succesfully.', 'green'))
                     
-        except Exception as e:
+        except Exception:
             # Handling exceptions
             print(colored("Ran into an issue.", "red"))
             return None
 
-    except Exception as e:
+    except Exception:
         # Handling file not found or similar exceptions
         print(colored('Sorry! Can\'t get to the file or ran into an error.', 'red'))

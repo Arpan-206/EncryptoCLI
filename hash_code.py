@@ -138,6 +138,6 @@ def handle_file_hashing(algorithm: str) -> None:
         # Printing out the hash
         print(colored('Your hash is: ', 'white') + colored(hash_out, 'green'))
 
-    except Exception as e:
+    except Exception:
         print(colored(
             'Can\'t find the file please check the name and make sure the extension is also present.', 'red'))

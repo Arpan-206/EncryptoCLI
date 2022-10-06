@@ -72,7 +72,7 @@ def handle_text_enc() -> None:
     try:
         # Trying to create a cipher variable as an instance of the Fernet class.
         cipher = Fernet(key)
-    except Exception as e:
+    except Exception:
         # Handling exceptions
         print(colored('Key Error!', 'red'))
         return None
@@ -117,7 +117,7 @@ def handle_file_enc() -> None:
     try:
         # Trying to create a cipher variable as an instance of the Fernet class.
         cipher = Fernet(key)
-    except Exception as e:
+    except Exception:
         # Handling exceptions
         print(colored('Key Error!', 'red'))
         return None
@@ -146,11 +146,11 @@ def handle_file_enc() -> None:
                     write_file.write(encrypted_data)
                     print(colored('File encrypted succesfully.', 'green'))
                     
-        except Exception as e:
+        except Exception:
             # Handling exceptions
             print(colored("Ran into an issue.", "red"))
             return None
 
-    except Exception as e:
+    except Exception:
         # Handling file not found or similar exceptions
         print(colored('Sorry! Can\'t get to the file or ran into an error.', 'red'))
