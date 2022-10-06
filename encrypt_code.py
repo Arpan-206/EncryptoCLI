@@ -62,7 +62,7 @@ def handle_text_enc() -> None:
     passW: str = encrypt_info['password']
 
     # Checking if the user entered a password
-    if passW == '':
+    if not passW:
         print(colored('Please enter a password', 'red'))
         return None
 
@@ -76,7 +76,7 @@ def handle_text_enc() -> None:
         # Handling exceptions
         print(colored('Key Error!', 'red'))
         return None
-    
+
     # Encrypting the text and storing it in a variable.
     encrypted_text = cipher.encrypt(data.encode()).decode()
 
@@ -107,7 +107,7 @@ def handle_file_enc() -> None:
     passW: str = file_info['password']
 
     # Making sure that the password isn't empty
-    if passW == '':
+    if not passW:
         print(colored('Please enter a password', 'red'))
         return None
 
@@ -124,31 +124,32 @@ def handle_file_enc() -> None:
 
     try:
         # Getting the size of the file
-        file_size = os.path.getsize(f'{file_info["file_name"]}')
+        file_name: str = file_info['file_name']
+        file_size = os.path.getsize(file_name)
 
         # Verifying if the file size is less than 1 GB
         if file_size > 1073741824:
-            print(colored("File too large. Only files till 1GB are supported.", "red"))
+            print(colored("File too large. Only files up to 1GB are supported.", "red"))
             return None
 
         # Detecting if the file is already encrypted
-        if 'encrypto' in file_info['file_name']:
+        if 'encrypto' in file_name:
             print(colored("File is already encrypted.", "yellow"))
             return None
 
         try:
             # Opening and reading the file as binary
-            with open(file_info['file_name'], 'rb') as file_path:
+            with open(file_name, 'rb') as file_path:
                 encrypted_data = cipher.encrypt(file_path.read())
-                
-                # Writing the encrypted data into a new file
-                with open(f"{file_info['file_name']}encrypto", "wb") as write_file:
-                    write_file.write(encrypted_data)
-                    print(colored('File encrypted successfully.', 'green'))
-                    
+
+            # Writing the encrypted data into a new file
+            with open(f"{file_name}encrypto", 'wb') as write_file:
+                write_file.write(encrypted_data)
+                print(colored('File encrypted successfully.', 'green'))
+
         except Exception:
             # Handling exceptions
-            print(colored("Ran into an issue.", "red"))
+            print(colored('Ran into an issue.', 'red'))
             return None
 
     except Exception:
