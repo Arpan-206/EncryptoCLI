@@ -1,3 +1,14 @@
+import sys
+
+# Hack to fix python 3.10 support
+if sys.version_info >= (3, 10):
+    from typing import Mapping
+    import collections
+
+    # imported in prompt_toolkit 1.0.14 which is strictly
+    # relied on by PyInquirer
+    collections.Mapping = Mapping  # type: ignore
+
 # Importing 3rd Party Libraries
 from pyfiglet import Figlet
 from PyInquirer import prompt, Separator
