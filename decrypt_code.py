@@ -149,7 +149,7 @@ def handle_file_dec() -> None:
                 # Recreating the original file extension and writing to it
                 with open(f"{file_info['file_name'].replace('encrypto', '')}", "wb") as write_file:
                     write_file.write(encrypted_data)
-                    print(colored('File decrypted succesfully.', 'green'))
+                    print(colored('File decrypted successfully.', 'green'))
                     
         except Exception:
             # Handling exceptions

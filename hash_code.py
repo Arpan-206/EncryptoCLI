@@ -9,7 +9,7 @@ from termcolor import colored
 
 
 def hash_func() -> None:
-    # Asking the user for further data regarding algoritms
+    # Asking the user for further data regarding algorithms
     hash_info = prompt([
         {
             'type': 'list',
@@ -54,7 +54,7 @@ def hash_func() -> None:
 
     ])
 
-    # Storing the data into seperate variables
+    # Storing the data into separate variables
     algorithm: str = hash_info['algorithm']
     type_of_data: str = hash_info['type_of_data']
 
@@ -112,7 +112,6 @@ def handle_file_hashing(algorithm: str) -> None:
 
     try:
         # Again, Defining the hash_out variable according to the algorithm selected by user
-
         if algorithm == 'MD5':
             hash_out = hashlib.md5()
         elif algorithm == 'SHA256':

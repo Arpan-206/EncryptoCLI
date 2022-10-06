@@ -144,7 +144,7 @@ def handle_file_enc() -> None:
                 # Writing the encrypted data into a new file
                 with open(f"{file_info['file_name']}encrypto", "wb") as write_file:
                     write_file.write(encrypted_data)
-                    print(colored('File encrypted succesfully.', 'green'))
+                    print(colored('File encrypted successfully.', 'green'))
                     
         except Exception:
             # Handling exceptions
