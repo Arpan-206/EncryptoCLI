@@ -30,10 +30,6 @@ def encrypt_func():
 
     ])
 
-    if 'type_of_data' not in enc_info:
-        # user hit Ctrl+C
-        return
-
     # Store the type of data in a variable.
     type_of_data = enc_info['type_of_data']
 
@@ -60,10 +56,6 @@ def handle_text_enc():
             'message': 'Enter the password: ',
         },
     ])
-
-    if 'data' not in encrypt_info:
-        # user hit Ctrl+C
-        return
 
     # Storing the data into variables
     data = encrypt_info['data']
@@ -110,10 +102,6 @@ def handle_file_enc():
             'message': 'Enter the password: ',
         },
     ])
-
-    if 'password' not in file_info:
-        # user hit Ctrl+C
-        return
 
     # Storing it as a variable
     passW = file_info['password']

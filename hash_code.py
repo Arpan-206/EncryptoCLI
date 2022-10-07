@@ -54,10 +54,6 @@ def hash_func():
 
     ])
 
-    if 'type_of_data' not in hash_info:
-        # user hit Ctrl+C
-        return
-
     # Storing the data into seperate variables
     algorithm = hash_info['algorithm']
     type_of_data = hash_info['type_of_data']
@@ -79,10 +75,6 @@ def handle_text_hashing(algorithm):
             'message': 'Enter data to hash.',
         },
     ])
-
-    if 'hash_data' not in data_info:
-        # user hit Ctrl+C
-        return
 
     # Defining the hash_out variable according to the algorithm selected by user
     if algorithm == 'MD5':
@@ -117,10 +109,6 @@ def handle_file_hashing(algorithm):
             'message': 'Enter the path to the file.',
         },
     ])
-
-    if 'file_name' not in file_info:
-        # user hit Ctrl+C
-        return
 
     try:
         # Again, Defining the hash_out variable according to the algorithm selected by user
