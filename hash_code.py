@@ -54,6 +54,10 @@ def hash_func() -> None:
 
     ])
 
+    if 'type_of_data' not in hash_info:
+        # user hit Ctrl+C
+        return
+
     # Storing the data into separate variables
     algorithm: str = hash_info['algorithm']
     type_of_data: str = hash_info['type_of_data']
@@ -87,6 +91,10 @@ def handle_text_hashing(hash_out) -> None:
         },
     ])
 
+    if 'hash_data' not in data_info:
+        # user hit Ctrl+C
+        return
+
     # Populating it the data after converting it to binary
     hash_out.update(data_info['hash_data'].encode())
 
@@ -109,11 +117,15 @@ def handle_file_hashing(hash_out) -> None:
         },
     ])
 
+    if 'file_name' not in file_info:
+        # user hit Ctrl+C
+        return
+
     file_name: str = file_info['file_name']
 
     try:
         # Again, Defining the hash_out variable according to the algorithm selected by user
-        
+
 
         # Populating it the data after converting it to binary but this time in chunks so as to not put too much strain on memory
         with open(file_name, 'rb') as file_path:
