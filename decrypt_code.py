@@ -197,6 +197,10 @@ def handle_image_dec():
         },
     ])
 
+    if 'password' not in decrypt_info:
+        # user hit Ctrl+C
+        return
+
     # Storing data in variables
     passW = decrypt_info['password']
 
@@ -211,7 +215,7 @@ def handle_image_dec():
     try:
         # Generating cipher
         cipher = Fernet(key)
-    except Exception as e:
+    except Exception:
         # Handling exceptions
         print(colored('Key Error!', 'red'))
         return None
@@ -221,7 +225,7 @@ def handle_image_dec():
         data = lsb.reveal(decrypt_info['image_path'])
         decrypted_text = cipher.decrypt(data.encode()).decode()
 
-    except Exception as e:
+    except Exception:
         # Handling wrong key or data
         print(colored('Either the key or the input data is wrong.', 'red'))
         return None

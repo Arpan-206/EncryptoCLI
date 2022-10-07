@@ -30,7 +30,6 @@ def encrypt_func() -> None:
 
     ])
 
-
     if 'type_of_data' not in enc_info:
         # user hit Ctrl+C
         return
