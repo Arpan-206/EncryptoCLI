@@ -102,7 +102,7 @@ def handle_file_dec() -> None:
         },
     ])
 
-    if 'file_name' not in file_info:
+    if 'file_path' not in file_info:
         # user hit Ctrl+C
         return
 
@@ -139,7 +139,7 @@ def handle_image_dec():
 
     # Trying to decrypt text
     data = steganography.lsb.decrypt_image(image_path)
-    decrypted_text = encryption.aes.decrypt(data.encode()).decode()
+    decrypted_text = encryption.aes.decrypt(data.encode(), password).decode()
 
 
     # Printing the text on the console

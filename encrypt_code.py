@@ -80,7 +80,7 @@ def handle_text_enc() -> None:
         },
     ])
 
-    if 'data' not in encrypt_info:
+    if 'secret' not in encrypt_info:
         # user hit Ctrl+C
         return
 
@@ -95,6 +95,8 @@ def handle_text_enc() -> None:
 
     encrypted_text = encryption.aes.encrypt_text(secret, password)
 
+    print(type_of_output)
+
     if type_of_output == 'Text':
 
         # Printing out the data
@@ -106,6 +108,7 @@ def handle_text_enc() -> None:
 
         encrypted_secret = encryption.aes.encrypt_text(secret, password)
         steganography.lsb.encrypt_text(input_image_path, encrypted_secret)
+
         
 
 def handle_file_enc() -> None:
