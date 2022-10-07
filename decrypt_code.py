@@ -31,6 +31,10 @@ def decrypt_func():
 
     ])
 
+    if 'type_of_data' not in enc_info:
+        # user hit Ctrl+C
+        return
+
     # Storing the type of data in a variable
     type_of_data = enc_info['type_of_data']
 
@@ -57,6 +61,10 @@ def handle_text_dec():
             'message': 'Enter password:',
         },
     ])
+
+    if 'data' not in decrypt_info:
+        # user hit Ctrl+C
+        return
 
     # Storing data in variables
     data = decrypt_info['data']
@@ -107,6 +115,10 @@ def handle_file_dec():
             'message': 'Enter the password: ',
         },
     ])
+
+    if 'file_name' not in file_info:
+        # user hit Ctrl+C
+        return
 
     # Storing the password in a variable
     passW = file_info['password']
