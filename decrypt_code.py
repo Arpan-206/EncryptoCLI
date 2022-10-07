@@ -3,9 +3,10 @@ import os
 from cryptography.fernet import Fernet
 from PyInquirer import Separator, prompt
 from termcolor import colored
-from stegano import lsb 
+from stegano import lsb
+from encrypt.aes.decrypt import decrypt_file, decrypt_text 
 
-from key_gen import key_gen
+from util.key_gen import key_gen
 
 # Defining the decryption function
 
@@ -65,32 +66,10 @@ def handle_text_dec():
     ])
 
     # Storing data in variables
-    data = decrypt_info['data']
-    passW = decrypt_info['password']
+    encrypted_secret = decrypt_info['data']
+    password = decrypt_info['password']
 
-    # Making sure that the password is not empty
-    if passW == '':
-        print(colored('Please enter a password', 'red'))
-        return None
-
-    # Key Generation
-    key = key_gen(passW)
-
-    try:
-        # Generating cipher
-        cipher = Fernet(key)
-    except Exception as e:
-        # Handling exceptions
-        print(colored('Key Error!', 'red'))
-        return None
-
-    try:
-        # Trying to decrypt text
-        decrypted_text = cipher.decrypt(data.encode()).decode()
-    except Exception as e:
-        # Handling wrong key or data
-        print(colored('Either the key or the input data is wrong.', 'red'))
-        return None
+    decrypted_text = decrypt_text(encrypted_secret, password)
 
     # Printing the text on the console
     print(colored('The decrypted text is: ', 'white') +
@@ -103,7 +82,7 @@ def handle_file_dec():
         {
             'type': 'input',
             'qmark': '>',
-            'name': 'file_name',
+            'name': 'file_path',
             'message': 'Enter the path to the file.',
         },
         {
@@ -115,56 +94,13 @@ def handle_file_dec():
     ])
 
     # Storing the password in a variable
-    passW = file_info['password']
+    password = file_info['password']
+    file_path = file_info['file_path']
 
-    # Making sure that the password is not empty
-    if passW == '':
-        print(colored('Please enter a password', 'red'))
-        return None
+    decrypt_file(file_path, password)
+    print(colored('File decrypted succesfully.', 'green'))
 
-    # Key Generation
-    key = key_gen(passW)
-
-    try:
-        # Generating cipher
-        cipher = Fernet(key)
-    except Exception as e:
-        # Handling exceptions
-        print(colored('Key Error!', 'red'))
-        return None
-
-    try:
-        # Getting the size of the file
-        file_size = os.path.getsize(f'{file_info["file_name"]}')
-
-        # Making sure that the file size is below 1 GB
-        if file_size > 1073741824:
-            print(colored("File too large. Only files till 1GB are supported.", "red"))
-            return None
-
-        # Making sure that the file is encrypted
-        if 'encrypto' not in file_info['file_name']:
-            print(colored("File is not encrypted.", "yellow"))
-            return None
-
-        try:
-            # Reading the file as binary
-            with open(file_info['file_name'], 'rb') as file_path:
-                encrypted_data = cipher.decrypt(file_path.read())
-
-                # Recreating the original file extension and writing to it
-                with open(f"{file_info['file_name'].replace('encrypto', '')}", "wb") as write_file:
-                    write_file.write(encrypted_data)
-                    print(colored('File decrypted succesfully.', 'green'))
-                    
-        except Exception as e:
-            # Handling exceptions
-            print(colored("Ran into an issue.", "red"))
-            return None
-
-    except Exception as e:
-        # Handling file not found or similar exceptions
-        print(colored('Sorry! Can\'t get to the file or ran into an error.', 'red'))
+    # print(colored("Ran into an issue.", "red"))
 
 
 def handle_image_dec():

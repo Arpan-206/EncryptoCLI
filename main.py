@@ -62,3 +62,10 @@ elif operation == 'Encrypt':
 else:
     # * Called the decryption function
     decrypt_func()
+
+
+## print(colored('Please enter a password', 'red'))
+
+## print(colored('The encrypted text is: ', 'white') +
+##        colored(encrypted_text, 'green'))
+    

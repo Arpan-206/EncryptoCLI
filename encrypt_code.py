@@ -4,8 +4,10 @@ from cryptography.fernet import Fernet
 from PyInquirer import Separator, prompt
 from termcolor import colored
 from stegano import lsb
+from encrypt.aes.encrypt import encrypt_file, encrypt_text
 
-from key_gen import key_gen
+from util.key_gen import key_gen
+import util.prompts as prompts
 
 
 # Defining the encryption function
@@ -67,10 +69,10 @@ def handle_text_enc():
             'when': lambda answers : answers['type_of_output'] == 'Image',
         },
         {
-            'type': 'input',
-            'qmark': '>',
-            'name': 'data',
-            'message': 'Enter the text to encrypt:',
+                'type': 'input',
+                'qmark': '>',
+                'name': "to_encrypt_text",
+                'message': "Enter the text to encrypt:",
         },
         {
             'type': 'password',
@@ -87,29 +89,10 @@ def handle_text_enc():
         input_image_path = encrypt_info['input_image_path']
 
     # Storing the data into variables
-    data = encrypt_info['data']
-    passW = encrypt_info['password']
+    secret = encrypt_info['to_encrypt_text']
+    password = encrypt_info['password']
 
-    # Checking if the user entered a password
-    if passW == '':
-        print(colored('Please enter a password', 'red'))
-        return None
-
-    # Key generation
-    key = key_gen(passW)
-
-
-    try:
-        # Trying to create a cipher variable as an instance of the Fernet class.
-        cipher = Fernet(key)
-    except Exception as e:
-        # Handling exceptions
-        print(colored('Key Error!', 'red'))
-        return None
-    
-    # Encrypting the text and storing it in a variable.
-    encrypted_text = cipher.encrypt(data.encode()).decode()
-
+    encrypted_text = encrypt_text(secret, password)
 
     if type_of_output == 'Text':
 
@@ -130,7 +113,7 @@ def handle_file_enc():
         {
             'type': 'input',
             'qmark': '>',
-            'name': 'file_name',
+            'name': 'file_path',
             'message': 'Enter the path to the file.',
         },
         {
@@ -142,53 +125,7 @@ def handle_file_enc():
     ])
 
     # Storing it as a variable
-    passW = file_info['password']
+    password = file_info['password']
+    file_path = file_info['file_path']
 
-    # Making sure that the password isn't empty
-    if passW == '':
-        print(colored('Please enter a password', 'red'))
-        return None
-
-    # Key generation
-    key = key_gen(passW)
-
-    try:
-        # Trying to create a cipher variable as an instance of the Fernet class.
-        cipher = Fernet(key)
-    except Exception as e:
-        # Handling exceptions
-        print(colored('Key Error!', 'red'))
-        return None
-
-    try:
-        # Getting the size of the file
-        file_size = os.path.getsize(f'{file_info["file_name"]}')
-
-        # Verifying if the file size is less than 1 GB
-        if file_size > 1073741824:
-            print(colored("File too large. Only files till 1GB are supported.", "red"))
-            return None
-
-        # Detecting if the file is already encrypted
-        if 'encrypto' in file_info['file_name']:
-            print(colored("File is already encrypted.", "yellow"))
-            return None
-
-        try:
-            # Opening and reading the file as binary
-            with open(file_info['file_name'], 'rb') as file_path:
-                encrypted_data = cipher.encrypt(file_path.read())
-                
-                # Writing the encrypted data into a new file
-                with open(f"{file_info['file_name']}encrypto", "wb") as write_file:
-                    write_file.write(encrypted_data)
-                    print(colored('File encrypted succesfully.', 'green'))
-                    
-        except Exception as e:
-            # Handling exceptions
-            print(colored("Ran into an issue.", "red"))
-            return None
-
-    except Exception as e:
-        # Handling file not found or similar exceptions
-        print(colored('Sorry! Can\'t get to the file or ran into an error.', 'red'))
+    encrypt_file( file_path, password )
