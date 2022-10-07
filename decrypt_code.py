@@ -12,7 +12,7 @@ from util.key_gen import key_gen
 # Defining the decryption function
 
 
-def decrypt_func():
+def decrypt_func() -> None:
     # Asking the user for a prompt
     enc_info = prompt([
         {
@@ -37,8 +37,12 @@ def decrypt_func():
 
     ])
 
+    if 'type_of_data' not in enc_info:
+        # user hit Ctrl+C
+        return
+
     # Storing the type of data in a variable
-    type_of_data = enc_info['type_of_data']
+    type_of_data: str = enc_info['type_of_data']
 
     # Calling the appropriate function as per data
     if type_of_data == 'File':
@@ -49,7 +53,7 @@ def decrypt_func():
         handle_text_dec()
 
 
-def handle_text_dec():
+def handle_text_dec() -> None:
     # Using decryption information
     decrypt_info = prompt([
         {
@@ -66,6 +70,10 @@ def handle_text_dec():
         },
     ])
 
+    if 'data' not in decrypt_info:
+        # user hit Ctrl+C
+        return
+
     # Storing data in variables
     encrypted_secret = decrypt_info['data']
     password = decrypt_info['password']
@@ -77,7 +85,7 @@ def handle_text_dec():
           colored(decrypted_text, 'green'))
 
 
-def handle_file_dec():
+def handle_file_dec() -> None:
     # Getting the file info
     file_info = prompt([
         {
@@ -93,6 +101,10 @@ def handle_file_dec():
             'message': 'Enter the password: ',
         },
     ])
+
+    if 'file_name' not in file_info:
+        # user hit Ctrl+C
+        return
 
     # Storing the password in a variable
     password = file_info['password']
@@ -129,10 +141,6 @@ def handle_image_dec():
     data = steganography.lsb.decrypt_image(image_path)
     decrypted_text = encryption.aes.decrypt(data.encode()).decode()
 
-    # except Exception as e:
-    #     # Handling wrong key or data
-    #     print(colored('Either the key or the input data is wrong.', 'red'))
-    #     return None
 
     # Printing the text on the console
     print(colored('The decrypted text is: ', 'white') +

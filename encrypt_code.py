@@ -6,7 +6,7 @@ import steganography
 
 
 # Defining the encryption function
-def encrypt_func():
+def encrypt_func() -> None:
     # Get user prompt
     enc_info = prompt([
         {
@@ -27,9 +27,12 @@ def encrypt_func():
 
     ])
 
+    if 'type_of_data' not in enc_info:
+        # user hit Ctrl+C
+        return
 
     # Store the type of data in a variable.
-    type_of_data = enc_info['type_of_data']
+    type_of_data: str = enc_info['type_of_data']
 
     # Calling the appropriate functions according to the type of the value.
     if type_of_data == 'File':
@@ -38,7 +41,7 @@ def encrypt_func():
         handle_text_enc()
 
 
-def handle_text_enc():
+def handle_text_enc() -> None:
     # Asking the user for data to encrypt
     encrypt_info = prompt([
         {
@@ -77,6 +80,9 @@ def handle_text_enc():
         },
     ])
 
+    if 'data' not in encrypt_info:
+        # user hit Ctrl+C
+        return
 
     # Store the type of output in a variable
     type_of_output = encrypt_info['type_of_output']
@@ -102,7 +108,7 @@ def handle_text_enc():
         steganography.lsb.encrypt_text(input_image_path, encrypted_secret)
         
 
-def handle_file_enc():
+def handle_file_enc() -> None:
     # Asking the user for the file to encrypt
     file_info = prompt([
         {
@@ -118,6 +124,10 @@ def handle_file_enc():
             'message': 'Enter the password: ',
         },
     ])
+
+    if 'password' not in file_info:
+        # user hit Ctrl+C
+        return
 
     # Storing it as a variable
     password = file_info['password']
