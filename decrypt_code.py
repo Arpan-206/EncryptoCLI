@@ -10,7 +10,7 @@ from key_gen import key_gen
 # Defining the decryption function
 
 
-def decrypt_func():
+def decrypt_func() -> None:
     # Asking the user for a prompt
     enc_info = prompt([
         {
@@ -36,7 +36,7 @@ def decrypt_func():
     ])
 
     # Storing the type of data in a variable
-    type_of_data = enc_info['type_of_data']
+    type_of_data: str = enc_info['type_of_data']
 
     # Calling the appropriate function as per data
     if type_of_data == 'File':
@@ -47,7 +47,7 @@ def decrypt_func():
         handle_text_dec()
 
 
-def handle_text_dec():
+def handle_text_dec() -> None:
     # Using decryption information
     decrypt_info = prompt([
         {
@@ -65,11 +65,11 @@ def handle_text_dec():
     ])
 
     # Storing data in variables
-    data = decrypt_info['data']
-    passW = decrypt_info['password']
+    data: str = decrypt_info['data']
+    passW: str = decrypt_info['password']
 
     # Making sure that the password is not empty
-    if passW == '':
+    if not passW:
         print(colored('Please enter a password', 'red'))
         return None
 
@@ -79,7 +79,7 @@ def handle_text_dec():
     try:
         # Generating cipher
         cipher = Fernet(key)
-    except Exception as e:
+    except Exception:
         # Handling exceptions
         print(colored('Key Error!', 'red'))
         return None
@@ -87,7 +87,7 @@ def handle_text_dec():
     try:
         # Trying to decrypt text
         decrypted_text = cipher.decrypt(data.encode()).decode()
-    except Exception as e:
+    except Exception:
         # Handling wrong key or data
         print(colored('Either the key or the input data is wrong.', 'red'))
         return None
@@ -97,7 +97,7 @@ def handle_text_dec():
           colored(decrypted_text, 'green'))
 
 
-def handle_file_dec():
+def handle_file_dec() -> None:
     # Getting the file info
     file_info = prompt([
         {
@@ -115,10 +115,10 @@ def handle_file_dec():
     ])
 
     # Storing the password in a variable
-    passW = file_info['password']
+    passW: str = file_info['password']
 
     # Making sure that the password is not empty
-    if passW == '':
+    if not passW:
         print(colored('Please enter a password', 'red'))
         return None
 
@@ -128,41 +128,42 @@ def handle_file_dec():
     try:
         # Generating cipher
         cipher = Fernet(key)
-    except Exception as e:
+    except Exception:
         # Handling exceptions
         print(colored('Key Error!', 'red'))
         return None
 
     try:
         # Getting the size of the file
-        file_size = os.path.getsize(f'{file_info["file_name"]}')
+        file_name: str = file_info['file_name']
+        file_size = os.path.getsize(file_name)
 
         # Making sure that the file size is below 1 GB
         if file_size > 1073741824:
-            print(colored("File too large. Only files till 1GB are supported.", "red"))
+            print(colored("File too large. Only files up to 1GB are supported.", "red"))
             return None
 
         # Making sure that the file is encrypted
-        if 'encrypto' not in file_info['file_name']:
+        if 'encrypto' not in file_name:
             print(colored("File is not encrypted.", "yellow"))
             return None
 
         try:
             # Reading the file as binary
-            with open(file_info['file_name'], 'rb') as file_path:
+            with open(file_name, 'rb') as file_path:
                 encrypted_data = cipher.decrypt(file_path.read())
 
-                # Recreating the original file extension and writing to it
-                with open(f"{file_info['file_name'].replace('encrypto', '')}", "wb") as write_file:
-                    write_file.write(encrypted_data)
-                    print(colored('File decrypted succesfully.', 'green'))
-                    
-        except Exception as e:
+            # Recreating the original file extension and writing to it
+            with open(file_name.replace('encrypto', ''), 'wb') as write_file:
+                write_file.write(encrypted_data)
+                print(colored('File decrypted successfully.', 'green'))
+
+        except Exception:
             # Handling exceptions
             print(colored("Ran into an issue.", "red"))
             return None
 
-    except Exception as e:
+    except Exception:
         # Handling file not found or similar exceptions
         print(colored('Sorry! Can\'t get to the file or ran into an error.', 'red'))
 
