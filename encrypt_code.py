@@ -1,13 +1,8 @@
-import os
 
-from cryptography.fernet import Fernet
 from PyInquirer import Separator, prompt
 from termcolor import colored
-from stegano import lsb
-from encrypt.aes.encrypt import encrypt_file, encrypt_text
-
-from util.key_gen import key_gen
-import util.prompts as prompts
+import encryption.aes
+import steganography
 
 
 # Defining the encryption function
@@ -69,10 +64,10 @@ def handle_text_enc():
             'when': lambda answers : answers['type_of_output'] == 'Image',
         },
         {
-                'type': 'input',
-                'qmark': '>',
-                'name': "to_encrypt_text",
-                'message': "Enter the text to encrypt:",
+            'type': 'input',
+            'qmark': '>',
+            'name': "secret",
+            'message': "Enter the text to encrypt:",
         },
         {
             'type': 'password',
@@ -89,10 +84,10 @@ def handle_text_enc():
         input_image_path = encrypt_info['input_image_path']
 
     # Storing the data into variables
-    secret = encrypt_info['to_encrypt_text']
+    secret = encrypt_info['secret']
     password = encrypt_info['password']
 
-    encrypted_text = encrypt_text(secret, password)
+    encrypted_text = encryption.aes.encrypt_text(secret, password)
 
     if type_of_output == 'Text':
 
@@ -103,9 +98,9 @@ def handle_text_enc():
 
     elif type_of_output == 'Image':
 
-        secret = lsb.hide(input_image_path, encrypted_text)
-        secret.save("./encrypto.png")
-
+        encrypted_secret = encryption.aes.encrypt_text(secret, password)
+        steganography.lsb.encrypt_text(input_image_path, encrypted_secret)
+        
 
 def handle_file_enc():
     # Asking the user for the file to encrypt
@@ -128,4 +123,4 @@ def handle_file_enc():
     password = file_info['password']
     file_path = file_info['file_path']
 
-    encrypt_file( file_path, password )
+    encryption.aes.encrypt.encrypt_file( file_path, password )

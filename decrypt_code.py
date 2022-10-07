@@ -4,7 +4,8 @@ from cryptography.fernet import Fernet
 from PyInquirer import Separator, prompt
 from termcolor import colored
 from stegano import lsb
-from encrypt.aes.decrypt import decrypt_file, decrypt_text 
+import encryption.aes
+import steganography 
 
 from util.key_gen import key_gen
 
@@ -69,7 +70,7 @@ def handle_text_dec():
     encrypted_secret = decrypt_info['data']
     password = decrypt_info['password']
 
-    decrypted_text = decrypt_text(encrypted_secret, password)
+    decrypted_text = encryption.aes.decrypt_text(encrypted_secret, password)
 
     # Printing the text on the console
     print(colored('The decrypted text is: ', 'white') +
@@ -97,7 +98,7 @@ def handle_file_dec():
     password = file_info['password']
     file_path = file_info['file_path']
 
-    decrypt_file(file_path, password)
+    encryption.aes.decrypt_file(file_path, password)
     print(colored('File decrypted succesfully.', 'green'))
 
     # print(colored("Ran into an issue.", "red"))
@@ -120,34 +121,18 @@ def handle_image_dec():
         },
     ])
 
-    # Storing data in variables
-    passW = decrypt_info['password']
+    image_path = decrypt_info['image_path']
+    password = decrypt_info['password']
 
-    # Making sure that the password is not empty
-    if passW == '':
-        print(colored('Please enter a password', 'red'))
-        return None
 
-    # Key Generation
-    key = key_gen(passW)
+    # Trying to decrypt text
+    data = steganography.lsb.decrypt_image(image_path)
+    decrypted_text = encryption.aes.decrypt(data.encode()).decode()
 
-    try:
-        # Generating cipher
-        cipher = Fernet(key)
-    except Exception as e:
-        # Handling exceptions
-        print(colored('Key Error!', 'red'))
-        return None
-
-    try:
-        # Trying to decrypt text
-        data = lsb.reveal(decrypt_info['image_path'])
-        decrypted_text = cipher.decrypt(data.encode()).decode()
-    
-    except Exception as e:
-        # Handling wrong key or data
-        print(colored('Either the key or the input data is wrong.', 'red'))
-        return None
+    # except Exception as e:
+    #     # Handling wrong key or data
+    #     print(colored('Either the key or the input data is wrong.', 'red'))
+    #     return None
 
     # Printing the text on the console
     print(colored('The decrypted text is: ', 'white') +

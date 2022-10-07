@@ -9,10 +9,6 @@ def get_file(filename):
     if file_size > 1073741824:
         raise exceptions.FatalError("File too large. Only files till 1GB are supported.")
 
-    # Detecting if the file is already encrypted
-    if 'encrypto' in filename:
-        raise exceptions.MildError("File is already encrypted.")
-
     try:
         # Opening and reading the file as binary
         file = open(filename, 'rb')

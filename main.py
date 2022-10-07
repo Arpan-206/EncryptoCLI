@@ -1,5 +1,7 @@
 import sys
 
+from error_handler import handle_error
+
 # Hack to fix python 3.10 support
 if sys.version_info >= (3, 10):
     from typing import Mapping
@@ -48,21 +50,23 @@ operation = prompt([
     }
 ])['operation']
 
-# Calling the hash function if the selected operation is Hashing
-if operation == 'Hash':
-    # * Called the hashing function
-    hash_func()
+try:
+    # Calling the hash function if the selected operation is Hashing
+    if operation == 'Hash':
+        # * Called the hashing function
+        hash_func()
 
-# Calling the Encryption function if the selected operation is encryption
-elif operation == 'Encrypt':
-    # * Called the encryption function
-    encrypt_func()
+    # Calling the Encryption function if the selected operation is encryption
+    elif operation == 'Encrypt':
+        # * Called the encryption function
+        encrypt_func()
 
-# Calling the decryption function if the selected operation is decryption
-else:
-    # * Called the decryption function
-    decrypt_func()
-
+    # Calling the decryption function if the selected operation is decryption
+    else:
+        # * Called the decryption function
+        decrypt_func()
+except Exception as e:
+    handle_error(e)
 
 ## print(colored('Please enter a password', 'red'))
 
