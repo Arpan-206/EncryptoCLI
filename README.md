@@ -41,6 +41,29 @@ You can decrypt data by going through these steps.
 3. Enter the password. ![Decrypt Data Password](./docs-files/screenshots/11.png)
 4. And you are done.
 
+## Steganography
+You can encrypt and hide your data in an image using lsb method of steganography ( internally uses [stegano](https://stegano.readthedocs.io/en/latest/module.html) package )
+
+### Encrypt
+
+1. Select the type of data you want to encrypt.
+2. Select **Image** as output type 
+3. Input path to the image where your secret will be hidden
+4. Enter the text/secret you want to encrypt and hide
+5. Enter a password.
+4. And you are done your secret has been hidden in the image named "encrypto.png"
+
+
+### Decrypt
+
+1. Select **Image** as the type of data you want to decrypt.
+3. Input path to the image file you want to decrypt.
+4. Enter the text/secret you want to encrypt and hide
+5. Enter the password. 
+4. And you are done.
+
+
+
 
 ## 🐋 Docker
 You can pull this image from Docker Hub and build it very easily.
