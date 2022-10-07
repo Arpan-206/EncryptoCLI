@@ -95,8 +95,6 @@ def handle_text_enc() -> None:
 
     encrypted_text = encryption.aes.encrypt_text(secret, password)
 
-    print(type_of_output)
-
     if type_of_output == 'Text':
 
         # Printing out the data
@@ -106,8 +104,7 @@ def handle_text_enc() -> None:
 
     elif type_of_output == 'Image':
 
-        encrypted_secret = encryption.aes.encrypt_text(secret, password)
-        steganography.lsb.encrypt_text(input_image_path, encrypted_secret)
+        steganography.lsb.encrypt_text(input_image_path, encrypted_text, "./")
 
         
 
