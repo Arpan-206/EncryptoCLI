@@ -3,7 +3,7 @@ import os
 from cryptography.fernet import Fernet
 from PyInquirer import Separator, prompt
 from termcolor import colored
-from stegano import lsb 
+from stegano import lsb
 
 from key_gen import key_gen
 
@@ -35,6 +35,10 @@ def decrypt_func() -> None:
 
     ])
 
+    if 'type_of_data' not in enc_info:
+        # user hit Ctrl+C
+        return
+
     # Storing the type of data in a variable
     type_of_data: str = enc_info['type_of_data']
 
@@ -63,6 +67,10 @@ def handle_text_dec() -> None:
             'message': 'Enter password:',
         },
     ])
+
+    if 'data' not in decrypt_info:
+        # user hit Ctrl+C
+        return
 
     # Storing data in variables
     data: str = decrypt_info['data']
@@ -113,6 +121,10 @@ def handle_file_dec() -> None:
             'message': 'Enter the password: ',
         },
     ])
+
+    if 'file_name' not in file_info:
+        # user hit Ctrl+C
+        return
 
     # Storing the password in a variable
     passW: str = file_info['password']
@@ -185,6 +197,10 @@ def handle_image_dec():
         },
     ])
 
+    if 'password' not in decrypt_info:
+        # user hit Ctrl+C
+        return
+
     # Storing data in variables
     passW = decrypt_info['password']
 
@@ -199,7 +215,7 @@ def handle_image_dec():
     try:
         # Generating cipher
         cipher = Fernet(key)
-    except Exception as e:
+    except Exception:
         # Handling exceptions
         print(colored('Key Error!', 'red'))
         return None
@@ -208,8 +224,8 @@ def handle_image_dec():
         # Trying to decrypt text
         data = lsb.reveal(decrypt_info['image_path'])
         decrypted_text = cipher.decrypt(data.encode()).decode()
-    
-    except Exception as e:
+
+    except Exception:
         # Handling wrong key or data
         print(colored('Either the key or the input data is wrong.', 'red'))
         return None
