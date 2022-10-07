@@ -3,6 +3,7 @@ import os
 from cryptography.fernet import Fernet
 from PyInquirer import Separator, prompt
 from termcolor import colored
+from stegano import lsb
 
 from key_gen import key_gen
 
@@ -27,8 +28,8 @@ def encrypt_func():
             ],
         },
 
-
     ])
+
 
     # Store the type of data in a variable.
     type_of_data = enc_info['type_of_data']
@@ -44,6 +45,28 @@ def handle_text_enc():
     # Asking the user for data to encrypt
     encrypt_info = prompt([
         {
+            'type': 'list',
+            'qmark': '>',
+            'name': 'type_of_output',
+            'message': 'What do you want to encrypt to?',
+            'choices': [
+                Separator(),
+                {
+                    'name': 'Image',
+                },
+                {
+                    'name': 'Text',
+                },
+            ],
+        },
+        {
+            'type': 'input',
+            'qmark': '>',
+            'name': 'input_image_path',
+            'message': 'Enter the path to the image. ( PNG file recommended )',
+            'when': lambda answers : answers['type_of_output'] == 'Image',
+        },
+        {
             'type': 'input',
             'qmark': '>',
             'name': 'data',
@@ -57,6 +80,12 @@ def handle_text_enc():
         },
     ])
 
+
+    # Store the type of output in a variable
+    type_of_output = encrypt_info['type_of_output']
+    if encrypt_info['type_of_output'] == 'Image':
+        input_image_path = encrypt_info['input_image_path']
+
     # Storing the data into variables
     data = encrypt_info['data']
     passW = encrypt_info['password']
@@ -69,6 +98,7 @@ def handle_text_enc():
     # Key generation
     key = key_gen(passW)
 
+
     try:
         # Trying to create a cipher variable as an instance of the Fernet class.
         cipher = Fernet(key)
@@ -80,10 +110,18 @@ def handle_text_enc():
     # Encrypting the text and storing it in a variable.
     encrypted_text = cipher.encrypt(data.encode()).decode()
 
-    # Printing out the data
-    print(colored('The encrypted text is: ', 'white') +
-          colored(encrypted_text, 'green'))
-    return None
+
+    if type_of_output == 'Text':
+
+        # Printing out the data
+        print(colored('The encrypted text is: ', 'white') +
+            colored(encrypted_text, 'green'))
+        return None
+
+    elif type_of_output == 'Image':
+
+        secret = lsb.hide(input_image_path, encrypted_text)
+        secret.save("./encrypto.png")
 
 
 def handle_file_enc():
