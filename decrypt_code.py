@@ -5,7 +5,7 @@ from PyInquirer import Separator, prompt
 from termcolor import colored
 from stegano import lsb
 import encryption.aes
-import steganography 
+import steganography.lsb
 
 from util.key_gen import key_gen
 
@@ -102,7 +102,7 @@ def handle_file_dec() -> None:
         },
     ])
 
-    if 'file_name' not in file_info:
+    if 'file_path' not in file_info:
         # user hit Ctrl+C
         return
 
@@ -139,7 +139,7 @@ def handle_image_dec():
 
     # Trying to decrypt text
     data = steganography.lsb.decrypt_image(image_path)
-    decrypted_text = encryption.aes.decrypt(data.encode()).decode()
+    decrypted_text = encryption.aes.decrypt_text(data, password)
 
 
     # Printing the text on the console

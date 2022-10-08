@@ -29,6 +29,7 @@ def decrypt_text(encrypted_secret, password):
         decrypted_text = cipher.decrypt(encrypted_secret.encode()).decode()
     except Exception as e:
         # Handling wrong key or data
+        print(e)
         raise FatalError("Either the key or the input data is wrong.")
 
 
