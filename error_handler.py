@@ -7,3 +7,5 @@ def handle_error(e):
         print( colored(str(e), 'red') )
     elif( isinstance(e, exceptions.MildError) ):
         print( colored(str(e), 'yellow') )
+    else:
+        print(e)

@@ -2,7 +2,7 @@
 from PyInquirer import Separator, prompt
 from termcolor import colored
 import encryption.aes
-import steganography
+import steganography.lsb
 
 
 # Defining the encryption function
@@ -103,7 +103,7 @@ def handle_text_enc() -> None:
         return None
 
     elif type_of_output == 'Image':
-
+        print(input_image_path)
         steganography.lsb.encrypt_text(input_image_path, encrypted_text, "./")
 
         
