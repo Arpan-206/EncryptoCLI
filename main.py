@@ -1,5 +1,7 @@
 import sys
 
+from error_handler import handle_error
+
 # Hack to fix python 3.10 support
 if sys.version_info >= (3, 10):
     from typing import Mapping
@@ -29,6 +31,11 @@ def main():
                           ' You can also use this on any type of file below 1GB.', 'cyan')
     print(colored(f.renderText('Encrypto CLI'), 'green'), credit, description, '\n')
 
+## print(colored('Please enter a password', 'red'))
+
+## print(colored('The encrypted text is: ', 'white') +
+##        colored(encrypted_text, 'green'))
+    
     # Asking the user about which operation do they want to perform
     operation: str = prompt([
         {
@@ -58,25 +65,30 @@ def main():
         # user hit Ctrl+C
         return
 
-    # Calling the hash function if the selected operation is Hashing
-    if operation == 'Hash':
-        # * Called the hashing function
-        hash_func()
 
-    # Calling the Encryption function if the selected operation is encryption
-    elif operation == 'Encrypt':
-        # * Called the encryption function
-        encrypt_func()
+    try:
 
-    # Calling the decryption function if the selected operation is decryption
-    elif operation == 'Decrypt':
-        # * Called the decryption function
-        decrypt_func()
-    elif operation == 'Exit':
-        print(colored("goodbye :)", "blue"))
-    else:
-        raise NotImplementedError("operation not supported yet.")
+        # Calling the hash function if the selected operation is Hashing
+        if operation == 'Hash':
+            # * Called the hashing function
+            hash_func()
 
+        # Calling the Encryption function if the selected operation is encryption
+        elif operation == 'Encrypt':
+            # * Called the encryption function
+            encrypt_func()
+
+        # Calling the decryption function if the selected operation is decryption
+        elif operation == 'Decrypt':
+            # * Called the decryption function
+            decrypt_func()
+        elif operation == 'Exit':
+            print(colored("goodbye :)", "blue"))
+        else:
+            raise NotImplementedError("operation not supported yet.")
+
+    except Exception as e:
+        handle_error(e)
 
 if __name__ == "__main__":
     main()

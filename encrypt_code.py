@@ -1,11 +1,8 @@
-import os
 
-from cryptography.fernet import Fernet
 from PyInquirer import Separator, prompt
 from termcolor import colored
-from stegano import lsb
-
-from key_gen import key_gen
+import encryption.aes
+import steganography.lsb
 
 
 # Defining the encryption function
@@ -72,8 +69,8 @@ def handle_text_enc() -> None:
         {
             'type': 'input',
             'qmark': '>',
-            'name': 'data',
-            'message': 'Enter the text to encrypt:',
+            'name': "secret",
+            'message': "Enter the text to encrypt:",
         },
         {
             'type': 'password',
@@ -83,7 +80,7 @@ def handle_text_enc() -> None:
         },
     ])
 
-    if 'data' not in encrypt_info:
+    if 'secret' not in encrypt_info:
         # user hit Ctrl+C
         return
 
@@ -93,29 +90,10 @@ def handle_text_enc() -> None:
         input_image_path = encrypt_info['input_image_path']
 
     # Storing the data into variables
-    data: str = encrypt_info['data']
-    passW: str = encrypt_info['password']
+    secret = encrypt_info['secret']
+    password = encrypt_info['password']
 
-    # Checking if the user entered a password
-    if not passW:
-        print(colored('Please enter a password', 'red'))
-        return None
-
-    # Key generation
-    key = key_gen(passW)
-
-
-    try:
-        # Trying to create a cipher variable as an instance of the Fernet class.
-        cipher = Fernet(key)
-    except Exception:
-        # Handling exceptions
-        print(colored('Key Error!', 'red'))
-        return None
-
-    # Encrypting the text and storing it in a variable.
-    encrypted_text = cipher.encrypt(data.encode()).decode()
-
+    encrypted_text = encryption.aes.encrypt_text(secret, password)
 
     if type_of_output == 'Text':
 
@@ -125,10 +103,10 @@ def handle_text_enc() -> None:
         return None
 
     elif type_of_output == 'Image':
+        print(input_image_path)
+        steganography.lsb.encrypt_text(input_image_path, encrypted_text, "./")
 
-        secret = lsb.hide(input_image_path, encrypted_text)
-        secret.save("./encrypto.png")
-
+        
 
 def handle_file_enc() -> None:
     # Asking the user for the file to encrypt
@@ -136,7 +114,7 @@ def handle_file_enc() -> None:
         {
             'type': 'input',
             'qmark': '>',
-            'name': 'file_name',
+            'name': 'file_path',
             'message': 'Enter the path to the file.',
         },
         {
@@ -152,54 +130,7 @@ def handle_file_enc() -> None:
         return
 
     # Storing it as a variable
-    passW: str = file_info['password']
+    password = file_info['password']
+    file_path = file_info['file_path']
 
-    # Making sure that the password isn't empty
-    if not passW:
-        print(colored('Please enter a password', 'red'))
-        return None
-
-    # Key generation
-    key = key_gen(passW)
-
-    try:
-        # Trying to create a cipher variable as an instance of the Fernet class.
-        cipher = Fernet(key)
-    except Exception:
-        # Handling exceptions
-        print(colored('Key Error!', 'red'))
-        return None
-
-    try:
-        # Getting the size of the file
-        file_name: str = file_info['file_name']
-        file_size = os.path.getsize(file_name)
-
-        # Verifying if the file size is less than 1 GB
-        if file_size > 1073741824:
-            print(colored("File too large. Only files up to 1GB are supported.", "red"))
-            return None
-
-        # Detecting if the file is already encrypted
-        if 'encrypto' in file_name:
-            print(colored("File is already encrypted.", "yellow"))
-            return None
-
-        try:
-            # Opening and reading the file as binary
-            with open(file_name, 'rb') as file_path:
-                encrypted_data = cipher.encrypt(file_path.read())
-
-            # Writing the encrypted data into a new file
-            with open(f"{file_name}encrypto", 'wb') as write_file:
-                write_file.write(encrypted_data)
-                print(colored('File encrypted successfully.', 'green'))
-
-        except Exception:
-            # Handling exceptions
-            print(colored('Ran into an issue.', 'red'))
-            return None
-
-    except Exception:
-        # Handling file not found or similar exceptions
-        print(colored('Sorry! Can\'t get to the file or ran into an error.', 'red'))
+    encryption.aes.encrypt.encrypt_file( file_path, password )
