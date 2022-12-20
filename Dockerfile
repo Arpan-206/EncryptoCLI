@@ -1,4 +1,4 @@
-FROM python:3.11.0rc1-alpine
+FROM python:3.12.0a2-alpine
 RUN apk add build-base libffi-dev
 RUN pip3 install --no-cache --upgrade pip setuptools 
 WORKDIR /app
