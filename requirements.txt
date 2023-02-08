@@ -2,7 +2,7 @@ autopep8==1.7.0
 cffi==1.15.0
 colorama==0.4.5
 crayons==0.4.0
-cryptography==35.0.0
+cryptography==39.0.1
 numpy==1.23.3
 opencv-python==4.6.0.66
 piexif==1.1.3
