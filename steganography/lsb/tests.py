@@ -8,6 +8,9 @@ from steganography.lsb.decrypt import decrypt_image
 
 class TestEncryption:
 
+    """
+    Tests for the encryption and decryption of text
+    """
 
     @pytest.mark.parametrize(
         "input", 
