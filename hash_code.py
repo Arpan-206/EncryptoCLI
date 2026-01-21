@@ -2,7 +2,7 @@
 import hashlib
 
 # Importing the visual libraries
-from PyInquirer import Separator, prompt
+import inquirer
 from termcolor import colored
 
 # Defining the hash function.
@@ -10,51 +10,20 @@ from termcolor import colored
 
 def hash_func() -> None:
     # Asking the user for further data regarding algorithms
-    hash_info = prompt([
-        {
-            'type': 'list',
-            'qmark': '>',
-            'name': 'algorithm',
-            'message': 'Which algorithm do you want to use?',
-            'choices': [
-                Separator(),
-                {
-                    'name': 'MD5',
-                },
-                {
-                    'name': 'SHA256',
-                },
-                {
-                    'name': 'SHA512',
-                },
-                {
-                    'name': 'BLAKE2',
-                },
-                {
-                    'name': 'BLAKE2b',
-                },
-            ],
-        },
-        {
-            'type': 'list',
-            'qmark': '>',
-            'name': 'type_of_data',
-            'message': 'What do you want to hash?',
-            'choices': [
-                Separator(),
-                {
-                    'name': 'Text',
-                },
-                {
-                    'name': 'File',
-                },
-            ],
-        },
-
-
+    hash_info = inquirer.prompt([
+        inquirer.List(
+            'algorithm',
+            message='Which algorithm do you want to use?',
+            choices=['MD5', 'SHA256', 'SHA512', 'BLAKE2', 'BLAKE2b'],
+        ),
+        inquirer.List(
+            'type_of_data',
+            message='What do you want to hash?',
+            choices=['Text', 'File'],
+        ),
     ])
 
-    if 'type_of_data' not in hash_info:
+    if not hash_info or 'type_of_data' not in hash_info:
         # user hit Ctrl+C
         return
 
@@ -81,17 +50,12 @@ def hash_func() -> None:
 
 
 def handle_text_hashing(hash_out) -> None:
-    # Asking the user for the data
-    data_info = prompt([
-        {
-            'type': 'input',
-            'qmark': '>',
-            'name': 'hash_data',
-            'message': 'Enter data to hash.',
-        },
+    # Getting the text to hash
+    data_info = inquirer.prompt([
+        inquirer.Text('hash_data', message='Enter data to hash.'),
     ])
 
-    if 'hash_data' not in data_info:
+    if not data_info or 'hash_data' not in data_info:
         # user hit Ctrl+C
         return
 
@@ -108,16 +72,11 @@ def handle_text_hashing(hash_out) -> None:
 
 def handle_file_hashing(hash_out) -> None:
     # Asking the user for the path to the file
-    file_info = prompt([
-        {
-            'type': 'input',
-            'qmark': '>',
-            'name': 'file_name',
-            'message': 'Enter the path to the file.',
-        },
+    file_info = inquirer.prompt([
+        inquirer.Text('file_name', message='Enter the path to the file.'),
     ])
 
-    if 'file_name' not in file_info:
+    if not file_info or 'file_name' not in file_info:
         # user hit Ctrl+C
         return
 

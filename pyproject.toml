@@ -1,0 +1,37 @@
+[project]
+name = "EncryptoCLI"
+version = "0.1.0"
+description = "A command-line program for encrypting, decrypting, and hashing files"
+authors = [{name = "Arpan Pandey"}]
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.14"
+dependencies = [
+    "autopep8",
+    "cffi",
+    "colorama",
+    "crayons",
+    "cryptography",
+    "inquirer>=3.4",
+    "numpy",
+    "opencv-python",
+    "piexif",
+    "Pillow",
+    "pycodestyle",
+    "pycparser",
+    "pyfiglet",
+    "Pygments",
+    "regex",
+    "six",
+    "stegano",
+    "termcolor",
+    "toml",
+    "wcwidth",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["encryption", "steganography", "util"]

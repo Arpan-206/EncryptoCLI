@@ -2,18 +2,9 @@ import sys
 
 from error_handler import handle_error
 
-# Hack to fix python 3.10 support
-if sys.version_info >= (3, 10):
-    from typing import Mapping
-    import collections
-
-    # imported in prompt_toolkit 1.0.14 which is strictly
-    # relied on by PyInquirer
-    collections.Mapping = Mapping  # type: ignore
-
 # Importing 3rd Party Libraries
 from pyfiglet import Figlet
-from PyInquirer import prompt, Separator
+import inquirer
 from termcolor import colored
 
 # Importing the local functions
@@ -37,29 +28,14 @@ def main():
 ##        colored(encrypted_text, 'green'))
     
     # Asking the user about which operation do they want to perform
-    operation: str = prompt([
-        {
-            'type': 'list',
-            'qmark': '🔘',
-            'name': 'operation',
-            'message': 'What do you want to do?',
-            'choices': [
-                Separator(),
-                {
-                    'name': 'Hash',
-                },
-                {
-                    'name': 'Encrypt',
-                },
-                {
-                    'name': 'Decrypt',
-                },
-                {
-                    'name': 'Exit',
-                }
-            ],
-        }
-    ]).get('operation', None)
+    answers = inquirer.prompt([
+        inquirer.List(
+            'operation',
+            message='What do you want to do?',
+            choices=['Hash', 'Encrypt', 'Decrypt', 'Exit'],
+        ),
+    ])
+    operation: str = answers.get('operation', None) if answers else None
 
     if not operation:
         # user hit Ctrl+C

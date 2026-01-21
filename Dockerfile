@@ -1,7 +1,7 @@
-FROM python:3.12.0a4-alpine
+FROM python:3.14-alpine
 RUN apk add build-base libffi-dev
-RUN pip3 install --no-cache --upgrade pip setuptools 
+RUN pip install uv
 WORKDIR /app
-COPY requirements.txt requirements.txt
+COPY pyproject.toml pyproject.toml
 COPY . .
-RUN pip3 install --no-cache -r requirements.txt
+RUN uv sync --frozen

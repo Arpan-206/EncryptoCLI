@@ -1,5 +1,5 @@
 
-from PyInquirer import Separator, prompt
+import inquirer
 from termcolor import colored
 import encryption.aes
 import steganography.lsb
@@ -8,26 +8,15 @@ import steganography.lsb
 # Defining the encryption function
 def encrypt_func() -> None:
     # Get user prompt
-    enc_info = prompt([
-        {
-            'type': 'list',
-            'qmark': '>',
-            'name': 'type_of_data',
-            'message': 'What do you want to encrypt?',
-            'choices': [
-                Separator(),
-                {
-                    'name': 'Text',
-                },
-                {
-                    'name': 'File',
-                },
-            ],
-        },
-
+    enc_info = inquirer.prompt([
+        inquirer.List(
+            'type_of_data',
+            message='What do you want to encrypt?',
+            choices=['Text', 'File'],
+        ),
     ])
 
-    if 'type_of_data' not in enc_info:
+    if not enc_info:
         # user hit Ctrl+C
         return
 
@@ -43,51 +32,36 @@ def encrypt_func() -> None:
 
 def handle_text_enc() -> None:
     # Asking the user for data to encrypt
-    encrypt_info = prompt([
-        {
-            'type': 'list',
-            'qmark': '>',
-            'name': 'type_of_output',
-            'message': 'What do you want to encrypt to?',
-            'choices': [
-                Separator(),
-                {
-                    'name': 'Image',
-                },
-                {
-                    'name': 'Text',
-                },
-            ],
-        },
-        {
-            'type': 'input',
-            'qmark': '>',
-            'name': 'input_image_path',
-            'message': 'Enter the path to the image. ( PNG file recommended )',
-            'when': lambda answers : answers['type_of_output'] == 'Image',
-        },
-        {
-            'type': 'input',
-            'qmark': '>',
-            'name': "secret",
-            'message': "Enter the text to encrypt:",
-        },
-        {
-            'type': 'password',
-            'qmark': '>',
-            'name': 'password',
-            'message': 'Enter the password: ',
-        },
+    encrypt_info = inquirer.prompt([
+        inquirer.List(
+            'type_of_output',
+            message='What do you want to encrypt to?',
+            choices=['Image', 'Text'],
+        ),
     ])
+    
+    if not encrypt_info:
+        return
+    
+    type_of_output = encrypt_info['type_of_output']
+    
+    # Ask for additional inputs based on output type
+    additional_questions = []
+    if type_of_output == 'Image':
+        additional_questions.append(
+            inquirer.Text('input_image_path', message='Enter the path to the image. ( PNG file recommended )')
+        )
+    
+    additional_questions.extend([
+        inquirer.Text('secret', message='Enter the text to encrypt:'),
+        inquirer.Password('password', message='Enter the password: '),
+    ])
+    
+    encrypt_info.update(inquirer.prompt(additional_questions) or {})
 
     if 'secret' not in encrypt_info:
         # user hit Ctrl+C
         return
-
-    # Store the type of output in a variable
-    type_of_output = encrypt_info['type_of_output']
-    if encrypt_info['type_of_output'] == 'Image':
-        input_image_path = encrypt_info['input_image_path']
 
     # Storing the data into variables
     secret = encrypt_info['secret']
@@ -110,22 +84,12 @@ def handle_text_enc() -> None:
 
 def handle_file_enc() -> None:
     # Asking the user for the file to encrypt
-    file_info = prompt([
-        {
-            'type': 'input',
-            'qmark': '>',
-            'name': 'file_path',
-            'message': 'Enter the path to the file.',
-        },
-        {
-            'type': 'password',
-            'qmark': '>',
-            'name': 'password',
-            'message': 'Enter the password: ',
-        },
+    file_info = inquirer.prompt([
+        inquirer.Text('file_path', message='Enter the path to the file.'),
+        inquirer.Password('password', message='Enter the password: '),
     ])
 
-    if 'password' not in file_info:
+    if not file_info or 'password' not in file_info:
         # user hit Ctrl+C
         return
 

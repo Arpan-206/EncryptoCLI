@@ -1,7 +1,7 @@
 import os
 
 from cryptography.fernet import Fernet
-from PyInquirer import Separator, prompt
+import inquirer
 from termcolor import colored
 from stegano import lsb
 import encryption.aes
@@ -14,30 +14,15 @@ from util.key_gen import key_gen
 
 def decrypt_func() -> None:
     # Asking the user for a prompt
-    enc_info = prompt([
-        {
-            'type': 'list',
-            'qmark': '>',
-            'name': 'type_of_data',
-            'message': 'What do you want to decrypt?',
-            'choices': [
-                Separator(),
-                {
-                    'name': 'Text',
-                },
-                {
-                    'name': 'File',
-                },
-                {
-                    'name': 'Image',
-                },
-            ],
-        },
-
-
+    enc_info = inquirer.prompt([
+        inquirer.List(
+            'type_of_data',
+            message='What do you want to decrypt',
+            choices=['Text', 'File', 'Image'],
+        ),
     ])
 
-    if 'type_of_data' not in enc_info:
+    if not enc_info:
         # user hit Ctrl+C
         return
 
@@ -55,24 +40,15 @@ def decrypt_func() -> None:
 
 def handle_text_dec() -> None:
     # Using decryption information
-    decrypt_info = prompt([
-        {
-            'type': 'input',
-            'qmark': '>',
-            'name': 'data',
-            'message': 'Enter the text to decrypt.',
-        },
-        {
-            'type': 'password',
-            'qmark': '>',
-            'name': 'password',
-            'message': 'Enter password:',
-        },
+    decrypt_info = inquirer.prompt([
+        inquirer.Text('data', message='Enter the text to decrypt'),
+        inquirer.Password('password', message='Enter password'),
     ])
 
-    if 'data' not in decrypt_info:
+    if not decrypt_info or 'data' not in decrypt_info:
         # user hit Ctrl+C
         return
+
 
     # Storing data in variables
     encrypted_secret = decrypt_info['data']
@@ -87,22 +63,12 @@ def handle_text_dec() -> None:
 
 def handle_file_dec() -> None:
     # Getting the file info
-    file_info = prompt([
-        {
-            'type': 'input',
-            'qmark': '>',
-            'name': 'file_path',
-            'message': 'Enter the path to the file.',
-        },
-        {
-            'type': 'password',
-            'qmark': '>',
-            'name': 'password',
-            'message': 'Enter the password: ',
-        },
+    file_info = inquirer.prompt([
+        inquirer.Text('file_path', message='Enter the path to the file'),
+        inquirer.Password('password', message='Enter the password'),
     ])
 
-    if 'file_path' not in file_info:
+    if not file_info or 'file_path' not in file_info:
         # user hit Ctrl+C
         return
 
@@ -118,20 +84,13 @@ def handle_file_dec() -> None:
 
 def handle_image_dec():
     # Using decryption information
-    decrypt_info = prompt([
-        {
-            'type': 'input',
-            'qmark': '>',
-            'name': 'image_path',
-            'message': 'Enter the path of the image to decrypt.',
-        },
-        {
-            'type': 'password',
-            'qmark': '>',
-            'name': 'password',
-            'message': 'Enter password:',
-        },
+    decrypt_info = inquirer.prompt([
+        inquirer.Text('image_path', message='Enter the path of the image to decrypt'),
+        inquirer.Password('password', message='Enter password'),
     ])
+
+    if not decrypt_info:
+        return
 
     image_path = decrypt_info['image_path']
     password = decrypt_info['password']
