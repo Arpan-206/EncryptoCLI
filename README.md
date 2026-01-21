@@ -9,7 +9,7 @@ Encrypto CLI is a command-line program that provides you with an intuitive and e
 * Cryptography Module (Fernet Encryption)
 * Hashing Module
 * Termcolor
-* PyInquirer
+* InquirerPy
 * Scrypt
 
 ## How it works?

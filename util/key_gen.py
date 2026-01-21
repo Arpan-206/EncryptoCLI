@@ -1,5 +1,4 @@
 import random
-import random
 from base64 import urlsafe_b64encode
 from hashlib import scrypt
 

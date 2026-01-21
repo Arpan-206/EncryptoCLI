@@ -12,7 +12,7 @@ dependencies = [
     "colorama",
     "crayons",
     "cryptography",
-    "inquirer>=3.4",
+    "InquirerPy",
     "numpy",
     "opencv-python",
     "piexif",

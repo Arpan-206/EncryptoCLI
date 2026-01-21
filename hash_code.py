@@ -2,7 +2,7 @@
 import hashlib
 
 # Importing the visual libraries
-import inquirer
+from InquirerPy import inquirer
 from termcolor import colored
 
 # Defining the hash function.
@@ -10,26 +10,23 @@ from termcolor import colored
 
 def hash_func() -> None:
     # Asking the user for further data regarding algorithms
-    hash_info = inquirer.prompt([
-        inquirer.List(
-            'algorithm',
-            message='Which algorithm do you want to use?',
-            choices=['MD5', 'SHA256', 'SHA512', 'BLAKE2', 'BLAKE2b'],
-        ),
-        inquirer.List(
-            'type_of_data',
-            message='What do you want to hash?',
-            choices=['Text', 'File'],
-        ),
-    ])
-
-    if not hash_info or 'type_of_data' not in hash_info:
+    algorithm = inquirer.select(
+        message='Which algorithm do you want to use?',
+        choices=['MD5', 'SHA256', 'SHA512', 'BLAKE2', 'BLAKE2b'],
+    ).execute()
+    
+    if not algorithm:
         # user hit Ctrl+C
         return
-
-    # Storing the data into separate variables
-    algorithm: str = hash_info['algorithm']
-    type_of_data: str = hash_info['type_of_data']
+    
+    type_of_data = inquirer.select(
+        message='What do you want to hash?',
+        choices=['Text', 'File'],
+    ).execute()
+    
+    if not type_of_data:
+        # user hit Ctrl+C
+        return
 
     if algorithm == 'MD5':
         hash_out = hashlib.md5()
@@ -51,16 +48,16 @@ def hash_func() -> None:
 
 def handle_text_hashing(hash_out) -> None:
     # Getting the text to hash
-    data_info = inquirer.prompt([
-        inquirer.Text('hash_data', message='Enter data to hash.'),
-    ])
-
-    if not data_info or 'hash_data' not in data_info:
+    hash_data = inquirer.text(
+        message='Enter data to hash.'
+    ).execute()
+    
+    if not hash_data:
         # user hit Ctrl+C
         return
 
     # Populating it the data after converting it to binary
-    hash_out.update(data_info['hash_data'].encode())
+    hash_out.update(hash_data.encode())
 
     # Calculating the actual hash
     final_data = hash_out.hexdigest()
@@ -72,15 +69,13 @@ def handle_text_hashing(hash_out) -> None:
 
 def handle_file_hashing(hash_out) -> None:
     # Asking the user for the path to the file
-    file_info = inquirer.prompt([
-        inquirer.Text('file_name', message='Enter the path to the file.'),
-    ])
-
-    if not file_info or 'file_name' not in file_info:
+    file_name = inquirer.text(
+        message='Enter the path to the file.'
+    ).execute()
+    
+    if not file_name:
         # user hit Ctrl+C
         return
-
-    file_name: str = file_info['file_name']
 
     try:
         # Again, Defining the hash_out variable according to the algorithm selected by user

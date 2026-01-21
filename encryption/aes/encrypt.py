@@ -4,7 +4,6 @@ from util.exceptions import FatalError, MildError
 from util.file_handling import get_file
 
 from util.key_gen import key_gen
-import util.prompts as prompts
 
 
 def encrypt_text(secret, password):
@@ -13,10 +12,8 @@ def encrypt_text(secret, password):
     if password == '':
         raise FatalError("Please enter a password")
 
-
     # Key generation
     key = key_gen(password)
-
 
     try:
         # Trying to create a cipher variable as an instance of the Fernet class.

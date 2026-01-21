@@ -1,10 +1,8 @@
-import sys
-
 from error_handler import handle_error
 
 # Importing 3rd Party Libraries
 from pyfiglet import Figlet
-import inquirer
+from InquirerPy import inquirer
 from termcolor import colored
 
 # Importing the local functions
@@ -17,7 +15,7 @@ def main():
     # Generating the initial output text with pyfiglet
     f = Figlet(font='slant')
     credit = colored('                                                 By Arpan Pandey\n', 'yellow', attrs=['bold'])
-    description = colored('  A tool to hash or encrypt your data easily using Fernet Encryption.'
+    description = colored('A tool to hash or encrypt your data easily using Fernet Encryption.'
                           ' It is very easy and intuitive to use.'
                           ' You can also use this on any type of file below 1GB.', 'cyan')
     print(colored(f.renderText('Encrypto CLI'), 'green'), credit, description, '\n')
@@ -28,14 +26,10 @@ def main():
 ##        colored(encrypted_text, 'green'))
     
     # Asking the user about which operation do they want to perform
-    answers = inquirer.prompt([
-        inquirer.List(
-            'operation',
-            message='What do you want to do?',
-            choices=['Hash', 'Encrypt', 'Decrypt', 'Exit'],
-        ),
-    ])
-    operation: str = answers.get('operation', None) if answers else None
+    operation = inquirer.select(
+        message='What do you want to do?',
+        choices=['Hash', 'Encrypt', 'Decrypt', 'Exit'],
+    ).execute()
 
     if not operation:
         # user hit Ctrl+C
