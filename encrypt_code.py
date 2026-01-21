@@ -1,94 +1,87 @@
+"""Encryption handlers."""
 
 from InquirerPy import inquirer
 from termcolor import colored
-import encryption.aes
-import steganography.lsb
+
+from encryption.aes import AESCipher
+from steganography.lsb.handler import LSBSteganography
 
 
-# Defining the encryption function
-def encrypt_func() -> None:
-    # Get user prompt
-    type_of_data = inquirer.select(
-        message='What do you want to encrypt?',
-        choices=['Text', 'File'],
-    ).execute()
+class EncryptionHandler:
+    """Handle encryption workflows for text and files."""
 
-    if not type_of_data:
-        # user hit Ctrl+C
-        return
+    def __init__(self) -> None:
+        self.cipher = AESCipher()
+        self.steg = LSBSteganography()
 
-    # Calling the appropriate functions according to the type of the value.
-    if type_of_data == 'File':
-        handle_file_enc()
-    else:
-        handle_text_enc()
-
-
-def handle_text_enc() -> None:
-    # Asking the user for data to encrypt
-    type_of_output = inquirer.select(
-        message='What do you want to encrypt to?',
-        choices=['Image', 'Text'],
-    ).execute()
-    
-    if not type_of_output:
-        # user hit Ctrl+C
-        return
-    
-    # Ask for additional inputs based on output type
-    input_image_path = None
-    if type_of_output == 'Image':
-        input_image_path = inquirer.text(
-            message='Enter the path to the image. ( PNG file recommended )'
+    def run(self) -> None:
+        """Prompt for encryption mode and dispatch to the appropriate handler."""
+        type_of_data = inquirer.select(
+            message="What do you want to encrypt?",
+            choices=["Text", "File"],
         ).execute()
-        if not input_image_path:
+
+        if not type_of_data:
             return
-    
-    secret = inquirer.text(
-        message='Enter the text to encrypt:'
-    ).execute()
-    
-    if not secret:
-        # user hit Ctrl+C
-        return
-    
-    password = inquirer.secret(
-        message='Enter the password: '
-    ).execute()
-    
-    if not password:
-        # user hit Ctrl+C
-        return
 
-    encrypted_text = encryption.aes.encrypt_text(secret, password)
+        if type_of_data == "File":
+            self._encrypt_file()
+        else:
+            self._encrypt_text()
 
-    if type_of_output == 'Text':
-        # Printing out the data
-        print(colored('The encrypted text is: ', 'white') +
-            colored(encrypted_text, 'green'))
-        return None
+    def _encrypt_text(self) -> None:
+        """Encrypt text to either text output or embed into an image."""
+        type_of_output = inquirer.select(
+            message="What do you want to encrypt to?",
+            choices=["Image", "Text"],
+        ).execute()
 
-    elif type_of_output == 'Image':
-        steganography.lsb.encrypt_text(input_image_path, encrypted_text, "./")
+        if not type_of_output:
+            return
 
-        
+        input_image_path = None
+        if type_of_output == "Image":
+            input_image_path = inquirer.text(
+                message="Enter the path to the image. ( PNG file recommended )"
+            ).execute()
+            if not input_image_path:
+                return
 
-def handle_file_enc() -> None:
-    # Asking the user for the file to encrypt
-    file_path = inquirer.text(
-        message='Enter the path to the file.'
-    ).execute()
-    
-    if not file_path:
-        # user hit Ctrl+C
-        return
-    
-    password = inquirer.secret(
-        message='Enter the password: '
-    ).execute()
-    
-    if not password:
-        # user hit Ctrl+C
-        return
+        secret = inquirer.text(message="Enter the text to encrypt:").execute()
 
-    encryption.aes.encrypt.encrypt_file( file_path, password )
+        if not secret:
+            return
+
+        password = self._get_password()
+        if not password:
+            return
+
+        encrypted_text = self.cipher.encrypt_text(secret, password)
+
+        if type_of_output == "Text":
+            print(
+                colored("The encrypted text is: ", "white")
+                + colored(encrypted_text, "green")
+            )
+            return
+
+        self.steg.encrypt_text(input_image_path, encrypted_text, "./")
+
+    def _encrypt_file(self) -> None:
+        """Encrypt a file using the provided password."""
+        file_path = inquirer.text(message="Enter the path to the file.").execute()
+
+        if not file_path:
+            return
+
+        password = self._get_password()
+        if not password:
+            return
+
+        self.cipher.encrypt_file(file_path, password)
+
+    def _get_password(self) -> str:
+        """Prompt the user for a password, returning empty string on cancel."""
+        password = inquirer.secret(message="Enter the password: ").execute()
+
+        return password or ""
