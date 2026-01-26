@@ -7,8 +7,11 @@ cffi==2.0.0
     # via
     #   cryptography
     #   encryptocli
+click==8.3.1
+    # via typer
 colorama==0.4.6
     # via
+    #   click
     #   crayons
     #   encryptocli
 crayons==0.4.0
@@ -19,7 +22,15 @@ cryptography==46.0.3
     # via encryptocli
 inquirerpy==0.3.4
     # via encryptocli
-numpy==2.4.1
+markdown-it-py==4.0.0
+    # via rich
+mdurl==0.1.2
+    # via markdown-it-py
+numpy==2.2.6 ; python_full_version < '3.11'
+    # via
+    #   encryptocli
+    #   opencv-python
+numpy==2.4.1 ; python_full_version >= '3.11'
     # via
     #   encryptocli
     #   opencv-python
@@ -50,9 +61,15 @@ pycparser==2.23
 pyfiglet==1.0.4
     # via encryptocli
 pygments==2.19.2
-    # via encryptocli
+    # via
+    #   encryptocli
+    #   rich
 regex==2026.1.15
     # via encryptocli
+rich==14.3.1
+    # via typer
+shellingham==1.5.4
+    # via typer
 six==1.17.0
     # via encryptocli
 stegano==2.1.0
@@ -61,6 +78,14 @@ termcolor==3.3.0
     # via encryptocli
 toml==0.10.2
     # via encryptocli
+tomli==2.4.0 ; python_full_version < '3.11'
+    # via autopep8
+typer==0.21.1
+    # via encryptocli
+typing-extensions==4.15.0
+    # via
+    #   cryptography
+    #   typer
 wcwidth==0.2.14
     # via
     #   encryptocli
