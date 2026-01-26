@@ -2,6 +2,6 @@
 
 Auto-documentation for custom exception classes.
 
-::: util.exceptions.FatalError
+::: encryptocli.util.exceptions.FatalError
 
-::: util.exceptions.MildError
+::: encryptocli.util.exceptions.MildError

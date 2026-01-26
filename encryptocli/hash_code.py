@@ -1,7 +1,7 @@
 """Hashing handlers."""
 
 import hashlib
-from typing import Any, Callable, Dict
+from typing import Any, Callable
 
 from InquirerPy import inquirer
 from termcolor import colored
@@ -10,7 +10,7 @@ from termcolor import colored
 class HashingHandler:
     """Handle hashing workflows for text and files."""
 
-    ALGORITHMS: Dict[str, Callable[[], Any]] = {
+    ALGORITHMS: dict[str, Callable[[], Any]] = {
         "MD5": hashlib.md5,
         "SHA256": hashlib.sha256,
         "SHA512": hashlib.sha512,

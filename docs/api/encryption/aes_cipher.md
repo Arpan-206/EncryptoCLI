@@ -2,4 +2,4 @@
 
 Auto-documentation for AES/Fernet encryption and decryption.
 
-::: encryption.aes.cipher.AESCipher
+::: encryptocli.encryption.aes.cipher.AESCipher

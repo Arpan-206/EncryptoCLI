@@ -2,4 +2,4 @@
 
 Auto-documentation for the main CLI entrypoint module.
 
-::: main.EncryptoCLI
+::: encryptocli.main.EncryptoCLI

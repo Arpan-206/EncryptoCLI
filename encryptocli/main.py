@@ -4,10 +4,10 @@ from pyfiglet import Figlet
 from InquirerPy import inquirer
 from termcolor import colored
 
-from decrypt_code import DecryptionHandler
-from encrypt_code import EncryptionHandler
-from error_handler import handle_error
-from hash_code import HashingHandler
+from encryptocli.decrypt_code import DecryptionHandler
+from encryptocli.encrypt_code import EncryptionHandler
+from encryptocli.error_handler import handle_error
+from encryptocli.hash_code import HashingHandler
 
 
 class EncryptoCLI:

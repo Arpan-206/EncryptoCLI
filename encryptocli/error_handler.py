@@ -1,11 +1,9 @@
-from typing import Union
-
-import util.exceptions as exceptions
+import encryptocli.util.exceptions as exceptions
 from termcolor import colored
 
 
 def handle_error(
-    e: Union[exceptions.FatalError, exceptions.MildError, Exception],
+    e: exceptions.FatalError | exceptions.MildError | Exception,
 ) -> None:
     """Handle and display errors with appropriate coloring.
 

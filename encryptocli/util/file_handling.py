@@ -1,7 +1,7 @@
 import os
 from typing import BinaryIO
 
-import util.exceptions as exceptions
+import encryptocli.util.exceptions as exceptions
 
 
 def get_file(filename: str) -> BinaryIO:

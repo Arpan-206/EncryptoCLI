@@ -2,4 +2,4 @@
 
 Auto-documentation for LSB steganography utilities.
 
-::: steganography.lsb.handler.LSBSteganography
+::: encryptocli.steganography.lsb.handler.LSBSteganography

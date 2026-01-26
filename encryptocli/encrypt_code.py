@@ -1,12 +1,10 @@
 """Encryption handlers."""
 
-from typing import Optional
-
 from InquirerPy import inquirer
 from termcolor import colored
 
-from encryption.aes import AESCipher
-from steganography.lsb.handler import LSBSteganography
+from encryptocli.encryption.aes import AESCipher
+from encryptocli.steganography.lsb.handler import LSBSteganography
 
 
 class EncryptionHandler:
@@ -49,7 +47,7 @@ class EncryptionHandler:
         Returns:
             None
         """
-        type_of_output: Optional[str] = inquirer.select(
+        type_of_output: str | None = inquirer.select(
             message="What do you want to encrypt to?",
             choices=["Image", "Text"],
         ).execute()
@@ -57,7 +55,7 @@ class EncryptionHandler:
         if not type_of_output:
             return
 
-        input_image_path: Optional[str] = None
+        input_image_path: str | None = None
         if type_of_output == "Image":
             input_image_path = inquirer.text(
                 message="Enter the path to the image. ( PNG file recommended )"

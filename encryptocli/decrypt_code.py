@@ -1,12 +1,10 @@
 """Decryption handlers."""
 
-from typing import Optional
-
 from InquirerPy import inquirer
 from termcolor import colored
 
-from encryption.aes import AESCipher
-from steganography.lsb.handler import LSBSteganography
+from encryptocli.encryption.aes import AESCipher
+from encryptocli.steganography.lsb.handler import LSBSteganography
 
 
 class DecryptionHandler:

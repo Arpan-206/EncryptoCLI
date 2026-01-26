@@ -5,9 +5,9 @@ from typing import BinaryIO
 from cryptography.fernet import Fernet
 from termcolor import colored
 
-from util.exceptions import FatalError, MildError
-from util.file_handling import get_file
-from util.key_gen import key_gen
+from encryptocli.util.exceptions import FatalError, MildError
+from encryptocli.util.file_handling import get_file
+from encryptocli.util.key_gen import key_gen
 
 
 class AESCipher:

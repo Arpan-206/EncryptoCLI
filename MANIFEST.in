@@ -1,0 +1,8 @@
+include README.md
+include LICENSE
+include CONTRIBUTING.md
+include CODE_OF_CONDUCT.md
+recursive-include docs *.md
+recursive-include encryption *.py
+recursive-include steganography *.py
+recursive-include util *.py

@@ -2,4 +2,4 @@
 
 Auto-documentation for file handling utilities.
 
-::: util.file_handling.get_file
+::: encryptocli.util.file_handling.get_file

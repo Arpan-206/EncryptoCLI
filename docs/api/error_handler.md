@@ -2,4 +2,4 @@
 
 Auto-documentation for error handling utilities.
 
-::: error_handler.handle_error
+::: encryptocli.error_handler.handle_error

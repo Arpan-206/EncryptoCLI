@@ -2,4 +2,4 @@
 
 Auto-documentation for cryptographic key generation.
 
-::: util.key_gen.key_gen
+::: encryptocli.util.key_gen.key_gen
