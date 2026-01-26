@@ -1,6 +1,6 @@
 [project]
 name = "EncryptoCLI"
-version = "0.2.2"
+version = "0.3"
 description = "A command-line program for encrypting, decrypting, and hashing files"
 authors = [{name = "Arpan Pandey", email = "arpan@example.com"}]
 maintainers = [{name = "Arpan Pandey", email = "arpan@example.com"}]
