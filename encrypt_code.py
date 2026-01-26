@@ -1,5 +1,7 @@
 """Encryption handlers."""
 
+from typing import Optional
+
 from InquirerPy import inquirer
 from termcolor import colored
 
@@ -31,7 +33,7 @@ class EncryptionHandler:
 
     def _encrypt_text(self) -> None:
         """Encrypt text to either text output or embed into an image."""
-        type_of_output = inquirer.select(
+        type_of_output: Optional[str] = inquirer.select(
             message="What do you want to encrypt to?",
             choices=["Image", "Text"],
         ).execute()
@@ -39,7 +41,7 @@ class EncryptionHandler:
         if not type_of_output:
             return
 
-        input_image_path = None
+        input_image_path: Optional[str] = None
         if type_of_output == "Image":
             input_image_path = inquirer.text(
                 message="Enter the path to the image. ( PNG file recommended )"

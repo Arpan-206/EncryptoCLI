@@ -1,5 +1,7 @@
 """AES (Fernet) encryption/decryption utilities using a class-based API."""
 
+from typing import BinaryIO
+
 from cryptography.fernet import Fernet
 from termcolor import colored
 
@@ -11,12 +13,9 @@ from util.key_gen import key_gen
 class AESCipher:
     """Provide Fernet-based encryption and decryption for text and files."""
 
-    def __init__(self) -> None:
-        pass
-
     def encrypt_text(self, secret: str, password: str) -> str:
         """Encrypt plain text with the supplied password and return the cipher text."""
-        if password == '':
+        if password == "":
             raise FatalError("Please enter a password")
 
         cipher = self._cipher(password)
@@ -24,7 +23,7 @@ class AESCipher:
 
     def decrypt_text(self, encrypted_secret: str, password: str) -> str:
         """Decrypt cipher text with the supplied password and return plain text."""
-        if password == '':
+        if password == "":
             raise FatalError("Please enter a password")
 
         cipher = self._cipher(password)
@@ -35,13 +34,13 @@ class AESCipher:
 
     def encrypt_file(self, file_path: str, password: str) -> None:
         """Encrypt a file and write the result to <name>.encrypto."""
-        if password == '':
+        if password == "":
             raise FatalError("Please enter a password")
 
-        cipher = self._cipher(password)
-        file = get_file(file_path)
+        cipher: Fernet = self._cipher(password)
+        file: BinaryIO = get_file(file_path)
 
-        if 'encrypto' in file.name:
+        if "encrypto" in file.name:
             raise MildError("File is already encrypted.")
 
         try:
@@ -52,17 +51,17 @@ class AESCipher:
         try:
             with open(f"{file.name}.encrypto", "wb") as write_file:
                 write_file.write(encrypted_data)
-                print(colored('File encrypted succesfully.', 'green'))
+                print(colored("File encrypted succesfully.", "green"))
         except Exception as exc:
             raise FatalError("Error while writing to file") from exc
 
     def decrypt_file(self, file_path: str, password: str) -> None:
         """Decrypt a file previously encrypted by this tool."""
-        if password == '':
-            raise FatalError('Please enter a password')
+        if password == "":
+            raise FatalError("Please enter a password")
 
-        cipher = self._cipher(password)
-        file = get_file(file_path)
+        cipher: Fernet = self._cipher(password)
+        file: BinaryIO = get_file(file_path)
 
         try:
             decrypted_data = cipher.decrypt(file.read())
@@ -70,7 +69,7 @@ class AESCipher:
             raise FatalError("Ran into an issue while decrypting file") from exc
 
         try:
-            with open(file.name.replace('.encrypto', ''), "wb") as write_file:
+            with open(file.name.replace(".encrypto", ""), "wb") as write_file:
                 write_file.write(decrypted_data)
         except Exception as exc:
             raise FatalError("Ran into an issue while writing to file") from exc
@@ -81,6 +80,4 @@ class AESCipher:
         try:
             return Fernet(key)
         except Exception as exc:
-            raise FatalError('Key Error!') from exc
-
-
+            raise FatalError("Key Error!") from exc

@@ -1,8 +1,21 @@
 import os
+from typing import BinaryIO
+
 import util.exceptions as exceptions
 
 
-def get_file(filename):
+def get_file(filename: str) -> BinaryIO:
+    """Open and return a file in binary mode after validating its size.
+
+    Args:
+        filename: Path to the file to open.
+
+    Returns:
+        BinaryIO: File object opened in binary mode.
+
+    Raises:
+        FatalError: If file is too large (>1GB) or cannot be opened.
+    """
     file_size = os.path.getsize(f"{filename}")
 
     # Verifying if the file size is less than 1 GB
@@ -16,6 +29,6 @@ def get_file(filename):
         file = open(filename, "rb")
         return file
 
-    except Exception as e:
+    except Exception:
         # Handling exceptions
         raise exceptions.FatalError("Ran into an issue while openng file")

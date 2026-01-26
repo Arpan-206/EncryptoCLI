@@ -1,5 +1,7 @@
 """Decryption handlers."""
 
+from typing import Optional
+
 from InquirerPy import inquirer
 from termcolor import colored
 

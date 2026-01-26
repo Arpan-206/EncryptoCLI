@@ -1,6 +1,7 @@
 """Hashing handlers."""
 
 import hashlib
+from typing import Any, Callable, Dict
 
 from InquirerPy import inquirer
 from termcolor import colored
@@ -9,7 +10,7 @@ from termcolor import colored
 class HashingHandler:
     """Handle hashing workflows for text and files."""
 
-    ALGORITHMS = {
+    ALGORITHMS: Dict[str, Callable[[], Any]] = {
         "MD5": hashlib.md5,
         "SHA256": hashlib.sha256,
         "SHA512": hashlib.sha512,
@@ -42,7 +43,7 @@ class HashingHandler:
         else:
             self._hash_text(hash_out)
 
-    def _hash_text(self, hash_out) -> None:
+    def _hash_text(self, hash_out: Any) -> None:
         """Hash text provided by the user."""
         hash_data = inquirer.text(message="Enter data to hash.").execute()
 
@@ -53,7 +54,7 @@ class HashingHandler:
         final_data = hash_out.hexdigest()
         print(colored("Your hash is: ", "white") + colored(final_data, "green"))
 
-    def _hash_file(self, hash_out) -> None:
+    def _hash_file(self, hash_out: Any) -> None:
         """Hash a file in chunks to avoid memory overhead."""
         file_name = inquirer.text(message="Enter the path to the file.").execute()
 
