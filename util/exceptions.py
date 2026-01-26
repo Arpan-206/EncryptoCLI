@@ -1,8 +1,8 @@
-
 class FatalError(Exception):
 
-    def __init__ (self, message="Fatal Error"):
+    def __init__(self, message="Fatal Error"):
         super().__init__(message)
+
 
 class MildError(Exception):
 
