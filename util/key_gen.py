@@ -8,6 +8,9 @@ from hashlib import scrypt
 def key_gen(passW: str) -> bytes:
     """Generate a cryptographic key from a password using scrypt.
 
+    Derives a cryptographic key from the provided password using scrypt
+    with fixed parameters for consistency across platforms.
+
     Args:
         passW: The password to derive a key from.
 

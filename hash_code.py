@@ -19,7 +19,11 @@ class HashingHandler:
     }
 
     def run(self) -> None:
-        """Prompt for algorithm and data type, then hash accordingly."""
+        """Prompt for algorithm and data type, then hash accordingly.
+
+        Returns:
+            None
+        """
         algorithm = inquirer.select(
             message="Which algorithm do you want to use?",
             choices=list(self.ALGORITHMS.keys()),
@@ -44,7 +48,14 @@ class HashingHandler:
             self._hash_text(hash_out)
 
     def _hash_text(self, hash_out: Any) -> None:
-        """Hash text provided by the user."""
+        """Hash text provided by the user.
+
+        Args:
+            hash_out: Hash object from hashlib with update() and hexdigest() methods.
+
+        Returns:
+            None
+        """
         hash_data = inquirer.text(message="Enter data to hash.").execute()
 
         if not hash_data:
@@ -55,7 +66,14 @@ class HashingHandler:
         print(colored("Your hash is: ", "white") + colored(final_data, "green"))
 
     def _hash_file(self, hash_out: Any) -> None:
-        """Hash a file in chunks to avoid memory overhead."""
+        """Hash a file in chunks to avoid memory overhead.
+
+        Args:
+            hash_out: Hash object from hashlib with update() and hexdigest() methods.
+
+        Returns:
+            None
+        """
         file_name = inquirer.text(message="Enter the path to the file.").execute()
 
         if not file_name:

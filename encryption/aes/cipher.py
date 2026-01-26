@@ -14,7 +14,18 @@ class AESCipher:
     """Provide Fernet-based encryption and decryption for text and files."""
 
     def encrypt_text(self, secret: str, password: str) -> str:
-        """Encrypt plain text with the supplied password and return the cipher text."""
+        """Encrypt plain text with the supplied password and return the cipher text.
+
+        Args:
+            secret: Plain text to encrypt.
+            password: Password for encryption.
+
+        Returns:
+            str: Encrypted ciphertext as a string.
+
+        Raises:
+            FatalError: If password is empty.
+        """
         if password == "":
             raise FatalError("Please enter a password")
 
@@ -22,7 +33,18 @@ class AESCipher:
         return cipher.encrypt(secret.encode()).decode()
 
     def decrypt_text(self, encrypted_secret: str, password: str) -> str:
-        """Decrypt cipher text with the supplied password and return plain text."""
+        """Decrypt cipher text with the supplied password and return plain text.
+
+        Args:
+            encrypted_secret: Encrypted ciphertext to decrypt.
+            password: Password used during encryption.
+
+        Returns:
+            str: Decrypted plaintext.
+
+        Raises:
+            FatalError: If password is empty or decryption fails (invalid key/data).
+        """
         if password == "":
             raise FatalError("Please enter a password")
 
@@ -33,7 +55,19 @@ class AESCipher:
             raise FatalError("Either the key or the input data is wrong.") from exc
 
     def encrypt_file(self, file_path: str, password: str) -> None:
-        """Encrypt a file and write the result to <name>.encrypto."""
+        """Encrypt a file and write the result to <name>.encrypto.
+
+        Args:
+            file_path: Path to the file to encrypt.
+            password: Password for encryption.
+
+        Returns:
+            None
+
+        Raises:
+            FatalError: If password is empty, file too large, encryption fails, or write error.
+            MildError: If file is already encrypted (.encrypto extension).
+        """
         if password == "":
             raise FatalError("Please enter a password")
 
@@ -56,7 +90,18 @@ class AESCipher:
             raise FatalError("Error while writing to file") from exc
 
     def decrypt_file(self, file_path: str, password: str) -> None:
-        """Decrypt a file previously encrypted by this tool."""
+        """Decrypt a file previously encrypted by this tool.
+
+        Args:
+            file_path: Path to the encrypted file.
+            password: Password used during encryption.
+
+        Returns:
+            None
+
+        Raises:
+            FatalError: If password is empty, decryption fails, or write error occurs.
+        """
         if password == "":
             raise FatalError("Please enter a password")
 
@@ -75,7 +120,17 @@ class AESCipher:
             raise FatalError("Ran into an issue while writing to file") from exc
 
     def _cipher(self, password: str) -> Fernet:
-        """Create a Fernet cipher instance for the given password."""
+        """Create a Fernet cipher instance for the given password.
+
+        Args:
+            password: Password to derive the encryption key from.
+
+        Returns:
+            Fernet: Fernet cipher instance ready for encryption/decryption.
+
+        Raises:
+            FatalError: If key derivation or cipher creation fails.
+        """
         key = key_gen(password)
         try:
             return Fernet(key)

@@ -7,7 +7,14 @@ from termcolor import colored
 def handle_error(
     e: Union[exceptions.FatalError, exceptions.MildError, Exception],
 ) -> None:
-    """Handle and display errors with appropriate coloring."""
+    """Handle and display errors with appropriate coloring.
+
+    Args:
+        e: The exception to handle and display.
+
+    Returns:
+        None
+    """
     if isinstance(e, exceptions.FatalError):
         print(colored(str(e), "red"))
     elif isinstance(e, exceptions.MildError):

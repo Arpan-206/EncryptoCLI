@@ -13,11 +13,20 @@ class EncryptionHandler:
     """Handle encryption workflows for text and files."""
 
     def __init__(self) -> None:
+        """Initialize encryption handler with cipher and steganography instances.
+
+        Returns:
+            None
+        """
         self.cipher = AESCipher()
         self.steg = LSBSteganography()
 
     def run(self) -> None:
-        """Prompt for encryption mode and dispatch to the appropriate handler."""
+        """Prompt for encryption mode and dispatch to the appropriate handler.
+
+        Returns:
+            None
+        """
         type_of_data = inquirer.select(
             message="What do you want to encrypt?",
             choices=["Text", "File"],
@@ -32,7 +41,14 @@ class EncryptionHandler:
             self._encrypt_text()
 
     def _encrypt_text(self) -> None:
-        """Encrypt text to either text output or embed into an image."""
+        """Encrypt text to either text output or embed into an image.
+
+        Prompts user for output format, image path (if embedding),
+        text content, and password.
+
+        Returns:
+            None
+        """
         type_of_output: Optional[str] = inquirer.select(
             message="What do you want to encrypt to?",
             choices=["Image", "Text"],
@@ -70,7 +86,13 @@ class EncryptionHandler:
         self.steg.encrypt_text(input_image_path, encrypted_text, "./")
 
     def _encrypt_file(self) -> None:
-        """Encrypt a file using the provided password."""
+        """Encrypt a file using the provided password.
+
+        Prompts user for file path and password, then encrypts the file.
+
+        Returns:
+            None
+        """
         file_path = inquirer.text(message="Enter the path to the file.").execute()
 
         if not file_path:
@@ -83,7 +105,11 @@ class EncryptionHandler:
         self.cipher.encrypt_file(file_path, password)
 
     def _get_password(self) -> str:
-        """Prompt the user for a password, returning empty string on cancel."""
+        """Prompt the user for a password, returning empty string on cancel.
+
+        Returns:
+            str: The password entered by the user, or empty string if cancelled.
+        """
         password = inquirer.secret(message="Enter the password: ").execute()
 
         return password or ""

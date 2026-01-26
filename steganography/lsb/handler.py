@@ -14,5 +14,15 @@ class LSBSteganography:
         encrypted.save(f"{output_dir}encrypto.png")
 
     def decrypt_image(self, input_image_path: str) -> str:
-        """Extract hidden text from an image."""
+        """Extract hidden text from an image.
+
+        Uses LSB (Least Significant Bit) steganography to extract secret text
+        from the least significant bits of image pixels.
+
+        Args:
+            input_image_path: Path to the image containing hidden text.
+
+        Returns:
+            str: The extracted secret text from the image.
+        """
         return lsb.reveal(input_image_path)

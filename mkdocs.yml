@@ -1,0 +1,80 @@
+site_name: EncryptoCLI Documentation
+site_description: A command-line program for encrypting, decrypting, and hashing files
+site_author: Arpan Pandey
+site_url: https://encryptocli.example.com
+repo_url: https://github.com/Arpan-206/EncryptoCLI
+repo_name: Arpan-206/EncryptoCLI
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - toc.integrate
+    - content.code.copy
+    - content.code.select
+  palette:
+    - scheme: default
+      primary: blue
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: blue
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            show_source: true
+            show_root_heading: true
+            members_order: source
+
+nav:
+  - Home: index.md
+  - User Guide:
+      - Getting Started: user-guide/getting-started.md
+      - Hashing: user-guide/hashing.md
+      - Encryption: user-guide/encryption.md
+      - Decryption: user-guide/decryption.md
+      - Steganography: user-guide/steganography.md
+  - API Reference:
+      - Core:
+          - Main: api/main.md
+          - Error Handler: api/error_handler.md
+      - Encryption:
+          - AES Cipher: api/encryption/aes_cipher.md
+      - Utilities:
+          - Exceptions: api/utilities/exceptions.md
+          - File Handling: api/utilities/file_handling.md
+          - Key Generation: api/utilities/key_gen.md
+      - Steganography:
+          - LSB Handler: api/steganography/lsb_handler.md
+  - Contributing: contributing.md
+  - License: LICENSE.md
+
+markdown_extensions:
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.details
+  - pymdownx.tasklist
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - admonition
+  - tables
+  - toc:
+      permalink: true

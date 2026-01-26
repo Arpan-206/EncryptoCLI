@@ -14,12 +14,23 @@ class EncryptoCLI:
     """Orchestrates the CLI flow and delegates to feature handlers."""
 
     def __init__(self) -> None:
+        """Initialize the CLI with handler instances.
+
+        Returns:
+            None
+        """
         self.encryption_handler = EncryptionHandler()
         self.decryption_handler = DecryptionHandler()
         self.hashing_handler = HashingHandler()
 
     def display_banner(self) -> None:
-        """Render the application banner."""
+        """Render the application banner.
+
+        Prints the EncryptoCLI welcome banner with styling.
+
+        Returns:
+            None
+        """
         f = Figlet(font="slant")
         credit = colored(
             "                                                 By Arpan Pandey\n",
@@ -35,14 +46,27 @@ class EncryptoCLI:
         print(colored(f.renderText("Encrypto CLI"), "green"), credit, description, "\n")
 
     def get_operation(self) -> str:
-        """Prompt the user to choose an operation."""
+        """Prompt the user to choose an operation.
+
+        Returns:
+            str: The selected operation ('Hash', 'Encrypt', 'Decrypt', or 'Exit').
+        """
         return inquirer.select(
             message="What do you want to do?",
             choices=["Hash", "Encrypt", "Decrypt", "Exit"],
         ).execute()
 
     def run(self) -> None:
-        """Run the CLI, dispatching to the correct handler."""
+        """Run the CLI, dispatching to the correct handler.
+
+        Displays the banner, prompts for operation, and delegates to appropriate handler.
+
+        Returns:
+            None
+
+        Raises:
+            Exception: Caught and displayed via handle_error().
+        """
         self.display_banner()
 
         operation = self.get_operation()
@@ -65,7 +89,11 @@ class EncryptoCLI:
 
 
 def main() -> None:
-    """Legacy entrypoint retained for backward compatibility."""
+    """Legacy entrypoint retained for backward compatibility.
+
+    Returns:
+        None
+    """
     EncryptoCLI().run()
 
 

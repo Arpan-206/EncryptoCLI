@@ -13,11 +13,20 @@ class DecryptionHandler:
     """Handle decryption workflows for text, files, and images."""
 
     def __init__(self) -> None:
+        """Initialize decryption handler with cipher and steganography instances.
+
+        Returns:
+            None
+        """
         self.cipher = AESCipher()
         self.steg = LSBSteganography()
 
     def run(self) -> None:
-        """Prompt for decryption mode and dispatch accordingly."""
+        """Prompt for decryption mode and dispatch accordingly.
+
+        Returns:
+            None
+        """
         type_of_data = inquirer.select(
             message="What do you want to decrypt?",
             choices=["Text", "File", "Image"],
@@ -34,7 +43,11 @@ class DecryptionHandler:
             self._decrypt_text()
 
     def _decrypt_text(self) -> None:
-        """Decrypt text provided by the user."""
+        """Decrypt text provided by the user.
+
+        Returns:
+            None
+        """
         data = inquirer.text(message="Enter the text to decrypt").execute()
 
         if not data:
@@ -51,7 +64,11 @@ class DecryptionHandler:
         )
 
     def _decrypt_file(self) -> None:
-        """Decrypt a file using the provided password."""
+        """Decrypt a file using the provided password.
+
+        Returns:
+            None
+        """
         file_path = inquirer.text(message="Enter the path to the file").execute()
 
         if not file_path:
@@ -65,7 +82,11 @@ class DecryptionHandler:
         print(colored("File decrypted succesfully.", "green"))
 
     def _decrypt_image(self) -> None:
-        """Decrypt text hidden inside an image."""
+        """Decrypt text hidden inside an image.
+
+        Returns:
+            None
+        """
         image_path = inquirer.text(
             message="Enter the path of the image to decrypt"
         ).execute()
@@ -85,7 +106,11 @@ class DecryptionHandler:
         )
 
     def _get_password(self) -> str:
-        """Prompt the user for a password, returning empty string on cancel."""
+        """Prompt the user for a password, returning empty string on cancel.
+
+        Returns:
+            str: The password entered by the user, or empty string if cancelled.
+        """
         password = inquirer.secret(message="Enter password").execute()
 
         return password or ""
