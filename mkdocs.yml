@@ -1,7 +1,7 @@
 site_name: EncryptoCLI Documentation
 site_description: A command-line program for encrypting, decrypting, and hashing files
 site_author: Arpan Pandey
-site_url: https://encryptocli.example.com
+site_url: https://arpan-206.github.io/EncryptoCLI/
 repo_url: https://github.com/Arpan-206/EncryptoCLI
 repo_name: Arpan-206/EncryptoCLI
 
