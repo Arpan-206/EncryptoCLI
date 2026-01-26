@@ -74,12 +74,27 @@ class EncryptoCLI:
             return
 
         try:
+            result = None
             if operation == "Hash":
-                self.hashing_handler.run()
+                result = self.hashing_handler.run()
+                if result and not result.startswith("Error:"):
+                    print(colored("Your hash is: ", "white") + colored(result, "green"))
+                elif result:
+                    print(colored(result, "red"))
             elif operation == "Encrypt":
-                self.encryption_handler.run()
+                result = self.encryption_handler.run()
+                if result:
+                    print(
+                        colored("The encrypted text is: ", "white")
+                        + colored(result, "green")
+                    )
             elif operation == "Decrypt":
-                self.decryption_handler.run()
+                result = self.decryption_handler.run()
+                if result:
+                    print(
+                        colored("The decrypted text is: ", "white")
+                        + colored(result, "green")
+                    )
             elif operation == "Exit":
                 print(colored("goodbye :)", "blue"))
             else:

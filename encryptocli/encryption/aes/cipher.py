@@ -54,15 +54,15 @@ class AESCipher:
         except Exception as exc:
             raise FatalError("Either the key or the input data is wrong.") from exc
 
-    def encrypt_file(self, file_path: str, password: str) -> None:
-        """Encrypt a file and write the result to <name>.encrypto.
+    def encrypt_file(self, file_path: str, password: str) -> str:
+        """Encrypt a file using Fernet encryption with a password-derived key.
 
         Args:
             file_path: Path to the file to encrypt.
             password: Password for encryption.
 
         Returns:
-            None
+            str: Success message.
 
         Raises:
             FatalError: If password is empty, file too large, encryption fails, or write error.
@@ -85,7 +85,7 @@ class AESCipher:
         try:
             with open(f"{file.name}.encrypto", "wb") as write_file:
                 write_file.write(encrypted_data)
-                print(colored("File encrypted succesfully.", "green"))
+                return "File encrypted successfully"
         except Exception as exc:
             raise FatalError("Error while writing to file") from exc
 

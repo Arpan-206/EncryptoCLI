@@ -19,11 +19,11 @@ class EncryptionHandler:
         self.cipher = AESCipher()
         self.steg = LSBSteganography()
 
-    def run(self) -> None:
+    def run(self) -> str | None:
         """Prompt for encryption mode and dispatch to the appropriate handler.
 
         Returns:
-            None
+            str | None: Result message or None if cancelled.
         """
         type_of_data = inquirer.select(
             message="What do you want to encrypt?",
@@ -31,21 +31,21 @@ class EncryptionHandler:
         ).execute()
 
         if not type_of_data:
-            return
+            return None
 
         if type_of_data == "File":
-            self._encrypt_file()
+            return self._encrypt_file()
         else:
-            self._encrypt_text()
+            return self._encrypt_text()
 
-    def _encrypt_text(self) -> None:
+    def _encrypt_text(self) -> str | None:
         """Encrypt text to either text output or embed into an image.
 
         Prompts user for output format, image path (if embedding),
         text content, and password.
 
         Returns:
-            None
+            str | None: The encrypted text if successful, None if user cancelled or error occurred.
         """
         type_of_output: str | None = inquirer.select(
             message="What do you want to encrypt to?",
@@ -75,21 +75,18 @@ class EncryptionHandler:
         encrypted_text = self.cipher.encrypt_text(secret, password)
 
         if type_of_output == "Text":
-            print(
-                colored("The encrypted text is: ", "white")
-                + colored(encrypted_text, "green")
-            )
-            return
+            return encrypted_text
 
         self.steg.encrypt_text(input_image_path, encrypted_text, "./")
+        return "Image encrypted and saved successfully"
 
-    def _encrypt_file(self) -> None:
+    def _encrypt_file(self) -> str | None:
         """Encrypt a file using the provided password.
 
         Prompts user for file path and password, then encrypts the file.
 
         Returns:
-            None
+            str | None: Success message if encrypted, None if user cancelled.
         """
         file_path = inquirer.text(message="Enter the path to the file.").execute()
 
@@ -98,9 +95,9 @@ class EncryptionHandler:
 
         password = self._get_password()
         if not password:
-            return
+            return None
 
-        self.cipher.encrypt_file(file_path, password)
+        return self.cipher.encrypt_file(file_path, password)
 
     def _get_password(self) -> str:
         """Prompt the user for a password, returning empty string on cancel.

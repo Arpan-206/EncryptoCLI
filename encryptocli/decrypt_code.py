@@ -19,11 +19,11 @@ class DecryptionHandler:
         self.cipher = AESCipher()
         self.steg = LSBSteganography()
 
-    def run(self) -> None:
+    def run(self) -> str | None:
         """Prompt for decryption mode and dispatch accordingly.
 
         Returns:
-            None
+            str | None: Decrypted content or result message, None if cancelled.
         """
         type_of_data = inquirer.select(
             message="What do you want to decrypt?",
@@ -31,20 +31,20 @@ class DecryptionHandler:
         ).execute()
 
         if not type_of_data:
-            return
+            return None
 
         if type_of_data == "File":
-            self._decrypt_file()
+            return self._decrypt_file()
         elif type_of_data == "Image":
-            self._decrypt_image()
+            return self._decrypt_image()
         else:
-            self._decrypt_text()
+            return self._decrypt_text()
 
-    def _decrypt_text(self) -> None:
+    def _decrypt_text(self) -> str | None:
         """Decrypt text provided by the user.
 
         Returns:
-            None
+            str | None: Decrypted text or None if cancelled.
         """
         data = inquirer.text(message="Enter the text to decrypt").execute()
 
@@ -53,19 +53,16 @@ class DecryptionHandler:
 
         password = self._get_password()
         if not password:
-            return
+            return None
 
         decrypted_text = self.cipher.decrypt_text(data, password)
-        print(
-            colored("The decrypted text is: ", "white")
-            + colored(decrypted_text, "green")
-        )
+        return decrypted_text
 
-    def _decrypt_file(self) -> None:
+    def _decrypt_file(self) -> str | None:
         """Decrypt a file using the provided password.
 
         Returns:
-            None
+            str | None: Success message or None if cancelled.
         """
         file_path = inquirer.text(message="Enter the path to the file").execute()
 
@@ -74,16 +71,16 @@ class DecryptionHandler:
 
         password = self._get_password()
         if not password:
-            return
+            return None
 
         self.cipher.decrypt_file(file_path, password)
-        print(colored("File decrypted succesfully.", "green"))
+        return "File decrypted successfully"
 
-    def _decrypt_image(self) -> None:
+    def _decrypt_image(self) -> str | None:
         """Decrypt text hidden inside an image.
 
         Returns:
-            None
+            str | None: Decrypted text or None if cancelled.
         """
         image_path = inquirer.text(
             message="Enter the path of the image to decrypt"
@@ -94,14 +91,11 @@ class DecryptionHandler:
 
         password = self._get_password()
         if not password:
-            return
+            return None
 
         data = self.steg.decrypt_image(image_path)
         decrypted_text = self.cipher.decrypt_text(data, password)
-        print(
-            colored("The decrypted text is: ", "white")
-            + colored(decrypted_text, "green")
-        )
+        return decrypted_text
 
     def _get_password(self) -> str:
         """Prompt the user for a password, returning empty string on cancel.

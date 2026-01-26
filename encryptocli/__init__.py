@@ -6,7 +6,7 @@ A powerful and intuitive CLI application for:
 - Hiding encrypted data in images using LSB steganography
 """
 
-__version__ = "0.2.1"
+__version__ = "0.2.2"
 __author__ = "Arpan Pandey"
 __license__ = "MIT"
 

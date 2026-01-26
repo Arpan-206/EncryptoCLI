@@ -18,11 +18,11 @@ class HashingHandler:
         "BLAKE2b": hashlib.blake2b,
     }
 
-    def run(self) -> None:
+    def run(self) -> str | None:
         """Prompt for algorithm and data type, then hash accordingly.
 
         Returns:
-            None
+            str | None: The hash result or None if cancelled.
         """
         algorithm = inquirer.select(
             message="Which algorithm do you want to use?",
@@ -43,41 +43,41 @@ class HashingHandler:
         hash_out = self.ALGORITHMS[algorithm]()
 
         if type_of_data == "File":
-            self._hash_file(hash_out)
+            return self._hash_file(hash_out)
         else:
-            self._hash_text(hash_out)
+            return self._hash_text(hash_out)
 
-    def _hash_text(self, hash_out: Any) -> None:
+    def _hash_text(self, hash_out: Any) -> str | None:
         """Hash text provided by the user.
 
         Args:
             hash_out: Hash object from hashlib with update() and hexdigest() methods.
 
         Returns:
-            None
+            str | None: The computed hash or None if cancelled.
         """
         hash_data = inquirer.text(message="Enter data to hash.").execute()
 
         if not hash_data:
-            return
+            return None
 
         hash_out.update(hash_data.encode())
         final_data = hash_out.hexdigest()
-        print(colored("Your hash is: ", "white") + colored(final_data, "green"))
+        return final_data
 
-    def _hash_file(self, hash_out: Any) -> None:
+    def _hash_file(self, hash_out: Any) -> str | None:
         """Hash a file in chunks to avoid memory overhead.
 
         Args:
             hash_out: Hash object from hashlib with update() and hexdigest() methods.
 
         Returns:
-            None
+            str | None: The computed hash or None if cancelled/error.
         """
         file_name = inquirer.text(message="Enter the path to the file.").execute()
 
         if not file_name:
-            return
+            return None
 
         try:
             with open(file_name, "rb") as file_path:
@@ -87,12 +87,7 @@ class HashingHandler:
                     hash_out.update(chunk)
 
             final_hash = hash_out.hexdigest()
-            print(colored("Your hash is: ", "white") + colored(final_hash, "green"))
+            return final_hash
 
         except Exception:
-            print(
-                colored(
-                    "Can't find the file please check the name and make sure the extension is also present.",
-                    "red",
-                )
-            )
+            return "Error: Can't find the file. Please check the name and make sure the extension is present."
