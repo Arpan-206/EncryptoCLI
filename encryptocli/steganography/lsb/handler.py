@@ -25,4 +25,4 @@ class LSBSteganography:
         Returns:
             str: The extracted secret text from the image.
         """
-        return lsb.reveal(input_image_path)
+        return str(lsb.reveal(input_image_path))

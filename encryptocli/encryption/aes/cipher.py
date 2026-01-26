@@ -3,7 +3,6 @@
 from typing import BinaryIO
 
 from cryptography.fernet import Fernet
-from termcolor import colored
 
 from encryptocli.util.exceptions import FatalError, MildError
 from encryptocli.util.file_handling import get_file
@@ -65,7 +64,8 @@ class AESCipher:
             str: Success message.
 
         Raises:
-            FatalError: If password is empty, file too large, encryption fails, or write error.
+            FatalError: If password is empty, file too large, encryption fails,
+                or write error.
             MildError: If file is already encrypted (.encrypto extension).
         """
         if password == "":

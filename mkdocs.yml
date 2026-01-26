@@ -50,6 +50,10 @@ nav:
       - Decryption: user-guide/decryption.md
       - Steganography: user-guide/steganography.md
   - API Reference:
+      - Services (Business Logic):
+          - Services: api/services.md
+      - Interfaces:
+          - Interfaces: api/interfaces.md
       - Core:
           - Main: api/main.md
           - Error Handler: api/error_handler.md

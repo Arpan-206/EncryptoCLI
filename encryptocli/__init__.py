@@ -10,6 +10,6 @@ __version__ = "0.2.2"
 __author__ = "Arpan Pandey"
 __license__ = "MIT"
 
-from encryptocli.main import EncryptoCLI, main
+from encryptocli.main import main
 
-__all__ = ["EncryptoCLI", "main", "__version__", "__author__", "__license__"]
+__all__ = ["main", "__version__", "__author__", "__license__"]

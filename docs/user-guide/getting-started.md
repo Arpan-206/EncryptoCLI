@@ -29,25 +29,51 @@ pip install encryptocli
 
 ## Running EncryptoCLI
 
-### From PyPI
+EncryptoCLI supports two interfaces: **Interactive TUI** (prompts-based) and **CLI** (arguments-based).
 
+### Interactive Mode (TUI)
+
+Best for manual, interactive use:
+
+**From PyPI:**
 ```bash
 encryptocli
 ```
 
-### From Source
-
+**From Source:**
 ```bash
-# Navigate to the project directory
 cd EncryptoCLI
+python -m encryptocli
+```
 
-# Run the CLI
-python main.py
+### Command-Line Mode (CLI)
+
+Best for scripting and automation:
+
+**Hash text:**
+```bash
+encryptocli hash --text "hello world" --algorithm SHA256
+```
+
+**Encrypt text:**
+```bash
+encryptocli encrypt --text "secret message" --password "mypassword"
+```
+
+**Decrypt text:**
+```bash
+encryptocli decrypt --text "encrypted_text_here" --password "mypassword"
+```
+
+**Get help:**
+```bash
+encryptocli --help
+encryptocli hash --help
 ```
 
 ## First Run
 
-When you start EncryptoCLI, you'll see the welcome banner and be prompted to choose an operation:
+When you start EncryptoCLI in interactive mode, you'll see the welcome banner:
 
 ```
    ______                      _           _____ _      _____
@@ -62,7 +88,7 @@ It is very easy and intuitive to use.
 You can also use this on any type of file below 1GB.
 ```
 
-### Menu Options
+### Menu Options (Interactive Mode)
 
 1. **Hash** - Generate cryptographic hashes
 2. **Encrypt** - Encrypt text or files

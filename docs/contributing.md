@@ -32,8 +32,8 @@ uv pip install -e ".[dev]"
 ### Running Tests
 
 ```bash
-pytest encryption/aes/tests.py
-pytest steganography/lsb/tests.py
+pytest encryptocli/encryption/aes/tests.py
+pytest encryptocli/steganography/lsb/tests.py
 ```
 
 ### Code Formatting
@@ -41,7 +41,7 @@ pytest steganography/lsb/tests.py
 We use `black` for code formatting:
 
 ```bash
-black *.py util/ encryption/ steganography/
+black encryptocli/
 ```
 
 ### Code Quality
@@ -50,10 +50,10 @@ Ensure your code follows PEP 8 and has proper type hints:
 
 ```bash
 # Check for style issues
-flake8 *.py util/ encryption/ steganography/
+flake8 encryptocli/
 
 # Type checking
-mypy *.py util/ encryption/ steganography/
+mypy encryptocli/
 ```
 
 ## Pull Request Process

@@ -15,11 +15,12 @@ def key_gen(passW: str) -> bytes:
         passW: The password to derive a key from.
 
     Returns:
-        bytes: A base64-encoded cryptographic key suitable for Fernet encryption.
+        bytes: A base64-encoded cryptographic key suitable for Fernet
+            encryption.
     """
-    # Using the password itself as a seed to random to keep salt for scrypt consistent across devices and platforms
+    # Using password as seed to random to keep salt for scrypt consistent
     random.seed(passW)
-    salt = f"{ random.random() }".encode()
+    salt = f"{random.random()}".encode()
     key = urlsafe_b64encode(
         scrypt(passW.encode(), salt=salt, n=16384, r=8, p=1, dklen=32)
     )
