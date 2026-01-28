@@ -64,6 +64,8 @@ pygments==2.19.2
     # via
     #   encryptocli
     #   rich
+python-gnupg==0.5.3
+    # via encryptocli
 regex==2026.1.15
     # via encryptocli
 rich==14.3.1

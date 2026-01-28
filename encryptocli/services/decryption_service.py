@@ -1,56 +1,100 @@
 """Core decryption business logic service."""
 
 from encryptocli.encryption.aes import AESCipher
-from encryptocli.steganography.lsb.handler import LSBSteganography
+from encryptocli.steganography import get_steganography_handler
 
 
 class DecryptionService:
     """Handle decryption logic without UI dependencies."""
 
     def __init__(self) -> None:
-        """Initialize decryption service with cipher and steganography instances.
+        """Initialize decryption service with cipher instances.
 
         Returns:
             None
         """
-        self.cipher = AESCipher()
-        self.steg = LSBSteganography()
+        self.aes_cipher = AESCipher()
+        self._pgp_cipher = None  # Lazy initialization
 
-    def decrypt_text(self, data: str, password: str) -> str:
+    def _get_pgp_cipher(self):
+        """Get PGP cipher instance, initializing lazily if needed.
+
+        Returns:
+            PGPCipher: The PGP cipher instance
+
+        Raises:
+            OSError: If GPG is not installed on the system
+        """
+        if self._pgp_cipher is None:
+            try:
+                from encryptocli.encryption.pgp import PGPCipher
+
+                self._pgp_cipher = PGPCipher()
+            except OSError as e:
+                raise OSError(
+                    f"GPG (GNU Privacy Guard) is not installed on your system. "
+                    f"Please install GPG to use PGP encryption. "
+                    f"Details: {str(e)}"
+                )
+        return self._pgp_cipher
+
+    def decrypt_text(self, data: str, password: str, method: str = "aes") -> str:
         """Decrypt text.
 
         Args:
             data: The encrypted text to decrypt
-            password: The password used for encryption
+            password: The password/passphrase used for encryption
+            method: Decryption method ('aes' or 'pgp'). Default: 'aes'
 
         Returns:
             str: The decrypted text
         """
-        return self.cipher.decrypt_text(data, password)
+        if method.lower() == "pgp":
+            return self._get_pgp_cipher().decrypt_text(data, password)
+        return self.aes_cipher.decrypt_text(data, password)
 
-    def decrypt_file(self, file_path: str, password: str) -> str:
+    def decrypt_file(
+        self, file_path: str, password: str, method: str = "aes", output_dir: str = "./"
+    ) -> str:
         """Decrypt a file.
 
         Args:
             file_path: Path to the encrypted file
-            password: The password used for encryption
+            password: The password/passphrase used for encryption
+            method: Decryption method ('aes' or 'pgp'). Default: 'aes'
+            output_dir: Output directory for decrypted file (for PGP only)
 
         Returns:
             str: Success message
         """
-        self.cipher.decrypt_file(file_path, password)
+        if method.lower() == "pgp":
+            return self._get_pgp_cipher().decrypt_file(file_path, password, output_dir)
+        self.aes_cipher.decrypt_file(file_path, password)
         return "File decrypted successfully"
 
-    def decrypt_image(self, image_path: str, password: str) -> str:
-        """Decrypt text hidden inside an image.
+    def decrypt_image(
+        self,
+        image_path: str,
+        password: str,
+        steganography: str = "lsb",
+        method: str = "aes",
+    ) -> str:
+        """Decrypt text hidden inside an image using steganography.
 
         Args:
-            image_path: Path to the image file containing encrypted text
-            password: The password used for encryption
+            image_path: Path to the PNG image file containing encrypted text.
+            password: The password/passphrase used for encryption.
+            steganography: Steganography method to use ('lsb' or 'dct'). Default: 'lsb'.
+                          Must match the method used during encryption.
+            method: Decryption method ('aes' or 'pgp'). Default: 'aes'
 
         Returns:
-            str: The decrypted text
+            str: The decrypted text.
         """
-        data = self.steg.decrypt_image(image_path)
-        decrypted_text = self.cipher.decrypt_text(data, password)
+        steg = get_steganography_handler(steganography)
+        data = steg.decrypt_image(image_path)
+        if method.lower() == "pgp":
+            decrypted_text = self._get_pgp_cipher().decrypt_text(data, password)
+        else:
+            decrypted_text = self.aes_cipher.decrypt_text(data, password)
         return decrypted_text

@@ -1,23 +1,36 @@
 # EncryptoCLI - By Arpan Pandey
-![EncryptoCLI Thumbnail](./docs-files/EncryptoCLI-Thumbnail.png)
+![EncryptoCLI Thumbnail](./docs/EncryptoCLI-Thumbnail.png)
 
 ## 📚 Description
-Encrypto CLI is a command-line program that provides you with an intuitive and easy-to-use program that allows for a highly efficient and customizable interface to generate hashes of files or encrypt them. This allows you to encrypt and decrypt files or text data. This is all powered by the [Fernet](https://cryptography.io/en/latest/fernet/) Encryption.    
+Encrypto CLI is a command-line program that provides you with an intuitive and easy-to-use program that allows for a highly efficient and customizable interface to generate hashes of files or encrypt them. This allows you to encrypt and decrypt files or text data using either **Fernet (AES)** or **PGP encryption**. This is powered by the [Cryptography Module](https://cryptography.io/en/latest/) and [python-gnupg](https://python-gnupg.readthedocs.io/).
 
 ## Technologies Used
 * Python3
-* Cryptography Module (Fernet Encryption)
+* Cryptography Module (Fernet & PGP Encryption)
+* python-gnupg (GPG/PGP Support)
 * Hashing Module
 * Termcolor
 * InquirerPy
 * Scrypt
 
+## ✨ Features
+
+### Encryption Methods
+- **AES (Fernet)**: Symmetric encryption using passwords
+- **PGP**: Asymmetric encryption using public/private keys
+
+### Operations
+- **Hashing**: Generate cryptographic hashes (MD5, SHA256, SHA512, BLAKE2)
+- **Encryption**: Protect your data with multiple cipher methods
+- **Decryption**: Recover encrypted data
+- **Steganography**: Hide encrypted data in images
+
 ## How it works?
-The idea is very simple. The program first asks you about which operation do you want to perform and then asks you 2-3 questions relative to which operation you have selected.![First Image](./docs-files/screenshots/1.png)    
+The idea is very simple. The program first asks you about which operation do you want to perform and then asks you 2-3 questions relative to which operation you have selected.![First Image](./docs/screenshots/1.png)    
 
 ## Hashing
 You can generate hashes for text or file data by selecting the algorithm from the 5 options provided: 
-![Hashing Image](./docs-files/screenshots/3.png)
+![Hashing Image](./docs/screenshots/3.png)
 The five algorithms supported are:
 * MD5
 * SHA256
@@ -29,20 +42,22 @@ Also, if you are interested in an analysis of these algorithms or implementing t
 
 ## Encrypting 
 You can encrypt data by going through these steps.
-1. Select the type of data you want to encrypt. ![Encrypt Type Selection](./docs-files/screenshots/6.png)
-2. Input the data (either the text or path to a file). ![Encrypt Data Input](./docs-files/screenshots/7.png)
-3. Enter a password. ![Encrypt Data Password](./docs-files/screenshots/8.png)
-4. And you are done.
+1. Select the type of data you want to encrypt. ![Encrypt Type Selection](./docs/screenshots/6.png)
+2. Select the encryption method (AES or PGP)
+3. Input the data (either the text or path to a file). ![Encrypt Data Input](./docs/screenshots/7.png)
+4. For AES: Enter a password. For PGP: Enter recipient's email. ![Encrypt Data Password](./docs/screenshots/8.png)
+5. And you are done.
 
 ## Decrypting 
 You can decrypt data by going through these steps.
-1. Select the type of data you want to decrypt. ![Decrypt Type Selection](./docs-files/screenshots/9.png)
-2. Input the data (either the text or path to a file). ![Decrypt Data Input](./docs-files/screenshots/10.png)
-3. Enter the password. ![Decrypt Data Password](./docs-files/screenshots/11.png)
-4. And you are done.
+1. Select the type of data you want to decrypt. ![Decrypt Type Selection](./docs/screenshots/9.png)
+2. Select the decryption method (AES or PGP)
+3. Input the data (either the text or path to a file). ![Decrypt Data Input](./docs/screenshots/10.png)
+4. Enter the password or passphrase. ![Decrypt Data Password](./docs/screenshots/11.png)
+5. And you are done.
 
 ## Steganography
-You can encrypt and hide your data in an image using lsb method of steganography ( internally uses [stegano](https://stegano.readthedocs.io/en/latest/module.html) package )
+You can encrypt and hide your data in an image using LSB or DCT method of steganography ( internally uses [stegano](https://stegano.readthedocs.io/en/latest/module.html) package )
 
 ### Encrypt
 

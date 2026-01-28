@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Test files and temporary artifacts
+test_image.png
+encrypto.png
+test_all.sh
+*.egg

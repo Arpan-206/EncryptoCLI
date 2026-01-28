@@ -8,6 +8,7 @@ This allows the package to be run as a module:
 import sys
 
 from encryptocli.interfaces.tui_handler import TUIHandler
+from encryptocli.interfaces.cli_handler import get_app
 
 
 def main() -> None:
@@ -24,15 +25,9 @@ def main() -> None:
         tui = TUIHandler()
         tui.run()
     else:
-        # Import typer CLI lazily - only needed for CLI mode
-        try:
-            from encryptocli.interfaces.cli_handler import get_app
-
-            app = get_app()
-            app()
-        except ImportError as e:
-            print(f"Error: {e}")
-            sys.exit(1)
+        # Use typer CLI for argument-based mode
+        app = get_app()
+        app()
 
 
 if __name__ == "__main__":
