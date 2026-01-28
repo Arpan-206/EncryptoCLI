@@ -26,6 +26,7 @@ classifiers = [
 ]
 dependencies = [
     "autopep8",
+    "blake3",
     "cffi",
     "colorama",
     "crayons",

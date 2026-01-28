@@ -3,6 +3,8 @@
 -e .
 autopep8==2.3.2
     # via encryptocli
+blake3==1.0.8
+    # via encryptocli
 cffi==2.0.0
     # via
     #   cryptography
@@ -15,9 +17,7 @@ colorama==0.4.6
     #   crayons
     #   encryptocli
 crayons==0.4.0
-    # via
-    #   encryptocli
-    #   stegano
+    # via encryptocli
 cryptography==46.0.3
     # via encryptocli
 inquirerpy==0.3.4
@@ -30,24 +30,20 @@ numpy==2.2.6 ; python_full_version < '3.11'
     # via
     #   encryptocli
     #   opencv-python
+    #   scipy
 numpy==2.4.1 ; python_full_version >= '3.11'
     # via
     #   encryptocli
     #   opencv-python
+    #   scipy
 opencv-python==4.13.0.90
-    # via
-    #   encryptocli
-    #   stegano
+    # via encryptocli
 pfzy==0.3.4
     # via inquirerpy
 piexif==1.1.3
-    # via
-    #   encryptocli
-    #   stegano
+    # via encryptocli
 pillow==11.3.0
-    # via
-    #   encryptocli
-    #   stegano
+    # via encryptocli
 prompt-toolkit==3.0.52
     # via inquirerpy
 pycodestyle==2.14.0
@@ -64,17 +60,19 @@ pygments==2.19.2
     # via
     #   encryptocli
     #   rich
-python-gnupg==0.5.3
+python-gnupg==0.5.6
     # via encryptocli
 regex==2026.1.15
     # via encryptocli
 rich==14.3.1
     # via typer
+scipy==1.15.3 ; python_full_version < '3.11'
+    # via encryptocli
+scipy==1.17.0 ; python_full_version >= '3.11'
+    # via encryptocli
 shellingham==1.5.4
     # via typer
 six==1.17.0
-    # via encryptocli
-stegano==2.1.0
     # via encryptocli
 termcolor==3.3.0
     # via encryptocli
@@ -86,6 +84,7 @@ typer==0.21.1
     # via encryptocli
 typing-extensions==4.15.0
     # via
+    #   blake3
     #   cryptography
     #   typer
 wcwidth==0.2.14

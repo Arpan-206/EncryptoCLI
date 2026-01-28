@@ -1,6 +1,6 @@
 # EncryptoCLI Documentation
 
-Welcome to the EncryptoCLI documentation! EncryptoCLI is a command-line tool that provides an intuitive interface for encrypting, decrypting, and hashing files and text data.
+Welcome to the EncryptoCLI documentation! **Secure CLI for hashing, encryption, and steganography (AES/Fernet and PGP).**
 
 ## Features
 
@@ -10,15 +10,16 @@ Welcome to the EncryptoCLI documentation! EncryptoCLI is a command-line tool tha
 - Reusable service layer for integration
 
 🔐 **Encryption & Decryption**
-- Fernet-based encryption using cryptography
+- **AES/Fernet encryption** - Fast symmetric encryption with password-based key derivation
+- **PGP encryption** - Asymmetric encryption with public/private key pairs (RSA 2048-bit)
 - Password-protected data encryption
 - Support for text and file encryption
-- LSB steganography for hiding data in images
+- LSB and DCT steganography for hiding data in images
 
 🔑 **Hashing**
-- Multiple hashing algorithms: MD5, SHA256, SHA512, BLAKE2, BLAKE2b
+- **14 hashing algorithms**: MD5, SHA1, SHA-2 family (SHA224/256/384/512), SHA-3 family (SHA3_224/256/384/512), BLAKE2S/B, BLAKE3
 - Support for text and file hashing
-- Efficient chunked file processing
+- Efficient chunked file processing for large files
 
 🖼️ **Steganography**
 - Hide encrypted data within images using LSB method
@@ -41,11 +42,20 @@ encryptocli
 # Hash text
 encryptocli hash --text "hello" --algorithm SHA256
 
-# Encrypt text
-encryptocli encrypt --text "secret" --password "mypass"
+# Encrypt text with AES
+encryptocli encrypt --text "secret" --password "mypass" --method aes
+
+# Encrypt text with PGP
+encryptocli encrypt --text "secret" --password "recipient@example.com" --method pgp
 
 # Decrypt text
-encryptocli decrypt --text "encrypted_text" --password "mypass"
+encryptocli decrypt --text "encrypted_text" --password "mypass" --method aes
+
+# PGP key management
+encryptocli pgp-key gen     # Generate key pair
+encryptocli pgp-key list    # List keys
+encryptocli pgp-key export  # Export public key
+encryptocli pgp-key import  # Import public key
 ```
 
 ### As a Library

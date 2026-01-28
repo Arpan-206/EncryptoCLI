@@ -4,4 +4,4 @@ RUN pip install uv
 WORKDIR /app
 COPY pyproject.toml pyproject.toml
 COPY . .
-RUN uv sync --frozen
+RUN uv sync --frozen 

@@ -4,16 +4,26 @@ import hashlib
 from pathlib import Path
 from typing import Any, Callable
 
+from blake3 import blake3
+
 
 class HashingService:
     """Handle hashing logic without UI dependencies."""
 
     ALGORITHMS: dict[str, Callable[[], Any]] = {
         "MD5": hashlib.md5,
+        "SHA1": hashlib.sha1,
+        "SHA224": hashlib.sha224,
         "SHA256": hashlib.sha256,
+        "SHA384": hashlib.sha384,
         "SHA512": hashlib.sha512,
-        "BLAKE2": hashlib.blake2s,
-        "BLAKE2b": hashlib.blake2b,
+        "SHA3_224": hashlib.sha3_224,
+        "SHA3_256": hashlib.sha3_256,
+        "SHA3_384": hashlib.sha3_384,
+        "SHA3_512": hashlib.sha3_512,
+        "BLAKE2S": hashlib.blake2s,
+        "BLAKE2B": hashlib.blake2b,
+        "BLAKE3": blake3,
     }
 
     def hash_text(self, text: str, algorithm: str) -> str:
@@ -69,4 +79,4 @@ class HashingService:
         Returns:
             list[str]: List of algorithm names
         """
-        return list(self.ALGORITHMS.keys())
+        return sorted(list(self.ALGORITHMS.keys()))

@@ -42,7 +42,10 @@ def hash(
         "SHA256",
         "--algorithm",
         "-a",
-        help="Hashing algorithm (MD5, SHA256, SHA512, BLAKE2, BLAKE2b)",
+        help=(
+            "Hashing algorithm (e.g., MD5, SHA1, SHA256, SHA512, SHA3_256, "
+            "BLAKE2S/B, BLAKE3, ARGON2ID)"
+        ),
     ),
 ) -> None:
     """Hash text or file using specified algorithm."""

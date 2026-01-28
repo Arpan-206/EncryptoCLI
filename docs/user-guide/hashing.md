@@ -4,37 +4,51 @@ Hashing is a one-way function that converts data into a fixed-size string of cha
 
 ## Supported Algorithms
 
-EncryptoCLI supports five industry-standard hashing algorithms:
+EncryptoCLI supports **14 industry-standard hashing algorithms**:
 
-### MD5
+### Legacy Algorithms
+
+#### MD5
 - **Speed**: Very Fast
 - **Output Size**: 128 bits (32 hex characters)
 - **Use Case**: Legacy applications (NOT recommended for security-critical applications)
 - **Note**: Cryptographically broken, use only when required for compatibility
 
-### SHA256
+#### SHA1
+- **Speed**: Very Fast
+- **Output Size**: 160 bits (40 hex characters)
+- **Use Case**: Legacy applications (NOT recommended for new projects)
+- **Note**: Deprecated for security purposes, but still used in Git
+
+### SHA-2 Family (Recommended)
+
+#### SHA224, SHA256, SHA384, SHA512
 - **Speed**: Fast
-- **Output Size**: 256 bits (64 hex characters)
+- **Output Sizes**: 224, 256, 384, or 512 bits
 - **Use Case**: Recommended for most applications
-- **Note**: Part of the SHA-2 family, widely used and trusted
+- **Note**: Widely trusted and used across the industry (TLS, Bitcoin, etc.)
 
-### SHA512
+### SHA-3 Family (Modern)
+
+#### SHA3_224, SHA3_256, SHA3_384, SHA3_512
 - **Speed**: Fast
-- **Output Size**: 512 bits (128 hex characters)
-- **Use Case**: When stronger hashing is needed
-- **Note**: Provides more resistance to collision attacks
+- **Output Sizes**: 224, 256, 384, or 512 bits
+- **Use Case**: Modern alternative to SHA-2
+- **Note**: Based on Keccak algorithm, provides different security properties
 
-### BLAKE2
+### BLAKE Family (High Performance)
+
+#### BLAKE2S, BLAKE2B
 - **Speed**: Fastest
-- **Output Size**: 256 bits (64 hex characters)
+- **Output Sizes**: 256 bits (BLAKE2S), 512 bits (BLAKE2B)
 - **Use Case**: Performance-critical applications
-- **Note**: Modern algorithm, faster than MD5, SHA-2, and SHA-3
+- **Note**: Faster than MD5, SHA-2, and SHA-3 while providing strong security
 
-### BLAKE2b
-- **Speed**: Fastest
-- **Output Size**: 512 bits (128 hex characters)
-- **Use Case**: Maximum security with excellent performance
-- **Note**: 64-bit version of BLAKE2, recommended for new projects
+#### BLAKE3
+- **Speed**: Extremely Fast (parallelizable)
+- **Output Size**: 256 bits (default, extendable)
+- **Use Case**: Modern high-performance applications
+- **Note**: Newest BLAKE variant, optimized for modern CPUs with SIMD support
 
 ## How to Hash Data
 
@@ -52,15 +66,23 @@ From the main menu, select **Hash**:
 
 ### Step 2: Choose Algorithm
 
-Select your preferred algorithm:
+Select your preferred algorithm (14 available):
 
 ```
 ? Which algorithm do you want to use?
-❯ MD5
+❯ BLAKE2B
+  BLAKE2S
+  BLAKE3
+  MD5
+  SHA1
+  SHA224
   SHA256
+  SHA384
   SHA512
-  BLAKE2
-  BLAKE2b
+  SHA3_224
+  SHA3_256
+  SHA3_384
+  SHA3_512
 ```
 
 ### Step 3: Choose Data Type

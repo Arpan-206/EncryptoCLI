@@ -6,14 +6,16 @@ PGP key management commands have been added to both the CLI and TUI interfaces, 
 
 ## CLI Commands
 
+All PGP key management commands are grouped under the `pgp-key` command with subcommands.
+
 ### Generate Key Pair
 
 Generate a new PGP key pair (RSA 2048-bit).
 
 ```bash
-encryptocli pgp-gen-key
+encryptocli pgp-key gen
 # or with options:
-encryptocli pgp-gen-key --name "John Doe" --email "john@example.com" --passphrase "secure_pass"
+encryptocli pgp-key gen --name "John Doe" --email "john@example.com" --passphrase "secure_pass"
 ```
 
 **Options:**
@@ -33,9 +35,9 @@ Email: john@example.com
 Export a public key to a file for sharing.
 
 ```bash
-encryptocli pgp-export-key
+encryptocli pgp-key export
 # or with options:
-encryptocli pgp-export-key --email "john@example.com" --output "john_public.asc"
+encryptocli pgp-key export --email "john@example.com" --output "john_public.asc"
 ```
 
 **Options:**
@@ -52,9 +54,9 @@ Public key exported to john_public.asc
 Import a public key from a file.
 
 ```bash
-encryptocli pgp-import-key
+encryptocli pgp-key import
 # or with option:
-encryptocli pgp-import-key --file "recipient_public.asc"
+encryptocli pgp-key import --file "recipient_public.asc"
 ```
 
 **Options:**
@@ -70,7 +72,7 @@ Public key imported successfully. Fingerprint: ABC123...
 List all available PGP keys in the keyring.
 
 ```bash
-encryptocli pgp-list-keys
+encryptocli pgp-key list
 ```
 
 **Output:**
