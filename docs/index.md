@@ -24,7 +24,7 @@ Welcome to the EncryptoCLI documentation! **Secure CLI for hashing, encryption, 
 🖼️ **Steganography**
 - Hide encrypted data within images using LSB method
 - Extract hidden data from images
-- Powered by the stegano library
+- Powered by custom LSB and DCT implementations
 
 ## Quick Start
 
@@ -106,7 +106,7 @@ Decrypt encrypted text, files, or data hidden in images using your password.
 - **InquirerPy** - Interactive CLI prompts
 - **Typer** - Command-line arguments
 - **Termcolor** - Colored terminal output
-- **Stegano** - Image steganography
+- **PIL (Pillow)** - Image processing for steganography
 - **Scrypt** - Key derivation
 
 ## Navigation

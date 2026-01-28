@@ -57,7 +57,7 @@ You can decrypt data by going through these steps.
 5. And you are done.
 
 ## Steganography
-You can encrypt and hide your data in an image using LSB or DCT method of steganography ( internally uses [stegano](https://stegano.readthedocs.io/en/latest/module.html) package )
+You can encrypt and hide your data in an image using **LSB (Least Significant Bit)** or **DCT (Frequency Domain)** steganography methods. Both methods support PNG format for lossless embedding.
 
 ### Encrypt
 
