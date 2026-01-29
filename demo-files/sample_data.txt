@@ -1,0 +1,10 @@
+Sample Data File
+================
+
+Name: John Doe
+Email: john@example.com
+Phone: 555-1234
+Address: 123 Main St, Anytown, USA
+
+This file can be used to demonstrate file encryption
+and decryption features in EncryptoCLI.
