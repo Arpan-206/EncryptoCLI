@@ -100,6 +100,98 @@ encryptocli decrypt --image cover.png --password "pass" --steganography lsb
 - `lsb` - Least Significant Bit (higher capacity)
 - `dct` - Discrete Cosine Transform (more robust)
 
+### PGP Key Management
+
+```bash
+# List all keys
+encryptocli pgp list
+
+# Generate new key pair
+encryptocli pgp generate --name "Your Name" --email "you@example.com"
+
+# Import key from file
+encryptocli pgp import --file pubkey.asc
+
+# Export key
+encryptocli pgp export --email "you@example.com" --output mykey.asc
+```
+
+## 🐳 Docker
+
+Run EncryptoCLI in a container:
+
+```bash
+# Build image
+docker build -t encryptocli .
+
+# Run interactive mode
+docker run -it encryptocli
+
+# Run with command
+docker run -it encryptocli encryptocli hash --text "hello" --algorithm SHA256
+```
+
+## 🛠️ Development
+
+### Setup
+
+```bash
+# Clone repository
+git clone https://github.com/arpan-pandey/EncryptoCLI.git
+cd EncryptoCLI
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Install in development mode
+pip install -e .
+```
+
+### Testing
+
+```bash
+# Run tests
+pytest
+
+# Run with coverage
+pytest --cov=encryptocli
+```
+
+### Code Quality
+
+```bash
+# Format code
+black encryptocli/
+
+# Type checking
+mypy encryptocli/
+
+# Linting
+flake8 encryptocli/
+```
+
+## 📖 Documentation
+
+Full documentation available at: [https://arpan-pandey.github.io/EncryptoCLI/](https://arpan-pandey.github.io/EncryptoCLI/)
+
+## 🎥 Video Demo
+
+Watch the [EncryptoCLI Demo Video](https://www.youtube.com/watch?v=your-video-id)
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👤 Author
+
+**Arpan Pandey**
+
+- GitHub: [@arpan-pandey](https://github.com/arpan-pandey)
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
 
 
 
