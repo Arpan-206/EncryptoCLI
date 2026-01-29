@@ -2,12 +2,7 @@
 
 from pathlib import Path
 
-try:
-    import typer
-except ImportError:
-    raise ImportError(
-        "Typer is required for CLI mode. Install it with: pip install typer"
-    )
+import typer
 
 from termcolor import colored
 
