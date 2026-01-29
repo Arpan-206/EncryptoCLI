@@ -1,0 +1,2339 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Secure CLI for encryption, decryption, hashing, and steganography with AES and PGP support">
+      
+      
+        <meta name="author" content="Arpan Pandey">
+      
+      
+        <link rel="canonical" href="https://arpan-206.github.io/EncryptoCLI/function-breakdown/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../EncryptoCLI-Logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>EncryptoCLI — Comprehensive Function Breakdown - EncryptoCLI</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#encryptocli-comprehensive-function-breakdown" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="EncryptoCLI" class="md-header__button md-logo" aria-label="EncryptoCLI" data-md-component="logo">
+      
+  <img src="../EncryptoCLI-Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            EncryptoCLI
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              EncryptoCLI — Comprehensive Function Breakdown
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Arpan-206/EncryptoCLI" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Arpan-206/EncryptoCLI
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../user-guide/" class="md-tabs__link">
+          
+  
+  
+  User Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../api/" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../LICENSE/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  License
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="EncryptoCLI" class="md-nav__button md-logo" aria-label="EncryptoCLI" data-md-component="logo">
+      
+  <img src="../EncryptoCLI-Logo.svg" alt="logo">
+
+    </a>
+    EncryptoCLI
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Arpan-206/EncryptoCLI" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Arpan-206/EncryptoCLI
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Guide
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Guide
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-guide/hashing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hashing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-guide/encryption/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AES Encryption
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-guide/decryption/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AES Decryption
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-guide/pgp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PGP Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-guide/pgp-key-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PGP Key Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-guide/steganography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Steganography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Encryption
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Encryption
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/encryption/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/encryption/aes_cipher/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AES Cipher
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/encryption/pgp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PGP Cipher
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Steganography
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Steganography
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/steganography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/steganography/lsb_handler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LSB Handler
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/steganography/dct_handler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCT Handler
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interfaces
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Interfaces
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/interfaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/interfaces/cli_handler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI Handler
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/interfaces/tui_handler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TUI Handler
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Utilities
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Utilities
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/utilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/utilities/exceptions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Exceptions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/utilities/file_handling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File Handling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/utilities/key_gen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Key Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LICENSE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    License
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="encryptocli-comprehensive-function-breakdown">EncryptoCLI — Comprehensive Function Breakdown<a class="headerlink" href="#encryptocli-comprehensive-function-breakdown" title="Permanent link">&para;</a></h1>
+<p>This document explains every major function in EncryptoCLI and its role in the larger system. The project is organized in layers: interfaces, services, domain modules, and utilities. Each function is documented with its purpose, inputs, outputs, and how it fits into the overall data flow.</p>
+<hr />
+<h2 id="1-entry-point-layer">1. Entry Point Layer<a class="headerlink" href="#1-entry-point-layer" title="Permanent link">&para;</a></h2>
+<h3 id="mainpymain"><code>main.py::main()</code><a class="headerlink" href="#mainpymain" title="Permanent link">&para;</a></h3>
+<p><strong>Purpose</strong>: Routes between CLI and TUI based on command-line arguments.</p>
+<p><strong>Parameters</strong>:
+- None (reads from <code>sys.argv</code>)</p>
+<p><strong>Return</strong>: None</p>
+<p><strong>Logic</strong>:
+- If arguments are provided (<code>sys.argv &gt; 1</code>), launch CLI via <code>cli_app()</code>
+- Otherwise, instantiate <code>TUIHandler()</code> and call <code>run()</code></p>
+<p><strong>Role in System</strong>: This is the gateway function. It decides which interface (CLI or TUI) the user sees based on how they invoke the program.</p>
+<hr />
+<h2 id="2-interfaces-layer">2. Interfaces Layer<a class="headerlink" href="#2-interfaces-layer" title="Permanent link">&para;</a></h2>
+<h3 id="interface-functions">Interface Functions<a class="headerlink" href="#interface-functions" title="Permanent link">&para;</a></h3>
+<p>The interfaces layer handles all user input/output. It parses arguments, validates them, calls services, and displays results.</p>
+<hr />
+<h4 id="cli-handler-cli_handlerpy">CLI Handler (<code>cli_handler.py</code>)<a class="headerlink" href="#cli-handler-cli_handlerpy" title="Permanent link">&para;</a></h4>
+<p><strong><code>app</code></strong> (Typer app instance)
+- The Typer application that routes CLI commands
+- Defines subcommands: <code>hash</code>, <code>encrypt</code>, <code>decrypt</code>, <code>pgp</code>
+- All commands are invoked with flags (e.g., <code>--text</code>, <code>--password</code>)</p>
+<hr />
+<h5 id="hash-command-hash">Hash Command: <code>hash()</code><a class="headerlink" href="#hash-command-hash" title="Permanent link">&para;</a></h5>
+<p><strong>Purpose</strong>: Hash text or files using various algorithms (SHA256, BLAKE3, etc.)</p>
+<p><strong>Parameters</strong>:
+- <code>text</code>: Optional text to hash (via <code>--text</code> or <code>-t</code>)
+- <code>file</code>: Optional file path to hash (via <code>--file</code> or <code>-f</code>)
+- <code>algorithm</code>: Hashing algorithm name (default: SHA256)</p>
+<p><strong>Return</strong>: None (prints result to terminal)</p>
+<p><strong>Logic</strong>:
+1. Validate that exactly one of <code>text</code> or <code>file</code> is provided
+2. Check file exists (for file path)
+3. Call <code>hashing_service.hash_text()</code> or <code>hashing_service.hash_file()</code>
+4. Print result in green
+5. Catch errors and delegate to <code>handle_error()</code></p>
+<p><strong>Role in System</strong>: User-facing CLI command for hashing. Acts as a wrapper around the service.</p>
+<hr />
+<h5 id="encrypt-command-encrypt">Encrypt Command: <code>encrypt()</code><a class="headerlink" href="#encrypt-command-encrypt" title="Permanent link">&para;</a></h5>
+<p><strong>Purpose</strong>: Encrypt text or files using AES or PGP, optionally into an image.</p>
+<p><strong>Parameters</strong>:
+- <code>text</code>: Optional text to encrypt
+- <code>file</code>: Optional file to encrypt
+- <code>password</code>: Password for AES
+- <code>recipient_email</code>: PGP recipient email
+- <code>recipient_key</code>: PGP recipient public key (string)
+- <code>recipient_key_file</code>: PGP recipient public key (file)
+- <code>image</code>: Optional image for steganography
+- <code>output_dir</code>: Output directory for encrypted image
+- <code>steganography</code>: Stego method (lsb or dct)
+- <code>method</code>: Encryption method (aes or pgp)</p>
+<p><strong>Return</strong>: None (prints result)</p>
+<p><strong>Logic</strong>:
+1. Validate input (text XOR file, not both)
+2. Validate encryption method parameters:
+   - AES requires password
+   - PGP requires one of: email, key, or key_file
+3. Call appropriate service method (<code>encrypt_text()</code>, <code>encrypt_file()</code>, or <code>encrypt_text_to_image()</code>)
+4. Print result
+5. Handle errors</p>
+<p><strong>Role in System</strong>: CLI encryption command. Bridges user input to encryption service layer. Handles both simple and complex workflows (with steganography).</p>
+<hr />
+<h5 id="decrypt-command-decrypt">Decrypt Command: <code>decrypt()</code><a class="headerlink" href="#decrypt-command-decrypt" title="Permanent link">&para;</a></h5>
+<p><strong>Purpose</strong>: Decrypt text, files, or images using AES or PGP.</p>
+<p><strong>Parameters</strong>:
+- <code>text</code>: Encrypted text
+- <code>file</code>: Encrypted file path
+- <code>image</code>: Image with embedded encrypted text
+- <code>password</code>: Password/passphrase
+- <code>steganography</code>: Stego method (lsb or dct)
+- <code>method</code>: Decryption method (aes or pgp)
+- <code>output_dir</code>: Output directory for decrypted file</p>
+<p><strong>Return</strong>: None (prints result)</p>
+<p><strong>Logic</strong>:
+1. Validate exactly one of text/file/image is provided
+2. Call appropriate service method
+3. Print decrypted result
+4. Handle errors</p>
+<p><strong>Role in System</strong>: CLI decryption command. Mirrors the encrypt command but for decryption. Supports all three input types (text, file, image).</p>
+<hr />
+<h5 id="pgp-gen-key-command-pgp_gen_key">PGP Gen Key Command: <code>pgp_gen_key()</code><a class="headerlink" href="#pgp-gen-key-command-pgp_gen_key" title="Permanent link">&para;</a></h5>
+<p><strong>Purpose</strong>: Generate a new PGP key pair (RSA 2048-bit).</p>
+<p><strong>Parameters</strong>:
+- <code>name</code>: Full name for the key
+- <code>email</code>: Email address for the key
+- <code>passphrase</code>: Passphrase to protect the key</p>
+<p><strong>Return</strong>: None (prints fingerprint)</p>
+<p><strong>Logic</strong>:
+1. Instantiate <code>PGPCipher()</code>
+2. Call <code>generate_key_pair()</code>
+3. Print success message and fingerprint
+4. Handle errors</p>
+<p><strong>Role in System</strong>: CLI key generation for PGP. Sets up user's public/private key pair in GPG keyring.</p>
+<hr />
+<h5 id="pgp-export-key-command-pgp_export_key">PGP Export Key Command: <code>pgp_export_key()</code><a class="headerlink" href="#pgp-export-key-command-pgp_export_key" title="Permanent link">&para;</a></h5>
+<p><strong>Purpose</strong>: Export a public key from the keyring to a file.</p>
+<p><strong>Parameters</strong>:
+- <code>email</code>: Email of key to export
+- <code>output</code>: Output file path for the public key</p>
+<p><strong>Return</strong>: None</p>
+<p><strong>Logic</strong>:
+1. Instantiate <code>PGPCipher()</code>
+2. Export public key by email
+3. Write to file
+4. Print success message</p>
+<p><strong>Role in System</strong>: CLI utility for sharing public keys. Enables other users to encrypt for you.</p>
+<hr />
+<h4 id="tui-handler-tui_handlerpy">TUI Handler (<code>tui_handler.py</code>)<a class="headerlink" href="#tui-handler-tui_handlerpy" title="Permanent link">&para;</a></h4>
+<p><strong><code>TUIHandler</code> class</strong></p>
+<p>This class manages all TUI interactions. It prompts users with menus and delegates to services.</p>
+<hr />
+<h5 id="__init__"><code>__init__()</code><a class="headerlink" href="#__init__" title="Permanent link">&para;</a></h5>
+<p><strong>Purpose</strong>: Initialize TUI handler with service instances.</p>
+<p><strong>Parameters</strong>: None</p>
+<p><strong>Return</strong>: None</p>
+<p><strong>Logic</strong>:
+- Instantiate <code>EncryptionService()</code>, <code>DecryptionService()</code>, <code>HashingService()</code>
+- Store as instance variables for reuse</p>
+<p><strong>Role in System</strong>: Constructor. Ensures services are available for all TUI methods.</p>
+<hr />
+<h5 id="display_banner"><code>display_banner()</code><a class="headerlink" href="#display_banner" title="Permanent link">&para;</a></h5>
+<p><strong>Purpose</strong>: Render the welcome banner with application title and description.</p>
+<p><strong>Parameters</strong>: None</p>
+<p><strong>Return</strong>: None</p>
+<p><strong>Logic</strong>:
+- Use Figlet library to generate ASCII art banner
+- Display with colored output (green title, yellow credit, cyan description)</p>
+<p><strong>Role in System</strong>: UI cosmetic. Provides a friendly introduction when the TUI starts.</p>
+<hr />
+<h5 id="get_operation"><code>get_operation()</code><a class="headerlink" href="#get_operation" title="Permanent link">&para;</a></h5>
+<p><strong>Purpose</strong>: Prompt user to select a top-level operation.</p>
+<p><strong>Parameters</strong>: None</p>
+<p><strong>Return</strong>: str (operation name: "Hash", "Encrypt", "Decrypt", "PGP", "Exit")</p>
+<p><strong>Logic</strong>:
+- Use InquirerPy's <code>select()</code> to present a menu
+- Return the user's choice</p>
+<p><strong>Role in System</strong>: Main dispatcher. Routes the user to the appropriate sub-operation.</p>
+<hr />
+<h5 id="run"><code>run()</code><a class="headerlink" href="#run" title="Permanent link">&para;</a></h5>
+<p><strong>Purpose</strong>: Main TUI loop. Display banner, prompt for operation, delegate to handlers.</p>
+<p><strong>Parameters</strong>: None</p>
+<p><strong>Return</strong>: None</p>
+<p><strong>Logic</strong>:
+1. Call <code>display_banner()</code>
+2. Call <code>get_operation()</code> to get user's choice
+3. Dispatch to appropriate handler (<code>_handle_hash()</code>, <code>_handle_encrypt()</code>, etc.)
+4. Catch exceptions and delegate to <code>handle_error()</code></p>
+<p><strong>Role in System</strong>: Main entry point for TUI. Orchestrates the entire TUI experience.</p>
+<hr />
+<h5 id="_handle_hash"><code>_handle_hash()</code><a class="headerlink" href="#_handle_hash" title="Permanent link">&para;</a></h5>
+<p><strong>Purpose</strong>: TUI workflow for hashing.</p>
+<p><strong>Parameters</strong>: None</p>
+<p><strong>Return</strong>: None</p>
+<p><strong>Logic</strong>:
+1. Prompt for algorithm (select from available algorithms)
+2. Prompt for type (Text or File)
+3. If file, prompt for file path and hash it
+4. If text, prompt for text and hash it
+5. Display result in green
+6. Handle errors</p>
+<p><strong>Role in System</strong>: TUI handler for hashing. Provides guided prompts instead of CLI flags.</p>
+<hr />
+<h5 id="_handle_encrypt"><code>_handle_encrypt()</code><a class="headerlink" href="#_handle_encrypt" title="Permanent link">&para;</a></h5>
+<p><strong>Purpose</strong>: TUI workflow for encryption. Routes to text or file encryption.</p>
+<p><strong>Parameters</strong>: None</p>
+<p><strong>Return</strong>: None</p>
+<p><strong>Logic</strong>:
+1. Prompt for type (Text or File)
+2. Delegate to <code>_encrypt_text_tui()</code> or <code>_encrypt_file_tui()</code>
+3. Handle errors</p>
+<p><strong>Role in System</strong>: TUI dispatcher for encryption. Branches to more specific handlers.</p>
+<hr />
+<h5 id="_encrypt_text_tui"><code>_encrypt_text_tui()</code><a class="headerlink" href="#_encrypt_text_tui" title="Permanent link">&para;</a></h5>
+<p><strong>Purpose</strong>: TUI workflow for encrypting text.</p>
+<p><strong>Parameters</strong>: None</p>
+<p><strong>Return</strong>: None</p>
+<p><strong>Logic</strong>:
+1. Prompt for encryption method (AES or PGP)
+2. If AES:
+   - Prompt for password
+   - Optionally prompt for image (for steganography)
+   - Call <code>encryption_service.encrypt_text()</code> or <code>encrypt_text_to_image()</code>
+3. If PGP:
+   - Prompt for recipient email or key
+   - Call <code>encryption_service.encrypt_text()</code>
+4. Display result
+5. Handle errors</p>
+<p><strong>Role in System</strong>: TUI handler for text encryption. Provides guided flow with conditional prompts.</p>
+<hr />
+<h5 id="_encrypt_file_tui"><code>_encrypt_file_tui()</code><a class="headerlink" href="#_encrypt_file_tui" title="Permanent link">&para;</a></h5>
+<p><strong>Purpose</strong>: TUI workflow for encrypting files.</p>
+<p><strong>Parameters</strong>: None</p>
+<p><strong>Return</strong>: None</p>
+<p><strong>Logic</strong>:
+1. Prompt for encryption method (AES or PGP)
+2. Prompt for file path
+3. Call appropriate service method (<code>encrypt_file()</code>)
+4. Display success message
+5. Handle errors</p>
+<p><strong>Role in System</strong>: TUI handler for file encryption. Simpler than text since files don't support steganography directly.</p>
+<hr />
+<h5 id="_handle_decrypt"><code>_handle_decrypt()</code><a class="headerlink" href="#_handle_decrypt" title="Permanent link">&para;</a></h5>
+<p><strong>Purpose</strong>: TUI workflow for decryption. Routes to text, file, or image decryption.</p>
+<p><strong>Parameters</strong>: None</p>
+<p><strong>Return</strong>: None</p>
+<p><strong>Logic</strong>:
+1. Prompt for type (Text, File, or Image)
+2. Delegate to appropriate method (<code>_decrypt_text_tui()</code>, etc.)
+3. Handle errors</p>
+<p><strong>Role in System</strong>: TUI dispatcher for decryption. Routes to specific handlers based on input type.</p>
+<hr />
+<h5 id="_decrypt_text_tui-_decrypt_file_tui-_decrypt_image_tui"><code>_decrypt_text_tui()</code>, <code>_decrypt_file_tui()</code>, <code>_decrypt_image_tui()</code><a class="headerlink" href="#_decrypt_text_tui-_decrypt_file_tui-_decrypt_image_tui" title="Permanent link">&para;</a></h5>
+<p><strong>Purpose</strong>: TUI workflows for specific decryption scenarios.</p>
+<p><strong>Parameters</strong>: None</p>
+<p><strong>Return</strong>: None</p>
+<p><strong>Logic</strong>:
+- Prompt for required parameters (password, method, etc.)
+- Call appropriate service method
+- Display result
+- Handle errors</p>
+<p><strong>Role in System</strong>: TUI handlers for decryption variants. Each tailored to a specific input type.</p>
+<hr />
+<h5 id="_handle_pgp_keys"><code>_handle_pgp_keys()</code><a class="headerlink" href="#_handle_pgp_keys" title="Permanent link">&para;</a></h5>
+<p><strong>Purpose</strong>: TUI workflow for PGP key management.</p>
+<p><strong>Parameters</strong>: None</p>
+<p><strong>Return</strong>: None</p>
+<p><strong>Logic</strong>:
+1. Prompt for operation (Generate, Export, List, etc.)
+2. Delegate to specific method
+3. Handle errors</p>
+<p><strong>Role in System</strong>: TUI dispatcher for PGP operations. Centralizes key management UX.</p>
+<hr />
+<h3 id="error-handler-error_handlerpy">Error Handler (<code>error_handler.py</code>)<a class="headerlink" href="#error-handler-error_handlerpy" title="Permanent link">&para;</a></h3>
+<h4 id="handle_error"><code>handle_error()</code><a class="headerlink" href="#handle_error" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Format and display errors with appropriate colors.</p>
+<p><strong>Parameters</strong>:
+- <code>e</code>: Exception (FatalError, MildError, or generic Exception)</p>
+<p><strong>Return</strong>: None</p>
+<p><strong>Logic</strong>:
+- If <code>FatalError</code>: print in red (critical error)
+- If <code>MildError</code>: print in yellow (warning)
+- Otherwise: print in default color</p>
+<p><strong>Role in System</strong>: Centralized error display. Ensures consistent, color-coded feedback to users.</p>
+<hr />
+<h2 id="3-services-layer">3. Services Layer<a class="headerlink" href="#3-services-layer" title="Permanent link">&para;</a></h2>
+<p>Services act as orchestrators. They validate inputs, select algorithms, call domain modules, and return results. Services are <strong>UI-agnostic</strong>—both CLI and TUI use the same service methods.</p>
+<hr />
+<h3 id="encryption-service-encryption_servicepy">Encryption Service (<code>encryption_service.py</code>)<a class="headerlink" href="#encryption-service-encryption_servicepy" title="Permanent link">&para;</a></h3>
+<h4 id="__init___1"><code>__init__()</code><a class="headerlink" href="#__init___1" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Initialize encryption service with cipher instances.</p>
+<p><strong>Parameters</strong>: None</p>
+<p><strong>Return</strong>: None</p>
+<p><strong>Logic</strong>:
+- Instantiate <code>AESCipher()</code> immediately
+- Lazy-initialize <code>_pgp_cipher</code> (only when needed, since it requires GPG)</p>
+<p><strong>Role in System</strong>: Constructor. Prepares ciphers for use. Lazy loading avoids GPG dependency if not needed.</p>
+<hr />
+<h4 id="_get_pgp_cipher"><code>_get_pgp_cipher()</code><a class="headerlink" href="#_get_pgp_cipher" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Get or create PGP cipher instance lazily.</p>
+<p><strong>Parameters</strong>: None</p>
+<p><strong>Return</strong>: PGPCipher instance</p>
+<p><strong>Logic</strong>:
+- If <code>_pgp_cipher</code> is None, try to import and instantiate <code>PGPCipher()</code>
+- If import fails (GPG not installed), raise a helpful error message
+- Cache the instance for reuse</p>
+<p><strong>Role in System</strong>: Lazy loader for PGP. Avoids importing GPG (and requiring it) until actually used.</p>
+<hr />
+<h4 id="encrypt_text"><code>encrypt_text()</code><a class="headerlink" href="#encrypt_text" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Encrypt text using AES or PGP.</p>
+<p><strong>Parameters</strong>:
+- <code>secret</code>: Text to encrypt
+- <code>password</code>: Password for AES
+- <code>method</code>: "aes" or "pgp" (default: "aes")
+- <code>recipient_email</code>, <code>recipient_key</code>, <code>recipient_key_file</code>: PGP options</p>
+<p><strong>Return</strong>: str (encrypted text)</p>
+<p><strong>Logic</strong>:
+- If method is "pgp", call <code>self._get_pgp_cipher().encrypt_text()</code>
+- Otherwise, call <code>self.aes_cipher.encrypt_text()</code></p>
+<p><strong>Role in System</strong>: High-level encryption orchestrator. Routes to the right cipher based on method.</p>
+<hr />
+<h4 id="encrypt_file"><code>encrypt_file()</code><a class="headerlink" href="#encrypt_file" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Encrypt a file using AES or PGP.</p>
+<p><strong>Parameters</strong>:
+- <code>file_path</code>: Path to file
+- <code>password</code>: Password for AES
+- <code>method</code>: "aes" or "pgp"
+- PGP recipient options</p>
+<p><strong>Return</strong>: str (success message)</p>
+<p><strong>Logic</strong>:
+- Similar to <code>encrypt_text()</code> but delegates to file encryption methods
+- Returns success message</p>
+<p><strong>Role in System</strong>: File encryption orchestrator.</p>
+<hr />
+<h4 id="encrypt_text_to_image"><code>encrypt_text_to_image()</code><a class="headerlink" href="#encrypt_text_to_image" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Encrypt text and embed it into an image using steganography.</p>
+<p><strong>Parameters</strong>:
+- <code>image_path</code>: Path to input image
+- <code>secret</code>: Text to encrypt
+- <code>password</code>: Password for AES
+- <code>output_dir</code>: Output directory
+- <code>steganography</code>: "lsb" or "dct"
+- <code>method</code>: "aes" or "pgp"
+- PGP recipient options</p>
+<p><strong>Return</strong>: str (success message)</p>
+<p><strong>Logic</strong>:
+1. Encrypt the text using <code>encrypt_text()</code> (returns ciphertext)
+2. Get steganography handler via <code>get_steganography_handler()</code>
+3. Call stego handler's <code>encrypt_text()</code> to embed ciphertext into image
+4. Return success message</p>
+<p><strong>Role in System</strong>: High-level orchestrator for crypto + steganography workflow. Chains encryption and hiding.</p>
+<hr />
+<h4 id="decrypt_text_from_image"><code>decrypt_text_from_image()</code><a class="headerlink" href="#decrypt_text_from_image" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Extract and decrypt text from an image.</p>
+<p><strong>Parameters</strong>:
+- <code>image_path</code>: Path to stego image
+- <code>password</code>: Password
+- <code>steganography</code>: Stego method
+- <code>method</code>: Decryption method</p>
+<p><strong>Return</strong>: str (decrypted text)</p>
+<p><strong>Logic</strong>:
+1. Get stego handler and extract encrypted text via <code>decrypt_image()</code>
+2. Decrypt the extracted text using <code>decrypt_text()</code>
+3. Return plaintext</p>
+<p><strong>Role in System</strong>: High-level orchestrator for extraction + decryption workflow. Reverses the encrypt-to-image process.</p>
+<hr />
+<h3 id="decryption-service-decryption_servicepy">Decryption Service (<code>decryption_service.py</code>)<a class="headerlink" href="#decryption-service-decryption_servicepy" title="Permanent link">&para;</a></h3>
+<p>Similar structure to <code>EncryptionService</code>.</p>
+<h4 id="decrypt_text"><code>decrypt_text()</code><a class="headerlink" href="#decrypt_text" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Decrypt text using AES or PGP.</p>
+<p><strong>Parameters</strong>:
+- <code>data</code>: Encrypted text
+- <code>password</code>: Password/passphrase
+- <code>method</code>: "aes" or "pgp"</p>
+<p><strong>Return</strong>: str (plaintext)</p>
+<p><strong>Logic</strong>:
+- Route to correct cipher based on method
+- Return decrypted result</p>
+<p><strong>Role in System</strong>: High-level decryption orchestrator.</p>
+<hr />
+<h4 id="decrypt_file"><code>decrypt_file()</code><a class="headerlink" href="#decrypt_file" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Decrypt a file.</p>
+<p><strong>Parameters</strong>:
+- <code>file_path</code>: Encrypted file
+- <code>password</code>: Password
+- <code>method</code>: Decryption method
+- <code>output_dir</code>: Output directory (for PGP)</p>
+<p><strong>Return</strong>: str (success message)</p>
+<p><strong>Logic</strong>:
+- Route to correct cipher
+- Return success message</p>
+<p><strong>Role in System</strong>: File decryption orchestrator.</p>
+<hr />
+<h4 id="decrypt_image"><code>decrypt_image()</code><a class="headerlink" href="#decrypt_image" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Decrypt text hidden in an image.</p>
+<p><strong>Parameters</strong>:
+- <code>image_path</code>: Stego image
+- <code>password</code>: Password
+- <code>steganography</code>: Stego method
+- <code>method</code>: Decryption method</p>
+<p><strong>Return</strong>: str (plaintext)</p>
+<p><strong>Logic</strong>:
+1. Get stego handler and extract encrypted text
+2. Decrypt using correct cipher
+3. Return plaintext</p>
+<p><strong>Role in System</strong>: Image extraction + decryption orchestrator.</p>
+<hr />
+<h3 id="hashing-service-hashing_servicepy">Hashing Service (<code>hashing_service.py</code>)<a class="headerlink" href="#hashing-service-hashing_servicepy" title="Permanent link">&para;</a></h3>
+<h4 id="algorithms-class-variable"><code>ALGORITHMS</code> (class variable)<a class="headerlink" href="#algorithms-class-variable" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Dictionary of available hashing algorithms mapped to hashlib functions.</p>
+<p><strong>Value</strong>:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>{
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  &quot;MD5&quot;: hashlib.md5,
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  &quot;SHA1&quot;: hashlib.sha1,
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  &quot;SHA256&quot;: hashlib.sha256,
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  &quot;SHA512&quot;: hashlib.sha512,
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  &quot;BLAKE2B&quot;: hashlib.blake2b,
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  &quot;BLAKE3&quot;: blake3,
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  ... (13 total)
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>}
+</span></code></pre></div></p>
+<p><strong>Role in System</strong>: Algorithm registry. Enables dynamic selection at runtime.</p>
+<hr />
+<h4 id="hash_text"><code>hash_text()</code><a class="headerlink" href="#hash_text" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Hash text using a specified algorithm.</p>
+<p><strong>Parameters</strong>:
+- <code>text</code>: Text to hash
+- <code>algorithm</code>: Algorithm name (key in <code>ALGORITHMS</code> dict)</p>
+<p><strong>Return</strong>: str (hex digest)</p>
+<p><strong>Logic</strong>:
+1. Validate algorithm is supported
+2. Get hash function from <code>ALGORITHMS</code>
+3. Update hash with encoded text
+4. Return hex digest</p>
+<p><strong>Role in System</strong>: Text hashing orchestrator.</p>
+<hr />
+<h4 id="hash_file"><code>hash_file()</code><a class="headerlink" href="#hash_file" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Hash a file using a specified algorithm.</p>
+<p><strong>Parameters</strong>:
+- <code>file_path</code>: Path to file
+- <code>algorithm</code>: Algorithm name</p>
+<p><strong>Return</strong>: str (hex digest)</p>
+<p><strong>Logic</strong>:
+1. Validate algorithm
+2. Check file exists
+3. Open file and read in chunks (4KB at a time)
+4. Update hash with each chunk
+5. Return hex digest</p>
+<p><strong>Role in System</strong>: File hashing orchestrator. Chunks are read to handle large files efficiently.</p>
+<hr />
+<h4 id="get_available_algorithms"><code>get_available_algorithms()</code><a class="headerlink" href="#get_available_algorithms" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Return list of available hashing algorithms.</p>
+<p><strong>Parameters</strong>: None</p>
+<p><strong>Return</strong>: list[str] (sorted algorithm names)</p>
+<p><strong>Logic</strong>:
+- Return sorted list of <code>ALGORITHMS.keys()</code></p>
+<p><strong>Role in System</strong>: Utility for TUI and help text. Dynamically lists supported algorithms.</p>
+<hr />
+<h2 id="4-domain-modules-cryptography-and-steganography">4. Domain Modules (Cryptography and Steganography)<a class="headerlink" href="#4-domain-modules-cryptography-and-steganography" title="Permanent link">&para;</a></h2>
+<p>These modules implement the actual algorithms.</p>
+<hr />
+<h3 id="aes-cipher-encryptionaescipherpy">AES Cipher (<code>encryption/aes/cipher.py</code>)<a class="headerlink" href="#aes-cipher-encryptionaescipherpy" title="Permanent link">&para;</a></h3>
+<h4 id="aescipher-class"><code>AESCipher</code> class<a class="headerlink" href="#aescipher-class" title="Permanent link">&para;</a></h4>
+<h4 id="encrypt_text_1"><code>encrypt_text()</code><a class="headerlink" href="#encrypt_text_1" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Encrypt text using Fernet (AES-128 in CBC mode).</p>
+<p><strong>Parameters</strong>:
+- <code>secret</code>: Plaintext
+- <code>password</code>: Password</p>
+<p><strong>Return</strong>: str (ciphertext)</p>
+<p><strong>Logic</strong>:
+1. Validate password is not empty
+2. Generate Fernet key from password via <code>key_gen()</code>
+3. Create Fernet cipher
+4. Encrypt secret and return as string</p>
+<p><strong>Role in System</strong>: Low-level AES encryption. Used by <code>EncryptionService</code>.</p>
+<hr />
+<h4 id="decrypt_text_1"><code>decrypt_text()</code><a class="headerlink" href="#decrypt_text_1" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Decrypt Fernet-encrypted text.</p>
+<p><strong>Parameters</strong>:
+- <code>encrypted_secret</code>: Ciphertext
+- <code>password</code>: Password</p>
+<p><strong>Return</strong>: str (plaintext)</p>
+<p><strong>Logic</strong>:
+1. Validate password
+2. Generate same key from password
+3. Decrypt and decode
+4. Catch decryption errors and raise FatalError</p>
+<p><strong>Role in System</strong>: Low-level AES decryption.</p>
+<hr />
+<h4 id="encrypt_file_1"><code>encrypt_file()</code><a class="headerlink" href="#encrypt_file_1" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Encrypt a file to <code>.encrypto</code> extension.</p>
+<p><strong>Parameters</strong>:
+- <code>file_path</code>: File to encrypt
+- <code>password</code>: Password</p>
+<p><strong>Return</strong>: str (success message)</p>
+<p><strong>Logic</strong>:
+1. Validate password
+2. Generate key
+3. Read file via <code>get_file()</code> (validates size &lt; 1GB)
+4. Encrypt binary content
+5. Write to <code>{filename}.encrypto</code>
+6. Return success message</p>
+<p><strong>Role in System</strong>: File-level encryption. Produces <code>.encrypto</code> files.</p>
+<hr />
+<h4 id="decrypt_file_1"><code>decrypt_file()</code><a class="headerlink" href="#decrypt_file_1" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Decrypt a <code>.encrypto</code> file.</p>
+<p><strong>Parameters</strong>:
+- <code>file_path</code>: Encrypted file
+- <code>password</code>: Password</p>
+<p><strong>Return</strong>: None</p>
+<p><strong>Logic</strong>:
+1. Validate password
+2. Generate key
+3. Read encrypted file
+4. Decrypt
+5. Write to original filename (without <code>.encrypto</code> extension)</p>
+<p><strong>Role in System</strong>: File-level decryption. Restores original filename.</p>
+<hr />
+<h4 id="_cipher"><code>_cipher()</code><a class="headerlink" href="#_cipher" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Create a Fernet cipher from a password.</p>
+<p><strong>Parameters</strong>:
+- <code>password</code>: Password</p>
+<p><strong>Return</strong>: Fernet instance</p>
+<p><strong>Logic</strong>:
+1. Derive key using <code>key_gen()</code>
+2. Create Fernet cipher with key
+3. Handle errors</p>
+<p><strong>Role in System</strong>: Internal utility. Abstracts key derivation and cipher creation.</p>
+<hr />
+<h3 id="pgp-cipher-encryptionpgpcipherpy">PGP Cipher (<code>encryption/pgp/cipher.py</code>)<a class="headerlink" href="#pgp-cipher-encryptionpgpcipherpy" title="Permanent link">&para;</a></h3>
+<h4 id="pgpcipher-class"><code>PGPCipher</code> class<a class="headerlink" href="#pgpcipher-class" title="Permanent link">&para;</a></h4>
+<h4 id="__init___2"><code>__init__()</code><a class="headerlink" href="#__init___2" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Initialize PGP cipher with GPG instance.</p>
+<p><strong>Parameters</strong>:
+- <code>gpg_home</code>: Optional custom GPG home directory (defaults to ~/.gnupg)</p>
+<p><strong>Return</strong>: None</p>
+<p><strong>Logic</strong>:
+1. Expand home directory path or use system default
+2. Create directory with secure permissions (0o700)
+3. Instantiate <code>gnupg.GPG()</code> with home directory</p>
+<p><strong>Role in System</strong>: Constructor. Sets up GPG instance for all PGP operations.</p>
+<hr />
+<h4 id="generate_key_pair"><code>generate_key_pair()</code><a class="headerlink" href="#generate_key_pair" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Generate a PGP key pair (RSA 2048-bit).</p>
+<p><strong>Parameters</strong>:
+- <code>name</code>: Full name for key
+- <code>email</code>: Email for key
+- <code>passphrase</code>: Passphrase to protect key</p>
+<p><strong>Return</strong>: str (key fingerprint)</p>
+<p><strong>Logic</strong>:
+1. Validate all parameters provided
+2. Build key input configuration with <code>gen_key_input()</code>
+3. Generate key with <code>gen_key()</code>
+4. Return fingerprint</p>
+<p><strong>Role in System</strong>: Key generation utility. Called via CLI/TUI.</p>
+<hr />
+<h4 id="encrypt_text_2"><code>encrypt_text()</code><a class="headerlink" href="#encrypt_text_2" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Encrypt text using recipient's public key.</p>
+<p><strong>Parameters</strong>:
+- <code>secret</code>: Text to encrypt
+- <code>recipient_email</code>: Recipient's email (from keyring)
+- <code>recipient_key</code>: Public key as string
+- <code>recipient_key_file</code>: Path to public key file
+- <code>passphrase</code>: Optional passphrase for signing</p>
+<p><strong>Return</strong>: str (ciphertext)</p>
+<p><strong>Logic</strong>:
+1. Validate secret is not empty
+2. Determine recipient ID (priority: file &gt; string &gt; email)
+3. If file or string, import key into keyring
+4. Encrypt secret to recipient
+5. Check encryption status
+6. Return encrypted data</p>
+<p><strong>Role in System</strong>: PGP text encryption. Supports multiple ways to specify recipient.</p>
+<hr />
+<h4 id="decrypt_text_2"><code>decrypt_text()</code><a class="headerlink" href="#decrypt_text_2" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Decrypt PGP-encrypted text.</p>
+<p><strong>Parameters</strong>:
+- <code>encrypted_secret</code>: Ciphertext
+- <code>passphrase</code>: Passphrase for private key</p>
+<p><strong>Return</strong>: str (plaintext)</p>
+<p><strong>Logic</strong>:
+1. Validate passphrase provided
+2. Decrypt using passphrase
+3. Check decryption status
+4. Return plaintext</p>
+<p><strong>Role in System</strong>: PGP text decryption.</p>
+<hr />
+<h4 id="encrypt_file_2"><code>encrypt_file()</code><a class="headerlink" href="#encrypt_file_2" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Encrypt a file using public key.</p>
+<p><strong>Parameters</strong>:
+- <code>file_path</code>: File to encrypt
+- Recipient options (same as text)</p>
+<p><strong>Return</strong>: str (success message)</p>
+<p><strong>Logic</strong>:
+1. Validate recipient specified
+2. Determine recipient ID (import if needed)
+3. Read file
+4. Encrypt file content
+5. Write to <code>.pgp</code> file
+6. Return success message</p>
+<p><strong>Role in System</strong>: PGP file encryption.</p>
+<hr />
+<h4 id="decrypt_file_2"><code>decrypt_file()</code><a class="headerlink" href="#decrypt_file_2" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Decrypt a PGP-encrypted file.</p>
+<p><strong>Parameters</strong>:
+- <code>file_path</code>: Encrypted file
+- <code>passphrase</code>: Passphrase
+- <code>output_dir</code>: Output directory</p>
+<p><strong>Return</strong>: str (success message)</p>
+<p><strong>Logic</strong>:
+1. Validate passphrase
+2. Read encrypted file
+3. Decrypt
+4. Write to output directory (original filename)
+5. Return success message</p>
+<p><strong>Role in System</strong>: PGP file decryption.</p>
+<hr />
+<h3 id="lsb-steganography-steganographylsbhandlerpy">LSB Steganography (<code>steganography/lsb/handler.py</code>)<a class="headerlink" href="#lsb-steganography-steganographylsbhandlerpy" title="Permanent link">&para;</a></h3>
+<h4 id="lsbsteganography-class"><code>LSBSteganography</code> class<a class="headerlink" href="#lsbsteganography-class" title="Permanent link">&para;</a></h4>
+<p>Embeds data into the <strong>least significant bits</strong> of image pixels. Works with PNG (lossless).</p>
+<h4 id="encrypt_text_3"><code>encrypt_text()</code><a class="headerlink" href="#encrypt_text_3" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Hide text in an image's LSBs.</p>
+<p><strong>Parameters</strong>:
+- <code>input_image_path</code>: Input image (PNG recommended)
+- <code>secret</code>: Text to hide
+- <code>output_dir</code>: Output directory</p>
+<p><strong>Return</strong>: None</p>
+<p><strong>Logic</strong>:
+1. Open image and convert to RGB
+2. Flatten pixel array
+3. Encode secret:
+   - First 32 bits: length of secret (as 4-byte big-endian integer)
+   - Next N bits: secret bytes
+   - Final 8 bits: end marker (11111111)
+4. For each bit in encoded secret:
+   - Clear LSB of pixel (<code>pixel &amp; 0xFE</code>)
+   - Set LSB to encoded bit (<code>| bit</code>)
+5. Reshape array and save as PNG</p>
+<p><strong>Role in System</strong>: LSB embedding algorithm. Simple, fast, but visible to statistical analysis.</p>
+<hr />
+<h4 id="decrypt_image_1"><code>decrypt_image()</code><a class="headerlink" href="#decrypt_image_1" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Extract hidden text from image.</p>
+<p><strong>Parameters</strong>:
+- <code>input_image_path</code>: Image with hidden text</p>
+<p><strong>Return</strong>: str (hidden text)</p>
+<p><strong>Logic</strong>:
+1. Open image and flatten to array
+2. Extract LSBs as bit string
+3. Read first 32 bits as length
+4. Read next (length * 8) bits as secret bytes
+5. Decode and return text
+6. Catch errors and return empty string</p>
+<p><strong>Role in System</strong>: LSB extraction algorithm. Reverses the embedding process.</p>
+<hr />
+<h3 id="dct-steganography-steganographydcthandlerpy">DCT Steganography (<code>steganography/dct/handler.py</code>)<a class="headerlink" href="#dct-steganography-steganographydcthandlerpy" title="Permanent link">&para;</a></h3>
+<h4 id="dctsteganography-class"><code>DCTSteganography</code> class<a class="headerlink" href="#dctsteganography-class" title="Permanent link">&para;</a></h4>
+<p>Conceptually similar to LSB (current implementation is simplified). Intended for frequency-domain embedding but simplified for compatibility.</p>
+<h4 id="encrypt_text_4"><code>encrypt_text()</code><a class="headerlink" href="#encrypt_text_4" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Hide text in image (currently uses LSB, not full DCT).</p>
+<p><strong>Parameters</strong>: Same as LSB</p>
+<p><strong>Return</strong>: None</p>
+<p><strong>Logic</strong>: Same as LSB (simplified implementation)</p>
+<p><strong>Role in System</strong>: Placeholder for DCT algorithm. Could be extended with true DCT in the future.</p>
+<hr />
+<h4 id="decrypt_image_2"><code>decrypt_image()</code><a class="headerlink" href="#decrypt_image_2" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Extract text from image (LSB-based).</p>
+<p><strong>Parameters</strong>: Same as LSB</p>
+<p><strong>Return</strong>: str (hidden text)</p>
+<p><strong>Logic</strong>: Same as LSB</p>
+<p><strong>Role in System</strong>: Placeholder extraction. Mirrors encryption.</p>
+<hr />
+<h2 id="5-utilities-layer">5. Utilities Layer<a class="headerlink" href="#5-utilities-layer" title="Permanent link">&para;</a></h2>
+<h3 id="key-generation-utilkey_genpy">Key Generation (<code>util/key_gen.py</code>)<a class="headerlink" href="#key-generation-utilkey_genpy" title="Permanent link">&para;</a></h3>
+<h4 id="key_gen"><code>key_gen()</code><a class="headerlink" href="#key_gen" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Derive a cryptographic key from a password using scrypt.</p>
+<p><strong>Parameters</strong>:
+- <code>passW</code>: Password (string)</p>
+<p><strong>Return</strong>: bytes (base64-encoded key)</p>
+<p><strong>Logic</strong>:
+1. Use password as seed for random number generator
+2. Generate salt from random number
+3. Use scrypt with password and salt:
+   - n=16384 (CPU/memory cost)
+   - r=8 (block size)
+   - p=1 (parallelization)
+   - dklen=32 (32-byte output)
+4. Base64-encode result
+5. Return key</p>
+<p><strong>Role in System</strong>: Key derivation function. Used by AES cipher to convert passwords to Fernet keys. Ensures same password → same key (for decryption).</p>
+<hr />
+<h3 id="file-handling-utilfile_handlingpy">File Handling (<code>util/file_handling.py</code>)<a class="headerlink" href="#file-handling-utilfile_handlingpy" title="Permanent link">&para;</a></h3>
+<h4 id="get_file"><code>get_file()</code><a class="headerlink" href="#get_file" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Open a file in binary mode with size validation.</p>
+<p><strong>Parameters</strong>:
+- <code>filename</code>: Path to file</p>
+<p><strong>Return</strong>: BinaryIO (file object)</p>
+<p><strong>Logic</strong>:
+1. Check file size using <code>os.path.getsize()</code>
+2. Validate size &lt; 1 GB (1073741824 bytes)
+3. Open file in binary read mode (<code>"rb"</code>)
+4. Return file object
+5. Catch errors and raise FatalError</p>
+<p><strong>Role in System</strong>: Safe file opener. Prevents accidentally processing huge files and provides clear error messages.</p>
+<hr />
+<h3 id="exceptions-utilexceptionspy">Exceptions (<code>util/exceptions.py</code>)<a class="headerlink" href="#exceptions-utilexceptionspy" title="Permanent link">&para;</a></h3>
+<h4 id="fatalerror-class"><code>FatalError</code> (class)<a class="headerlink" href="#fatalerror-class" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Exception for critical errors that should terminate execution.</p>
+<p><strong>Attributes</strong>:
+- <code>message</code>: Error description</p>
+<p><strong>Role in System</strong>: Signals unrecoverable errors. Caught by <code>handle_error()</code> and displayed in red.</p>
+<h4 id="milderror-class"><code>MildError</code> (class)<a class="headerlink" href="#milderror-class" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Exception for non-fatal warnings.</p>
+<p><strong>Attributes</strong>:
+- <code>message</code>: Error description</p>
+<p><strong>Role in System</strong>: Signals warnings or issues that don't stop execution. Displayed in yellow.</p>
+<hr />
+<h2 id="6-steganography-factory">6. Steganography Factory<a class="headerlink" href="#6-steganography-factory" title="Permanent link">&para;</a></h2>
+<h3 id="steganography__init__py"><code>steganography/__init__.py</code><a class="headerlink" href="#steganography__init__py" title="Permanent link">&para;</a></h3>
+<h4 id="get_steganography_handler"><code>get_steganography_handler()</code><a class="headerlink" href="#get_steganography_handler" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose</strong>: Factory function to get the right steganography handler by name.</p>
+<p><strong>Parameters</strong>:
+- <code>name</code>: "lsb" or "dct"</p>
+<p><strong>Return</strong>: LSBSteganography or DCTSteganography instance</p>
+<p><strong>Logic</strong>:
+- If "lsb": return <code>LSBSteganography()</code>
+- If "dct": return <code>DCTSteganography()</code>
+- Otherwise: raise error</p>
+<p><strong>Role in System</strong>: Factory pattern. Abstracts stego handler selection from services.</p>
+<hr />
+<h2 id="7-data-flow-examples">7. Data Flow Examples<a class="headerlink" href="#7-data-flow-examples" title="Permanent link">&para;</a></h2>
+<h3 id="example-1-cli-aes-encryption">Example 1: CLI AES Encryption<a class="headerlink" href="#example-1-cli-aes-encryption" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>user runs: encryptocli encrypt --text &quot;hello&quot; --password &quot;secret&quot;
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  ↓
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>CLI handler `encrypt()` validates inputs
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  ↓
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Calls `EncryptionService.encrypt_text(&quot;hello&quot;, &quot;secret&quot;)`
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  ↓
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>Service calls `AESCipher.encrypt_text()`
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  ↓
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>Cipher derives key via `key_gen()`, creates Fernet, encrypts
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  ↓
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>Returns ciphertext to service
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>  ↓
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>Service returns to CLI
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>  ↓
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>CLI prints result in green
+</span></code></pre></div>
+<h3 id="example-2-tui-text-image-lsb-steganography">Example 2: TUI Text → Image (LSB Steganography)<a class="headerlink" href="#example-2-tui-text-image-lsb-steganography" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>user selects: Encrypt → Text → AES + Image
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  ↓
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>TUI `_encrypt_text_tui()` prompts for text, password, image, output dir
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  ↓
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>Calls `EncryptionService.encrypt_text_to_image(...)`
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  ↓
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>Service encrypts text via `AESCipher` → ciphertext
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  ↓
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>Service gets LSB handler via `get_steganography_handler(&quot;lsb&quot;)`
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  ↓
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>Handler&#39;s `encrypt_text()` embeds ciphertext into image LSBs
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>  ↓
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>Handler saves stego image as `encrypto.png`
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>  ↓
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>Service returns success message
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>  ↓
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>TUI displays result
+</span></code></pre></div>
+<h3 id="example-3-cli-hash">Example 3: CLI Hash<a class="headerlink" href="#example-3-cli-hash" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>user runs: encryptocli hash --file &quot;data.bin&quot; --algorithm &quot;SHA256&quot;
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  ↓
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>CLI handler `hash()` validates file exists
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  ↓
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>Calls `HashingService.hash_file(&quot;data.bin&quot;, &quot;SHA256&quot;)`
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  ↓
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>Service validates algorithm is in `ALGORITHMS` dict
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  ↓
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>Service opens file, reads in 4KB chunks, updates SHA256 hash
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  ↓
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>Service returns hex digest
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>  ↓
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>CLI prints result in green
+</span></code></pre></div>
+<hr />
+<h2 id="8-key-design-patterns">8. Key Design Patterns<a class="headerlink" href="#8-key-design-patterns" title="Permanent link">&para;</a></h2>
+<h3 id="layered-architecture">Layered Architecture<a class="headerlink" href="#layered-architecture" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Interfaces</strong> (CLI/TUI) handle user input/output</li>
+<li><strong>Services</strong> validate and orchestrate</li>
+<li><strong>Domain modules</strong> implement algorithms</li>
+<li><strong>Utilities</strong> provide helpers</li>
+</ul>
+<p>This separation keeps each layer independent and testable.</p>
+<h3 id="lazy-initialization">Lazy Initialization<a class="headerlink" href="#lazy-initialization" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>PGPCipher</code> is created only when needed (requires GPG)</li>
+<li>Avoids unnecessary dependencies</li>
+</ul>
+<h3 id="factory-pattern">Factory Pattern<a class="headerlink" href="#factory-pattern" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>get_steganography_handler()</code> abstracts handler selection</li>
+<li>Enables easy addition of new stego methods</li>
+</ul>
+<h3 id="error-mapping">Error Mapping<a class="headerlink" href="#error-mapping" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>FatalError</code> and <code>MildError</code> provide semantic error levels</li>
+<li><code>handle_error()</code> displays them appropriately</li>
+</ul>
+<h3 id="service-abstraction">Service Abstraction<a class="headerlink" href="#service-abstraction" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Both CLI and TUI use the same service methods</li>
+<li>Ensures consistent behavior regardless of interface</li>
+</ul>
+<hr />
+<h2 id="9-testing-implications">9. Testing Implications<a class="headerlink" href="#9-testing-implications" title="Permanent link">&para;</a></h2>
+<p>Each layer can be tested independently:</p>
+<ul>
+<li><strong>Utilities</strong>: Test key generation and file handling in isolation</li>
+<li><strong>Domain modules</strong>: Test encryption/decryption without UI</li>
+<li><strong>Services</strong>: Test orchestration and error handling</li>
+<li><strong>Interfaces</strong>: Test user flows and validation</li>
+</ul>
+<p>This modular structure enables comprehensive testing without needing to mock UI elements.</p>
+<hr />
+<h2 id="10-extension-points">10. Extension Points<a class="headerlink" href="#10-extension-points" title="Permanent link">&para;</a></h2>
+<p>To add a new feature:</p>
+<ol>
+<li><strong>New algorithm</strong>: Add to domain module, extend service routing</li>
+<li><strong>New CLI command</strong>: Add <code>@app.command()</code> in <code>cli_handler.py</code></li>
+<li><strong>New TUI flow</strong>: Add method to <code>TUIHandler</code> class</li>
+<li><strong>New steganography method</strong>: Implement in new file, add to factory</li>
+</ol>
+<p>The layered design makes these changes localized and low-risk.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/Arpan-206/EncryptoCLI" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://pypi.org/project/EncryptoCLI/" target="_blank" rel="noopener" title="pypi.org" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.8 200.5c-7.7-30.9-22.3-54.2-53.4-54.2h-40.1v47.4c0 36.8-31.2 67.8-66.8 67.8H172.7c-29.2 0-53.4 25-53.4 54.3v101.8c0 29 25.2 46 53.4 54.3 33.8 9.9 66.3 11.7 106.8 0 26.9-7.8 53.4-23.5 53.4-54.3v-40.7H226.2v-13.6h160.2c31.1 0 42.6-21.7 53.4-54.2 11.2-33.5 10.7-65.7 0-108.6M286.2 444.7a20.4 20.4 0 1 1 0-40.7 20.4 20.4 0 1 1 0 40.7M167.8 248.1h106.8c29.7 0 53.4-24.5 53.4-54.3V91.9c0-29-24.4-50.7-53.4-55.6-35.8-5.9-74.7-5.6-106.8.1-45.2 8-53.4 24.7-53.4 55.6v40.7h106.9v13.6h-147c-31.1 0-58.3 18.7-66.8 54.2-9.8 40.7-10.2 66.1 0 108.6 7.6 31.6 25.7 54.2 56.8 54.2H101v-48.8c0-35.3 30.5-66.4 66.8-66.4m-6.6-183.4a20.4 20.4 0 1 1 0 40.8 20.4 20.4 0 1 1 0-40.8"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "toc.follow", "toc.integrate", "content.code.copy", "content.code.select", "content.code.annotate", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
