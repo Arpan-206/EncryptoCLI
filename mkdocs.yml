@@ -63,10 +63,9 @@ plugins:
 
 nav:
   - Home: index.md
-  - Getting Started:
-      - Installation: user-guide/getting-started.md
-      - Quick Start: user-guide/quick-start.md
+  - Getting Started: getting-started.md
   - User Guide:
+      - Overview: user-guide/index.md
       - Hashing: user-guide/hashing.md
       - AES Encryption: user-guide/encryption.md
       - AES Decryption: user-guide/decryption.md
@@ -74,33 +73,25 @@ nav:
       - PGP Key Management: user-guide/pgp-key-management.md
       - Steganography: user-guide/steganography.md
   - API Reference:
-      - Overview: api/overview.md
-      - Core:
-          - Main: api/main.md
-          - Error Handler: api/error_handler.md
-      - Services:
-          - Encryption Service: api/services/encryption_service.md
-          - Decryption Service: api/services/decryption_service.md
-          - Hashing Service: api/services/hashing_service.md
+      - Overview: api/index.md
+      - Services: api/services.md
       - Encryption:
+          - Overview: api/encryption/index.md
           - AES Cipher: api/encryption/aes_cipher.md
           - PGP Cipher: api/encryption/pgp.md
       - Steganography:
+          - Overview: api/steganography/index.md
           - LSB Handler: api/steganography/lsb_handler.md
           - DCT Handler: api/steganography/dct_handler.md
       - Interfaces:
+          - Overview: api/interfaces/index.md
           - CLI Handler: api/interfaces/cli_handler.md
           - TUI Handler: api/interfaces/tui_handler.md
       - Utilities:
+          - Overview: api/utilities/index.md
           - Exceptions: api/utilities/exceptions.md
           - File Handling: api/utilities/file_handling.md
           - Key Generation: api/utilities/key_gen.md
-  - Testing:
-      - Test Suite: testing/overview.md
-      - Running Tests: testing/running-tests.md
-  - Development:
-      - Contributing: contributing.md
-      - Architecture: development/architecture.md
   - License: LICENSE.md
 
 markdown_extensions:

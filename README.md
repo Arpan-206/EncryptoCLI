@@ -1,81 +1,104 @@
-# EncryptoCLI - By Arpan Pandey
+# EncryptoCLI
+
 ![EncryptoCLI Thumbnail](./docs/EncryptoCLI-Thumbnail.png)
 
+[![PyPI version](https://badge.fury.io/py/EncryptoCLI.svg)](https://badge.fury.io/py/EncryptoCLI)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ## 📚 Description
-Encrypto CLI is a command-line program that provides you with an intuitive and easy-to-use program that allows for a highly efficient and customizable interface to generate hashes of files or encrypt them. This allows you to encrypt and decrypt files or text data using either **Fernet (AES)** or **PGP encryption**. This is powered by the [Cryptography Module](https://cryptography.io/en/latest/) and [python-gnupg](https://python-gnupg.readthedocs.io/).
 
-## Technologies Used
-* Python3
-* Cryptography Module (Fernet & PGP Encryption)
-* python-gnupg (GPG/PGP Support)
-* Hashing Module
-* Termcolor
-* InquirerPy
-* Scrypt
+EncryptoCLI is a powerful command-line tool for encryption, decryption, hashing, and steganography operations. It provides both an interactive TUI (Text User Interface) and a traditional CLI for flexible workflows.
 
-## ✨ Features
+### Key Features
 
-### Encryption Methods
-- **AES (Fernet)**: Symmetric encryption using passwords
-- **PGP**: Asymmetric encryption using public/private keys
+- **Multiple Encryption Methods**: AES (Fernet) and PGP/GPG support
+- **13 Hash Algorithms**: MD5, SHA256, SHA512, BLAKE2, BLAKE3, and more
+- **Image Steganography**: Hide encrypted data in images using LSB or DCT methods
+- **Dual Interfaces**: Interactive TUI or command-line arguments
+- **Modern Python**: Built with Python 3.10+ type hints and async support
 
-### Operations
-- **Hashing**: Generate cryptographic hashes (MD5, SHA256, SHA512, BLAKE2)
-- **Encryption**: Protect your data with multiple cipher methods
-- **Decryption**: Recover encrypted data
-- **Steganography**: Hide encrypted data in images
+## 🚀 Installation
 
-## How it works?
-The idea is very simple. The program first asks you about which operation do you want to perform and then asks you 2-3 questions relative to which operation you have selected.![First Image](./docs/screenshots/1.png)    
+```bash
+pip install EncryptoCLI
+```
 
-## Hashing
-You can generate hashes for text or file data by selecting the algorithm from the 5 options provided: 
-![Hashing Image](./docs/screenshots/3.png)
-The five algorithms supported are:
-* MD5
-* SHA256
-* SHA512
-* BLAKE2
-* BLAKE2b
+### Requirements
 
-Also, if you are interested in an analysis of these algorithms or implementing them by yourself you can head over to this article that I wrote on [hashing](https://hackersreboot.tech/articles/Cryptography/hashing).
+- Python 3.10 or higher
+- GPG (GNU Privacy Guard) for PGP encryption - [Install GPG](https://gnupg.org/download/)
 
-## Encrypting 
-You can encrypt data by going through these steps.
-1. Select the type of data you want to encrypt. ![Encrypt Type Selection](./docs/screenshots/6.png)
-2. Select the encryption method (AES or PGP)
-3. Input the data (either the text or path to a file). ![Encrypt Data Input](./docs/screenshots/7.png)
-4. For AES: Enter a password. For PGP: Enter recipient's email. ![Encrypt Data Password](./docs/screenshots/8.png)
-5. And you are done.
+## 💻 Usage
 
-## Decrypting 
-You can decrypt data by going through these steps.
-1. Select the type of data you want to decrypt. ![Decrypt Type Selection](./docs/screenshots/9.png)
-2. Select the decryption method (AES or PGP)
-3. Input the data (either the text or path to a file). ![Decrypt Data Input](./docs/screenshots/10.png)
-4. Enter the password or passphrase. ![Decrypt Data Password](./docs/screenshots/11.png)
-5. And you are done.
+### Interactive Mode (TUI)
 
-## Steganography
-You can encrypt and hide your data in an image using **LSB (Least Significant Bit)** or **DCT (Frequency Domain)** steganography methods. Both methods support PNG format for lossless embedding.
+Simply run without arguments to launch the interactive interface:
 
-### Encrypt
+```bash
+encryptocli
+```
 
-1. Select the type of data you want to encrypt.
-2. Select **Image** as output type 
-3. Input path to the image where your secret will be hidden
-4. Enter the text/secret you want to encrypt and hide
-5. Enter a password.
-4. And you are done your secret has been hidden in the image named "encrypto.png"
+### Command-Line Mode
 
+#### Hashing
 
-### Decrypt
+```bash
+# Hash text
+encryptocli hash --text "secret message" --algorithm SHA256
 
-1. Select **Image** as the type of data you want to decrypt.
-3. Input path to the image file you want to decrypt.
-4. Enter the text/secret you want to encrypt and hide
-5. Enter the password. 
-4. And you are done.
+# Hash file
+encryptocli hash --file document.pdf --algorithm SHA512
+```
+
+**Supported Algorithms**: MD5, SHA1, SHA224, SHA256, SHA384, SHA512, SHA3_224, SHA3_256, SHA3_384, SHA3_512, BLAKE2b, BLAKE2s, BLAKE3
+
+#### AES Encryption
+
+```bash
+# Encrypt text
+encryptocli encrypt --text "secret" --password "mypassword" --method aes
+
+# Encrypt file
+encryptocli encrypt --file document.txt --password "mypassword" --method aes
+
+# Decrypt
+encryptocli decrypt --file document.txt.enc --password "mypassword" --method aes
+```
+
+#### PGP Encryption
+
+PGP encryption supports three ways to specify the recipient:
+
+```bash
+# Using recipient email (key from GPG keyring)
+encryptocli encrypt --text "secret" --recipient-email "user@example.com" --method pgp
+
+# Using public key file
+encryptocli encrypt --text "secret" --recipient-key-file ~/recipient-pubkey.asc --method pgp
+
+# Using inline public key
+encryptocli encrypt --text "secret" --recipient-key "-----BEGIN PGP PUBLIC KEY BLOCK-----..." --method pgp
+
+# Decrypt (requires your private key passphrase)
+encryptocli decrypt --text "encrypted_data" --password "your_passphrase" --method pgp
+```
+
+#### Steganography
+
+Hide encrypted data inside images:
+
+```bash
+# Encrypt and hide in image
+encryptocli encrypt --text "secret" --password "pass" --image cover.png --steganography lsb
+
+# Extract and decrypt from image
+encryptocli decrypt --image cover.png --password "pass" --steganography lsb
+```
+
+**Steganography Methods**:
+- `lsb` - Least Significant Bit (higher capacity)
+- `dct` - Discrete Cosine Transform (more robust)
 
 
 

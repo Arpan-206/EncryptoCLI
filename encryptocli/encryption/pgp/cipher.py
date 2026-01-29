@@ -1,6 +1,6 @@
 """PGP (Pretty Good Privacy) encryption/decryption utilities using a class-based API."""
 
-from typing import BinaryIO, Optional
+from typing import BinaryIO
 import os
 
 try:
@@ -17,7 +17,7 @@ from encryptocli.util.file_handling import get_file
 class PGPCipher:
     """Provide PGP-based encryption and decryption for text and files."""
 
-    def __init__(self, gpg_home: Optional[str] = None) -> None:
+    def __init__(self, gpg_home: str | None = None) -> None:
         """Initialize PGP cipher with GPG instance.
 
         Args:
@@ -73,30 +73,75 @@ class PGPCipher:
             raise FatalError(f"Error generating PGP key: {str(exc)}") from exc
 
     def encrypt_text(
-        self, secret: str, recipient_email: str, passphrase: Optional[str] = None
+        self,
+        secret: str,
+        recipient_email: str | None = None,
+        recipient_key: str | None = None,
+        recipient_key_file: str | None = None,
+        passphrase: str | None = None,
     ) -> str:
         """Encrypt plain text with the recipient's public key.
 
         Args:
             secret: Plain text to encrypt.
-            recipient_email: Email address of the recipient (must have their public key).
+            recipient_email: Email address of recipient (uses key from keyring).
+            recipient_key: Recipient's public key as a string (PEM format).
+            recipient_key_file: Path to file containing recipient's public key.
             passphrase: Optional passphrase for the signing key.
 
         Returns:
             str: Encrypted ciphertext as a string.
 
         Raises:
-            FatalError: If encryption fails or recipient key not found.
+            FatalError: If encryption fails, no recipient specified, or key import fails.
+
+        Note:
+            Exactly one of recipient_email, recipient_key, or recipient_key_file must be provided.
+            Priority: recipient_key_file > recipient_key > recipient_email
         """
         if not secret:
             raise FatalError("Cannot encrypt empty text")
-        if not recipient_email:
-            raise FatalError("Recipient email is required")
+
+        # Determine recipient identifier
+        recipient_id = None
+
+        # Priority 1: Import key from file
+        if recipient_key_file:
+            try:
+                with open(recipient_key_file, "r") as f:
+                    key_data = f.read()
+                import_result = self.gpg.import_keys(key_data)
+                if not import_result.fingerprints:
+                    raise FatalError(f"Failed to import key from {recipient_key_file}")
+                recipient_id = import_result.fingerprints[0]
+            except FileNotFoundError:
+                raise FatalError(f"Key file not found: {recipient_key_file}")
+            except Exception as exc:
+                raise FatalError(f"Error importing key from file: {str(exc)}") from exc
+
+        # Priority 2: Import key from string
+        elif recipient_key:
+            try:
+                import_result = self.gpg.import_keys(recipient_key)
+                if not import_result.fingerprints:
+                    raise FatalError("Failed to import provided public key")
+                recipient_id = import_result.fingerprints[0]
+            except Exception as exc:
+                raise FatalError(f"Error importing key: {str(exc)}") from exc
+
+        # Priority 3: Use email from keyring
+        elif recipient_email:
+            recipient_id = recipient_email
+
+        else:
+            raise FatalError(
+                "Must provide one of: recipient_email, recipient_key, or recipient_key_file"
+            )
 
         try:
             encrypted_data = self.gpg.encrypt(
                 secret,
-                recipient_email,
+                recipient_id,
                 always_trust=True,
                 sign=None,
             )
@@ -130,29 +175,77 @@ class PGPCipher:
         except Exception as exc:
             raise FatalError(f"Error decrypting text: {str(exc)}") from exc
 
-    def encrypt_file(self, file_path: str, recipient_email: str) -> str:
+    def encrypt_file(
+        self,
+        file_path: str,
+        recipient_email: str | None = None,
+        recipient_key: str | None = None,
+        recipient_key_file: str | None = None,
+    ) -> str:
         """Encrypt a file using the recipient's public key.
 
         Args:
             file_path: Path to the file to encrypt.
-            recipient_email: Email address of the recipient.
+            recipient_email: Email address of recipient (uses key from keyring).
+            recipient_key: Recipient's public key as a string (PEM format).
+            recipient_key_file: Path to file containing recipient's public key.
 
         Returns:
             str: Success message.
 
         Raises:
-            FatalError: If encryption fails or file issues occur.
+            FatalError: If encryption fails, file issues occur, or key import fails.
             MildError: If file is already encrypted.
+
+        Note:
+            Exactly one of recipient_email, recipient_key, or recipient_key_file must be provided.
+            Priority: recipient_key_file > recipient_key > recipient_email
         """
         file: BinaryIO = get_file(file_path)
 
         if file.name.endswith(".pgp") or file.name.endswith(".gpg"):
             raise MildError("File is already encrypted with PGP.")
 
+        # Determine recipient identifier
+        recipient_id = None
+
+        # Priority 1: Import key from file
+        if recipient_key_file:
+            try:
+                with open(recipient_key_file, "r") as f:
+                    key_data = f.read()
+                import_result = self.gpg.import_keys(key_data)
+                if not import_result.fingerprints:
+                    raise FatalError(f"Failed to import key from {recipient_key_file}")
+                recipient_id = import_result.fingerprints[0]
+            except FileNotFoundError:
+                raise FatalError(f"Key file not found: {recipient_key_file}")
+            except Exception as exc:
+                raise FatalError(f"Error importing key from file: {str(exc)}") from exc
+
+        # Priority 2: Import key from string
+        elif recipient_key:
+            try:
+                import_result = self.gpg.import_keys(recipient_key)
+                if not import_result.fingerprints:
+                    raise FatalError("Failed to import provided public key")
+                recipient_id = import_result.fingerprints[0]
+            except Exception as exc:
+                raise FatalError(f"Error importing key: {str(exc)}") from exc
+
+        # Priority 3: Use email from keyring
+        elif recipient_email:
+            recipient_id = recipient_email
+
+        else:
+            raise FatalError(
+                "Must provide one of: recipient_email, recipient_key, or recipient_key_file"
+            )
+
         try:
             encrypted_data = self.gpg.encrypt_file(
                 file,
-                recipient_email,
+                recipient_id,
                 always_trust=True,
                 output=f"{file.name}.pgp",
             )
@@ -366,7 +459,7 @@ class PGPCipher:
         except Exception as exc:
             raise FatalError(f"Error verifying text: {str(exc)}") from exc
 
-    def verify_file(self, file_path: str, signature_path: Optional[str] = None) -> dict:
+    def verify_file(self, file_path: str, signature_path: str | None = None) -> dict:
         """Verify a file's signature.
 
         Args:

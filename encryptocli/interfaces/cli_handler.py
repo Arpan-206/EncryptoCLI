@@ -1,7 +1,6 @@
 """CLI interface handler using Typer for argument-based interface."""
 
 from pathlib import Path
-from typing import Optional
 
 try:
     import typer
@@ -36,8 +35,8 @@ hashing_service = HashingService()
 
 @app.command()
 def hash(
-    text: Optional[str] = typer.Option(None, "--text", "-t", help="Text to hash"),
-    file: Optional[str] = typer.Option(None, "--file", "-f", help="File path to hash"),
+    text: str | None = typer.Option(None, "--text", "-t", help="Text to hash"),
+    file: str | None = typer.Option(None, "--file", "-f", help="File path to hash"),
     algorithm: str = typer.Option(
         "SHA256",
         "--algorithm",
@@ -77,17 +76,33 @@ def hash(
 
 @app.command()
 def encrypt(
-    text: Optional[str] = typer.Option(None, "--text", "-t", help="Text to encrypt"),
-    file: Optional[str] = typer.Option(None, "--file", "-f", help="File to encrypt"),
-    password: str = typer.Option(
-        ...,
+    text: str | None = typer.Option(None, "--text", "-t", help="Text to encrypt"),
+    file: str | None = typer.Option(None, "--file", "-f", help="File to encrypt"),
+    password: str | None = typer.Option(
+        None,
         "--password",
         "-p",
-        prompt=True,
-        hide_input=True,
-        help="Password or recipient email",
+        help="Password for AES encryption",
     ),
-    image: Optional[str] = typer.Option(
+    recipient_email: str | None = typer.Option(
+        None,
+        "--recipient-email",
+        "-r",
+        help="PGP: Recipient's email address (uses key from keyring)",
+    ),
+    recipient_key: str | None = typer.Option(
+        None,
+        "--recipient-key",
+        "-k",
+        help="PGP: Recipient's public key as string (PEM format)",
+    ),
+    recipient_key_file: str | None = typer.Option(
+        None,
+        "--recipient-key-file",
+        "-kf",
+        help="PGP: Path to recipient's public key file",
+    ),
+    image: str | None = typer.Option(
         None,
         "--image",
         "-i",
@@ -112,12 +127,44 @@ def encrypt(
         typer.echo(colored("Error: Provide either --text or --file, not both", "red"))
         raise typer.Exit(code=1)
 
+    # Validate method-specific parameters
+    if method.lower() == "aes":
+        if not password:
+            password = typer.prompt("Password", hide_input=True)
+        if recipient_email or recipient_key or recipient_key_file:
+            typer.echo(
+                colored(
+                    "Warning: Recipient parameters are ignored for AES encryption",
+                    "yellow",
+                )
+            )
+    elif method.lower() == "pgp":
+        if not recipient_email and not recipient_key and not recipient_key_file:
+            typer.echo(
+                colored(
+                    "Error: PGP encryption requires one of: --recipient-email, --recipient-key, or --recipient-key-file",
+                    "red",
+                )
+            )
+            raise typer.Exit(code=1)
+        if password:
+            typer.echo(
+                colored("Warning: --password is ignored for PGP encryption", "yellow")
+            )
+
     try:
         if file:
             if not Path(file).exists():
                 typer.echo(colored(f"Error: File not found: {file}", "red"))
                 raise typer.Exit(code=1)
-            result = encryption_service.encrypt_file(file, password, method)
+            result = encryption_service.encrypt_file(
+                file,
+                password or "",
+                method,
+                recipient_email,
+                recipient_key,
+                recipient_key_file,
+            )
             typer.echo(colored(result, "green"))
         else:
             if image:
@@ -125,11 +172,26 @@ def encrypt(
                     typer.echo(colored(f"Error: Image file not found: {image}", "red"))
                     raise typer.Exit(code=1)
                 result = encryption_service.encrypt_text_to_image(
-                    str(image), str(text), password, output_dir, steganography, method
+                    str(image),
+                    str(text),
+                    password or "",
+                    output_dir,
+                    steganography,
+                    method,
+                    recipient_email,
+                    recipient_key,
+                    recipient_key_file,
                 )
                 typer.echo(colored(result, "green"))
             else:
-                result = encryption_service.encrypt_text(str(text), password, method)
+                result = encryption_service.encrypt_text(
+                    str(text),
+                    password or "",
+                    method,
+                    recipient_email,
+                    recipient_key,
+                    recipient_key_file,
+                )
                 typer.echo(
                     colored("Encrypted text: ", "white") + colored(result, "green")
                 )
@@ -140,13 +202,13 @@ def encrypt(
 
 @app.command()
 def decrypt(
-    text: Optional[str] = typer.Option(
+    text: str | None = typer.Option(
         None, "--text", "-t", help="Encrypted text to decrypt"
     ),
-    file: Optional[str] = typer.Option(
+    file: str | None = typer.Option(
         None, "--file", "-f", help="Encrypted file to decrypt"
     ),
-    image: Optional[str] = typer.Option(
+    image: str | None = typer.Option(
         None, "--image", "-i", help="Image file with encrypted text"
     ),
     password: str = typer.Option(
@@ -308,8 +370,8 @@ def pgp_list_keys() -> None:
 
 @pgp_app.command("sign")
 def pgp_sign(
-    text: Optional[str] = typer.Option(None, "--text", "-t", help="Text to sign"),
-    file: Optional[str] = typer.Option(None, "--file", "-f", help="File to sign"),
+    text: str | None = typer.Option(None, "--text", "-t", help="Text to sign"),
+    file: str | None = typer.Option(None, "--file", "-f", help="File to sign"),
     passphrase: str = typer.Option(
         ...,
         "--passphrase",
@@ -324,7 +386,7 @@ def pgp_sign(
     clearsign: bool = typer.Option(
         False, "--clear", "-c", help="Create clear-text signature (text only)"
     ),
-    output: Optional[str] = typer.Option(
+    output: str | None = typer.Option(
         None, "--output", "-o", help="Output file for signature (text signing only)"
     ),
 ) -> None:
@@ -366,13 +428,11 @@ def pgp_sign(
 
 @pgp_app.command("verify")
 def pgp_verify(
-    text: Optional[str] = typer.Option(
-        None, "--text", "-t", help="Signed text to verify"
-    ),
-    file: Optional[str] = typer.Option(
+    text: str | None = typer.Option(None, "--text", "-t", help="Signed text to verify"),
+    file: str | None = typer.Option(
         None, "--file", "-f", help="File to verify (or file with embedded signature)"
     ),
-    signature: Optional[str] = typer.Option(
+    signature: str | None = typer.Option(
         None, "--signature", "-s", help="Detached signature file path"
     ),
 ) -> None:
@@ -421,10 +481,10 @@ def pgp_verify(
 
 @pgp_app.command("sign-encrypt")
 def pgp_sign_encrypt(
-    text: Optional[str] = typer.Option(
+    text: str | None = typer.Option(
         None, "--text", "-t", help="Text to sign and encrypt"
     ),
-    file: Optional[str] = typer.Option(
+    file: str | None = typer.Option(
         None, "--file", "-f", help="File to sign and encrypt"
     ),
     recipient: str = typer.Option(
@@ -438,7 +498,7 @@ def pgp_sign_encrypt(
         hide_input=True,
         help="Passphrase for your private key",
     ),
-    output: Optional[str] = typer.Option(
+    output: str | None = typer.Option(
         None, "--output", "-o", help="Output file (text signing only)"
     ),
 ) -> None:
