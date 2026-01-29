@@ -1,323 +1,209 @@
-# PGP Key Management Commands
+# PGP Key Management
 
-## Overview
+Manage your PGP keys for secure asymmetric encryption.
 
-PGP key management commands have been added to both the CLI and TUI interfaces, allowing users to generate, import, export, and list PGP keys directly from EncryptoCLI.
+## Prerequisites
 
-## CLI Commands
+- **GPG installed** on your system
+  - macOS: `brew install gnupg`
+  - Ubuntu/Debian: `sudo apt-get install gnupg`
+  - Windows: Download from [gnupg.org](https://www.gnupg.org/download/)
 
-All PGP key management commands are grouped under the `pgp-key` command with subcommands.
+## Key Concepts
 
-### Generate Key Pair
+### Public Key
 
-Generate a new PGP key pair (RSA 2048-bit).
+- Can be shared freely with anyone
+- Used to encrypt data for you
+- Others use it to verify your digital signatures
 
-```bash
-encryptocli pgp-key gen
-# or with options:
-encryptocli pgp-key gen --name "John Doe" --email "john@example.com" --passphrase "secure_pass"
-```
+### Private Key
 
-**Options:**
-- `--name, -n`: Full name for the key (required)
-- `--email, -e`: Email address for the key (required)
-- `--passphrase, -p`: Passphrase to protect the key (required, hidden input)
+- Keep absolutely secret and secure
+- Used to decrypt data encrypted with your public key
+- Never share this key
+- Protected by passphrase
 
-**Output:**
-```
-PGP Key Generated Successfully!
-Fingerprint: 1234567890ABCDEF...
-Email: john@example.com
-```
+### Key Pair
 
-### Export Public Key
+- Public and private keys work together
+- Create both when generating a new key
+- Used for secure communication
 
-Export a public key to a file for sharing.
+## Generate a New Key Pair
 
-```bash
-encryptocli pgp-key export
-# or with options:
-encryptocli pgp-key export --email "john@example.com" --output "john_public.asc"
-```
-
-**Options:**
-- `--email, -e`: Email address of the key to export (required)
-- `--output, -o`: Output file path (default: public_key.asc)
-
-**Output:**
-```
-Public key exported to john_public.asc
-```
-
-### Import Public Key
-
-Import a public key from a file.
+### Using GPG Command Line
 
 ```bash
-encryptocli pgp-key import
-# or with option:
-encryptocli pgp-key import --file "recipient_public.asc"
+gpg --gen-key
 ```
 
-**Options:**
-- `--file, -f`: Path to the public key file (required)
+Follow the prompts:
 
-**Output:**
-```
-Public key imported successfully. Fingerprint: ABC123...
-```
+1. Select key type (default RSA and RSA is fine)
+2. Select key size (4096 bits recommended for security)
+3. Set expiration date (0 = no expiration recommended)
+4. Enter real name
+5. Enter email address
+6. Add comment (optional)
+7. Set passphrase (use strong passphrase)
 
-### List Keys
-
-List all available PGP keys in the keyring.
+### Verify Key Creation
 
 ```bash
-encryptocli pgp-key list
+gpg --list-secret-keys
 ```
 
-**Output:**
-```
-=== PGP Keys ===
+Shows your private keys with key IDs and details.
 
-1. John Doe <john@example.com>
-   Type: pub
-   Key ID: 1234567890ABCDEF
-   Fingerprint: 1234567890ABCDEF1234567890ABCDEF12345678
+## List Keys
 
-2. Alice Smith <alice@example.com>
-   Type: pub
-   Key ID: FEDCBA0987654321
-   Fingerprint: FEDCBA0987654321FEDCBA0987654321FEDCBA09
-```
-
-## TUI Interface
-
-The TUI interface now includes a "PGP Keys" option in the main menu:
-
-```
-What do you want to do?
-> Hash
-  Encrypt
-  Decrypt
-  PGP Keys
-  Exit
-```
-
-### Generate Key Pair (TUI)
-
-Select "PGP Keys" → "Generate Key Pair" to:
-1. Enter your full name
-2. Enter your email address
-3. Enter a passphrase to protect your key
-
-The system will generate and display:
-- Your full name
-- Email address
-- Key fingerprint
-
-### List Keys (TUI)
-
-Select "PGP Keys" → "List Keys" to view all keys in your keyring with:
-- Email address (UID)
-- Key ID
-- Fingerprint
-
-### Import Public Key (TUI)
-
-Select "PGP Keys" → "Import Public Key" to:
-1. Provide the path to the public key file
-2. Confirm successful import with fingerprint
-
-### Export Public Key (TUI)
-
-Select "PGP Keys" → "Export Public Key" to:
-1. Enter the email of the key to export
-2. Specify output file path (default: public_key.asc)
-3. Confirm successful export
-
-## Usage Examples
-
-### Example 1: Generate a Key Pair and Share It
+### View All Keys
 
 ```bash
-# Generate your key pair
-encryptocli pgp-gen-key
-
-# Export your public key for sharing
-encryptocli pgp-export-key --email "you@example.com" --output "my_public_key.asc"
-
-# Send the file to others or upload to a key server
-```
-
-### Example 2: Import a Recipient's Key and Encrypt
-
-```bash
-# Import recipient's public key
-encryptocli pgp-import-key --file "recipient_public.asc"
-
-# List keys to verify it was imported
-encryptocli pgp-list-keys
-
-# Now you can encrypt for them
-encryptocli encrypt --text "Secret message" --password "recipient@example.com" --method pgp
-```
-
-### Example 3: Key Management Workflow (TUI)
-
-```
-1. Run: python -m encryptocli
-2. Select: PGP Keys
-3. Select: Generate Key Pair
-4. Enter: Name, Email, Passphrase
-5. Success! Key generated with fingerprint
-6. Later, to share: PGP Keys → Export Public Key
-7. Or receive: PGP Keys → Import Public Key
-```
-
-## Key Management Best Practices
-
-### 1. **Backup Your Keys**
-After generating a key, export and safely backup your private key:
-```bash
-# The private key is only available locally
-# Consider exporting and encrypting it with a strong passphrase
-```
-
-### 2. **Share Your Public Key**
-```bash
-# Export your public key for others
-encryptocli pgp-export-key --email "you@example.com"
-
-# Share via email, upload to keyserver, or post online
-```
-
-### 3. **Verify Key Fingerprints**
-When importing a key, always verify the fingerprint through a trusted channel (call, video, in-person) before using it:
-```bash
-# See the fingerprint when importing
-encryptocli pgp-import-key --file "key.asc"
-
-# List keys to see fingerprints anytime
-encryptocli pgp-list-keys
-```
-
-### 4. **Protect Your Passphrase**
-- Use a strong, unique passphrase
-- Never share your passphrase
-- Store it in a secure password manager
-- Use the hidden input prompt (auto-masked)
-
-## File Management
-
-### Key Files
-- **Public Key Format**: `.asc` (ASCII-armored PGP format)
-- **Import/Export**: Uses standard OpenPGP format
-- **Compatibility**: Compatible with other PGP/GPG tools
-
-### Example File Structure
-
-```
-my_keys/
-├── john_public.asc       # Public key for sharing
-├── alice_public.asc      # Imported public key
-└── backup_key.asc        # Backup of your public key
-```
-
-## Integration with Encryption
-
-Once keys are set up, use them immediately:
-
-```bash
-# Using CLI
-encryptocli encrypt --text "Message" --password "recipient@example.com" --method pgp
-
-# Using TUI
-Select: Encrypt → Text/File → PGP → Enter recipient email
-```
-
-## Common Workflows
-
-### Secure Communication Setup
-
-```bash
-# User A: Generate and share
-encryptocli pgp-gen-key  # Interactive setup
-encryptocli pgp-export-key --email "a@example.com" --output "a_public.asc"
-# Send a_public.asc to User B
-
-# User B: Import and send reply
-encryptocli pgp-import-key --file "a_public.asc"
-encryptocli pgp-gen-key  # Generate own key
-encryptocli pgp-export-key --email "b@example.com" --output "b_public.asc"
-# Send b_public.asc to User A
-
-# User A: Import User B's key
-encryptocli pgp-import-key --file "b_public.asc"
-
-# Both can now encrypt/decrypt messages for each other
-```
-
-### Key List Reference
-
-```bash
-# Anytime you need to see available keys and their emails
-encryptocli pgp-list-keys
-
-# Use the email from the list when encrypting
-encryptocli encrypt --text "Message" --password "b@example.com" --method pgp
-```
-
-## Troubleshooting
-
-### "Key not found" error
-```bash
-# Verify the key exists
-encryptocli pgp-list-keys
-
-# Generate a new key if needed
-encryptocli pgp-gen-key
-```
-
-### "Import failed" error
-- Ensure the file is a valid PGP public key (.asc format)
-- Check that the file path is correct
-- Try opening the file to verify its format
-
-### Passphrase Issues
-```bash
-# If you forget your passphrase, you'll need to generate a new key
-# The old key remains but is inaccessible
-encryptocli pgp-gen-key  # Create new key with new passphrase
-```
-
-### Key Listing Empty
-```bash
-# If no keys appear, you need to generate or import one
-encryptocli pgp-gen-key  # Generate your own
-# OR
-encryptocli pgp-import-key  # Import someone else's
-```
-
-## Advanced: Manual Key Management
-
-If you need to work with keys outside EncryptoCLI:
-
-```bash
-# Export using GPG directly
-gpg --export your@email.com > your_public.asc
-gpg --export-secret-keys your@email.com > your_private.asc  # Keep safe!
-
-# Import using GPG directly
-gpg --import public_key.asc
-
-# List keys using GPG
 gpg --list-keys
 ```
 
-These keys will be recognized by EncryptoCLI.
+Shows all public keys (yours and imported ones).
 
-## See Also
+### View Secret Keys Only
 
-- [PGP User Guide](./docs/user-guide/pgp.md)
-- [PGP API Reference](./docs/api/encryption/pgp.md)
-- [GnuPG Documentation](https://www.gnupg.org/documentation/)
+```bash
+gpg --list-secret-keys
+```
+
+Shows only your private keys.
+
+### View Key Details
+
+```bash
+gpg --list-keys --with-fingerprint
+```
+
+Shows keys with additional fingerprint information.
+
+## Export Keys
+
+### Export Public Key
+
+```bash
+gpg --export --armor YOUR_EMAIL > public_key.asc
+```
+
+Share this file with anyone who needs to encrypt data for you.
+
+### Export Private Key
+
+```bash
+gpg --export-secret-keys --armor YOUR_EMAIL > private_key.asc
+```
+
+Keep this file secure. Never share it.
+
+## Import Keys
+
+### Import Public Key
+
+```bash
+gpg --import public_key.asc
+```
+
+Import someone else's public key to encrypt data for them.
+
+### Import Private Key
+
+```bash
+gpg --import private_key.asc
+```
+
+Restore your private key from backup.
+
+## Delete Keys
+
+### Delete Public Key
+
+```bash
+gpg --delete-key EMAIL_OR_ID
+```
+
+### Delete Private Key
+
+```bash
+gpg --delete-secret-key EMAIL_OR_ID
+```
+
+Warning: This cannot be undone without restoring from backup.
+
+## Key Backup and Recovery
+
+### Backup Your Keys
+
+```bash
+# Backup private key
+gpg --export-secret-keys --armor > backup_private_key.asc
+
+# Backup all public keys
+gpg --export --armor > backup_public_keys.asc
+```
+
+Store backups securely:
+- Encrypted external drive
+- Secure cloud storage (encrypted)
+- Physical storage in safe
+- Multiple redundant backups
+
+### Restore From Backup
+
+```bash
+gpg --import backup_private_key.asc
+gpg --import backup_public_keys.asc
+```
+
+## Using with EncryptoCLI
+
+### Encrypt for Someone
+
+1. Import their public key: `gpg --import their_public_key.asc`
+2. In EncryptoCLI, select "Encrypt" with PGP method
+3. Enter their email address
+4. Data is encrypted with their public key
+
+### Decrypt Your Messages
+
+1. EncryptoCLI detects encrypted data
+2. You'll be prompted for your passphrase
+3. GPG uses your private key to decrypt
+4. Decrypted data is displayed
+
+## Security Best Practices
+
+- Use strong passphrases (20+ characters)
+- Store backups in multiple secure locations
+- Never share your private key
+- Verify key fingerprints before importing keys from others
+- Regularly review and update your key expiration dates
+- Use key signing to build trust in your key network
+
+## Common Issues
+
+### "GPG not found"
+
+- Install GPG using package manager
+- Ensure GPG is in system PATH
+
+### "No secret key"
+
+- Check you generated a key pair: `gpg --list-secret-keys`
+- Ensure you know the email associated with your key
+
+### "Wrong passphrase"
+
+- Passphrase is case-sensitive
+- Ensure CAPS LOCK is off
+- Try again carefully
+
+### Key Not Found by Email
+
+- List all keys: `gpg --list-keys`
+- Verify exact email address format
+- Check if key might use different email

@@ -133,3 +133,21 @@ test_image.png
 encrypto.png
 test_all.sh
 *.egg
+# Sample encrypted files
+samples/*.encrypto
+samples/*.gpg
+samples/*.sig
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+
+# uv
+.python-version
+uv.lock

@@ -50,7 +50,8 @@ class EncryptionService:
             str: The encrypted text
         """
         if method.lower() == "pgp":
-            return self._get_pgp_cipher().encrypt_text(secret, password)
+            encrypted: str = self._get_pgp_cipher().encrypt_text(secret, password)
+            return encrypted
         return self.aes_cipher.encrypt_text(secret, password)
 
     def encrypt_text_to_image(
@@ -96,5 +97,6 @@ class EncryptionService:
             str: Result message
         """
         if method.lower() == "pgp":
-            return self._get_pgp_cipher().encrypt_file(file_path, password)
+            result: str = self._get_pgp_cipher().encrypt_file(file_path, password)
+            return result
         return self.aes_cipher.encrypt_file(file_path, password)

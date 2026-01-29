@@ -1,0 +1,33 @@
+/* Custom styles for EncryptoCLI documentation */
+
+/* Code blocks */
+.highlight {
+    border-radius: 4px;
+}
+
+/* Admonitions */
+.admonition {
+    border-radius: 4px;
+}
+
+/* Tables */
+table {
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* API documentation styling */
+.doc-section {
+    margin-bottom: 2em;
+}
+
+/* Better code inline styling */
+code {
+    padding: 0.1em 0.3em;
+    border-radius: 3px;
+}

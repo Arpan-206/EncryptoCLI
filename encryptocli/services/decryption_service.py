@@ -50,7 +50,8 @@ class DecryptionService:
             str: The decrypted text
         """
         if method.lower() == "pgp":
-            return self._get_pgp_cipher().decrypt_text(data, password)
+            decrypted: str = self._get_pgp_cipher().decrypt_text(data, password)
+            return decrypted
         return self.aes_cipher.decrypt_text(data, password)
 
     def decrypt_file(
@@ -68,7 +69,10 @@ class DecryptionService:
             str: Success message
         """
         if method.lower() == "pgp":
-            return self._get_pgp_cipher().decrypt_file(file_path, password, output_dir)
+            result: str = self._get_pgp_cipher().decrypt_file(
+                file_path, password, output_dir
+            )
+            return result
         self.aes_cipher.decrypt_file(file_path, password)
         return "File decrypted successfully"
 
@@ -94,7 +98,7 @@ class DecryptionService:
         steg = get_steganography_handler(steganography)
         data = steg.decrypt_image(image_path)
         if method.lower() == "pgp":
-            decrypted_text = self._get_pgp_cipher().decrypt_text(data, password)
+            result: str = self._get_pgp_cipher().decrypt_text(data, password)
         else:
-            decrypted_text = self.aes_cipher.decrypt_text(data, password)
-        return decrypted_text
+            result = self.aes_cipher.decrypt_text(data, password)
+        return result

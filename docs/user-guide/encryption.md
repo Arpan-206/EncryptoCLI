@@ -1,217 +1,108 @@
-# Encryption Guide
+# Encryption
 
-Encryption is the process of converting readable data (plaintext) into unreadable data (ciphertext) using a password. Only someone with the correct password can decrypt the data back to its original form.
+Encrypt your sensitive data using AES or PGP encryption methods.
 
 ## Encryption Methods
 
-EncryptoCLI supports two encryption methods:
+### AES (Advanced Encryption Standard)
 
-### 1. Text Encryption
-Encrypt text data and output it as encrypted text or hide it in an image.
+Symmetric encryption using Fernet (authenticated encryption).
 
-### 2. File Encryption
-Encrypt entire files and save them with a `.encrypto` extension.
+- **Advantages**:
+  - Fast and efficient
+  - Requires only a password
+  - Works with any file type
+  - No key setup needed
 
-## How Encryption Works
+- **Disadvantages**:
+  - Password must be shared securely
+  - Same password used to encrypt and decrypt
 
-EncryptoCLI uses **Fernet encryption** from the cryptography library, which provides:
+- **Best For**: Quick encryption of personal files, documents, images
 
-- **Symmetric encryption**: Same password encrypts and decrypts data
-- **Key derivation**: Your password is converted to a cryptographic key using scrypt
-- **Authentication**: Ensures data hasn't been tampered with
-- **Randomization**: Each encryption produces different output (even with same password)
+### PGP (Pretty Good Privacy)
 
-## Encrypting Text
+Asymmetric encryption using public key cryptography.
 
-### Step 1: Select Encryption
+- **Advantages**:
+  - Public key can be shared openly
+  - Only recipient with private key can decrypt
+  - Strong security guarantees
+  - Industry standard
 
-From the main menu, select **Encrypt**:
+- **Disadvantages**:
+  - Requires GPG installation
+  - Key setup and management required
+  - More complex workflow
 
-```
-? What do you want to do?
-❯ Encrypt
-```
+- **Best For**: Secure communication, file sharing with specific recipients
 
-### Step 2: Choose Data Type
+## Encrypt Text
 
-Select **Text**:
+1. Launch EncryptoCLI: `encryptocli`
+2. Select "Encrypt" operation
+3. Choose "Text" as data type
+4. Enter the text to encrypt
+5. Select encryption method:
+   - **AES**: Enter a strong password
+   - **PGP**: Enter recipient's email address
+6. Receive encrypted output
+7. Copy and save the encrypted text
 
-```
-? What do you want to encrypt?
-❯ Text
-  File
-```
+## Encrypt File
 
-### Step 3: Choose Output Format
+1. Launch EncryptoCLI: `encryptocli`
+2. Select "Encrypt" operation
+3. Choose "File" as data type
+4. Enter the file path to encrypt
+5. Select encryption method:
+   - **AES**: Enter a strong password
+   - **PGP**: Enter recipient's email address
+6. Encrypted file saved as `encryptocli_output.enc`
+7. Store securely
 
-Select how to output the encrypted data:
+## Encrypt to Image (Steganography)
 
-```
-? What do you want to encrypt to?
-❯ Image
-  Text
-```
+Hide encrypted data inside an image:
 
-#### Option A: Output as Text
+1. Launch EncryptoCLI: `encryptocli`
+2. Select "Encrypt" operation
+3. Choose "Image" as output type
+4. Provide the image file path
+5. Enter text to encrypt and hide
+6. Set a password
+7. Encrypted data is hidden in the image
+8. Visual appearance of image remains unchanged
 
-1. You'll be asked for the text to encrypt:
-   ```
-   ? Enter the text to encrypt: My secret message
-   ```
+See [Steganography](steganography.md) for more details.
 
-2. Enter a strong password:
-   ```
-   ? Enter the password: ••••••••
-   ```
+## Security Tips
 
-3. View the encrypted output:
-   ```
-   The encrypted text is: gAAAAABl...
-   ```
+- **AES**: Use strong, unique passwords
+  - Minimum 12 characters
+  - Mix uppercase, lowercase, numbers, symbols
+  - Avoid dictionary words
 
-#### Option B: Hide in Image (Steganography)
+- **PGP**: Protect your private key
+  - Store in secure location
+  - Use strong passphrase
+  - Backup securely
 
-1. Provide the path to a PNG image:
-   ```
-   ? Enter the path to the image. ( PNG file recommended ): /path/to/image.png
-   ```
+- **General**: 
+  - Only encrypt data you need to protect
+  - Keep encrypted files organized
+  - Remember your passwords/passphrases
+  - Share encrypted files through secure channels
 
-2. Enter the text to encrypt:
-   ```
-   ? Enter the text to encrypt: My secret message
-   ```
+## Supported File Types
 
-3. Enter a password:
-   ```
-   ? Enter the password: ••••••••
-   ```
+All file types are supported:
+- Documents (.pdf, .docx, .txt, etc.)
+- Images (.jpg, .png, .gif, etc.)
+- Archives (.zip, .tar, .rar, etc.)
+- Executables (.exe, .sh, etc.)
+- Any binary or text file
 
-4. The encrypted file will be saved as `encrypto.png` in the current directory.
+## Output Format
 
-## Encrypting Files
-
-### Step 1-2: Select File Encryption
-
-1. From the main menu, select **Encrypt**
-2. Choose **File**:
-
-```
-? What do you want to encrypt?
-❯ File
-```
-
-### Step 3: Provide File Path
-
-Enter the path to the file you want to encrypt:
-
-```
-? Enter the path to the file: /path/to/document.pdf
-```
-
-### Step 4: Enter Password
-
-Create a strong password:
-
-```
-? Enter the password: ••••••••
-```
-
-### Step 5: Done
-
-The encrypted file will be created with a `.encrypto` extension:
-
-```
-File encrypted successfully.
-document.pdf.encrypto
-```
-
-## Password Guidelines
-
-⚠️ **Important**: Your password determines your security level!
-
-### Strong Password Characteristics
-
-- **Length**: Minimum 12 characters (16+ recommended)
-- **Complexity**: Mix of uppercase, lowercase, numbers, and symbols
-- **Uniqueness**: Don't reuse passwords across applications
-- **Memorability**: Create a passphrase if needed
-
-### Examples
-
-❌ **Weak Passwords**:
-- `password`
-- `12345678`
-- `qwerty`
-- `abc123`
-
-✅ **Strong Passwords**:
-- `BlueMoon$Galaxy#2024!`
-- `CryptoKeeper@Secure7X`
-- `MyDogHas3Legs&Wings`
-
-### Password Recovery
-
-⚠️ **Critical**: If you lose your password, **your data cannot be recovered**. There is no password reset or recovery mechanism.
-
-## Security Best Practices
-
-✅ **Do**:
-- Use unique, strong passwords
-- Store passwords securely (password manager recommended)
-- Back up encrypted files
-- Test decryption on a copy first
-- Use PNG format for steganography
-
-❌ **Don't**:
-- Share passwords over insecure channels
-- Use the same password for multiple files
-- Store passwords in plain text
-- Forget your password
-- Assume encrypted data is secure forever (use regular algorithms)
-
-## File Size Limits
-
-- **Maximum file size**: 1 GB
-- **Recommended size**: < 500 MB
-- **Note**: Larger files may take longer to encrypt
-
-## Examples
-
-### Example 1: Encrypt a Document
-
-```bash
-# Encrypt a PDF
-? What do you want to encrypt? File
-? Enter the path to the file: ~/Documents/report.pdf
-? Enter the password: MySecurePassword123!
-File encrypted successfully.
-→ ~/Documents/report.pdf.encrypto
-```
-
-### Example 2: Hide a Message in an Image
-
-```bash
-# Hide a message
-? What do you want to encrypt? Text
-? What do you want to encrypt to? Image
-? Enter the path to the image: ~/Pictures/vacation.png
-? Enter the text to encrypt: "Meet me at the secret location"
-? Enter the password: MySecurePassword123!
-→ encrypto.png
-```
-
-## Troubleshooting
-
-### "File not found" error
-- Double-check the file path
-- Use absolute paths instead of relative paths
-- Ensure file exists and you have read permission
-
-### "File is already encrypted" error
-- Don't encrypt already encrypted files
-- If needed, decrypt first, then re-encrypt with new password
-
-### Encryption takes too long
-- This is normal for large files (1 GB might take a few minutes)
-- Ensure your system has sufficient RAM
-- Avoid encrypting over network drives
+Encrypted data is stored in a binary-safe format that preserves all data integrity.

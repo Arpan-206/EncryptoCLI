@@ -1,247 +1,85 @@
-# Decryption Guide
-
-Decryption is the process of converting encrypted data (ciphertext) back to its original readable form using the correct password.
-
-## What Can Be Decrypted
-
-EncryptoCLI can decrypt:
-
-1. **Encrypted text** - Text that was encrypted and output as ciphertext
-2. **Encrypted files** - Files with `.encrypto` extension
-3. **Steganographic images** - Images containing hidden encrypted data
-
-## How to Decrypt Data
-
-### Decrypting Text
-
-#### Step 1: Select Decryption
-
-From the main menu, select **Decrypt**:
-
-```
-? What do you want to do?
-❯ Decrypt
-```
-
-#### Step 2: Choose Decryption Type
-
-Select **Text**:
-
-```
-? What do you want to decrypt?
-❯ Text
-  File
-  Image
-```
-
-#### Step 3: Enter Encrypted Text
-
-Paste or enter the encrypted text:
-
-```
-? Enter the text to decrypt: gAAAAABl7Hdk...
-```
-
-#### Step 4: Enter Password
-
-Enter the password used during encryption:
-
-```
-? Enter password: ••••••••
-```
-
-#### Step 5: View Result
-
-The decrypted message will be displayed:
-
-```
-The decrypted text is: My original message
-```
-
-### Decrypting Files
-
-#### Step 1: Select Decryption
-
-From the main menu, select **Decrypt**.
-
-#### Step 2: Choose File Decryption
-
-Select **File**:
-
-```
-? What do you want to decrypt?
-  Text
-❯ File
-  Image
-```
-
-#### Step 3: Provide Encrypted File Path
-
-Enter the path to the `.encrypto` file:
-
-```
-? Enter the path to the file: /path/to/document.pdf.encrypto
-```
-
-#### Step 4: Enter Password
-
-Enter the password used during encryption:
-
-```
-? Enter password: ••••••••
-```
-
-#### Step 5: Done
-
-The decrypted file will be created with the original filename:
-
-```
-File decrypted successfully.
-document.pdf
-```
-
-### Decrypting Steganographic Images
-
-#### Step 1: Select Decryption
-
-From the main menu, select **Decrypt**.
-
-#### Step 2: Choose Image Decryption
-
-Select **Image**:
-
-```
-? What do you want to decrypt?
-  Text
-  File
-❯ Image
-```
-
-#### Step 3: Provide Image Path
-
-Enter the path to the image containing hidden data:
-
-```
-? Enter the path of the image to decrypt: /path/to/encrypto.png
-```
-
-#### Step 4: Enter Password
-
-Enter the password used to encrypt the hidden message:
-
-```
-? Enter password: ••••••••
-```
-
-#### Step 5: View Result
-
-The hidden message will be displayed:
-
-```
-The decrypted text is: My secret message
-```
-
-## Password Requirements
-
-⚠️ **Critical**: You must use the **exact same password** that was used during encryption.
-
-### Important Notes
-
-- **Case-sensitive**: `MyPassword` ≠ `mypassword`
-- **Exact match**: No typos allowed
-- **No recovery**: If you forget the password, the data cannot be recovered
-- **Character-sensitive**: All special characters must be identical
-
-## What Happens If Password Is Wrong
-
-If you enter an incorrect password:
-
-```
-Either the key or the input data is wrong.
-```
-
-This could mean:
-- Wrong password
-- Data is corrupted
-- Data was encrypted with a different method
-
-## Examples
-
-### Example 1: Decrypt a File
-
-```bash
-? What do you want to decrypt? File
-? Enter the path to the file: ~/Downloads/report.pdf.encrypto
-? Enter password: MySecurePassword123!
-File decrypted successfully.
-→ ~/Downloads/report.pdf
-```
-
-### Example 2: Decrypt a Text Message
-
-```bash
-? What do you want to decrypt? Text
-? Enter the text to decrypt: gAAAAABl7HdkZvJkA8w...
-? Enter password: MySecurePassword123!
-The decrypted text is: "Meet me at the secret location"
-```
-
-### Example 3: Extract Hidden Message from Image
-
-```bash
-? What do you want to decrypt? Image
-? Enter the path of the image to decrypt: ~/Pictures/encrypto.png
-? Enter password: MySecurePassword123!
-The decrypted text is: "Important secret data"
-```
-
-## File Organization
-
-When decrypting files:
-
-- **Decrypted file location**: Same directory as the encrypted file
-- **Original filename**: Restored automatically
-- **Overwrite behavior**: Existing files are overwritten without warning
+# Decryption
+
+Decrypt data that was previously encrypted with EncryptoCLI.
+
+## Decrypt Text
+
+1. Launch EncryptoCLI: `encryptocli`
+2. Select "Decrypt" operation
+3. Choose "Text" as data type
+4. Paste or enter the encrypted text
+5. Select decryption method matching encryption:
+   - **AES**: Enter the original password
+   - **PGP**: Passphrase will be requested by GPG
+6. View decrypted output
+7. Copy and use the decrypted text
+
+## Decrypt File
+
+1. Launch EncryptoCLI: `encryptocli`
+2. Select "Decrypt" operation
+3. Choose "File" as data type
+4. Enter the encrypted file path
+5. Select decryption method:
+   - **AES**: Enter the original password
+   - **PGP**: GPG will prompt for passphrase
+6. Decrypted file saved as `encryptocli_output.dec`
+7. Open or use the decrypted file
+
+## Decrypt from Image (Steganography)
+
+Extract and decrypt hidden data from an image:
+
+1. Launch EncryptoCLI: `encryptocli`
+2. Select "Decrypt" operation
+3. Choose "Image" as data type
+4. Enter the image file path containing hidden data
+5. Enter the password used during encryption
+6. Select steganography method (LSB or DCT)
+7. View extracted and decrypted data
+
+See [Steganography](steganography.md) for more details.
 
 ## Troubleshooting
 
-### "Either the key or the input data is wrong"
+### Wrong Password Error
 
-Possible solutions:
-- Double-check your password (case-sensitive!)
-- Ensure you're using the correct file
-- Try copying the encrypted text again (might have formatting issues)
-- Check if the file is corrupted
+- **AES**: Password is incorrect
+  - Try alternate passwords if you have multiple
+  - Ensure CAPS LOCK is off
+  - Check for extra spaces
 
-### "Can't find the file" error
+- **PGP**: Passphrase is incorrect
+  - Enter the passphrase for your private key
+  - Try again if you mistyped
 
-Solutions:
+### File Not Found
+
 - Verify the file path is correct
-- Check file still exists (not moved or deleted)
-- Use absolute paths instead of relative paths
-- Ensure you have read permission for the file
+- Check file exists and is readable
+- Ensure path has no typos
 
-### Decryption is taking too long
+### Unsupported Format
 
-- This is normal for large files (1 GB might take several minutes)
-- Large files require more processing time
-- Ensure your system has sufficient resources
+- File may not be encrypted with EncryptoCLI
+- Check file extension and format
+- Ensure file wasn't corrupted
+- Try with original encryption method
 
-## Security Notes
+### PGP Key Not Found
 
-🔒 **Decrypted data is temporary**: Once decrypted, the data is readable on your system.
+- Ensure GPG is installed
+- Run `gpg --list-secret-keys` to see your private keys
+- Import recipient's public key if needed
 
-✅ **Best Practices**:
-- Decrypt files only on secure, trusted systems
-- Delete decrypted files after use if sensitive
-- Avoid decrypting on shared computers
-- Keep encrypted backups of important files
-- Test decryption on a copy before deleting originals
+## Recovery Options
 
-## Batch Decryption
+If you've forgotten a password or passphrase:
 
-Currently, EncryptoCLI decrypts one file at a time. For multiple files:
+- **AES**: No recovery option - password is unrecoverable
+- **PGP**: Can create new key pair, but previous encrypted files cannot be recovered
 
-1. Note the password used
-2. Decrypt each file individually
-3. Consider scripting if needed (future enhancement)
+Always keep secure backups of:
+- PGP private keys
+- Passwords in a password manager
+- Passphrases in a secure location

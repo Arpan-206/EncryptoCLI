@@ -51,7 +51,7 @@ class TUIHandler:
         """
         operation = inquirer.select(
             message="What do you want to do?",
-            choices=["Hash", "Encrypt", "Decrypt", "PGP Keys", "Exit"],
+            choices=["Hash", "Encrypt", "Decrypt", "PGP", "Exit"],
         ).execute()
         return str(operation)
 
@@ -77,7 +77,7 @@ class TUIHandler:
                 self._handle_encrypt()
             elif operation == "Decrypt":
                 self._handle_decrypt()
-            elif operation == "PGP Keys":
+            elif operation == "PGP":
                 self._handle_pgp_keys()
             elif operation == "Exit":
                 print(colored("goodbye :)", "blue"))
@@ -348,14 +348,17 @@ class TUIHandler:
         return password or ""
 
     def _handle_pgp_keys(self) -> None:
-        """Handle PGP key management operations."""
+        """Handle PGP key management, signing, and verification operations."""
         operation = inquirer.select(
-            message="What would you like to do with PGP keys?",
+            message="What would you like to do with PGP?",
             choices=[
                 "Generate Key Pair",
                 "List Keys",
                 "Import Public Key",
                 "Export Public Key",
+                "Sign Text/File",
+                "Verify Signature",
+                "Sign and Encrypt",
             ],
         ).execute()
 
@@ -371,6 +374,12 @@ class TUIHandler:
                 self._pgp_import_key()
             elif operation == "Export Public Key":
                 self._pgp_export_key()
+            elif operation == "Sign Text/File":
+                self._pgp_sign()
+            elif operation == "Verify Signature":
+                self._pgp_verify()
+            elif operation == "Sign and Encrypt":
+                self._pgp_sign_and_encrypt()
         except Exception as e:
             handle_error(e)
 
@@ -459,3 +468,210 @@ class TUIHandler:
 
         print(colored("\n✓ " + result, "green"))
         print()
+
+    def _pgp_sign(self) -> None:
+        """Sign text or file with PGP."""
+        from encryptocli.encryption.pgp import PGPCipher
+
+        data_type = inquirer.select(
+            message="What do you want to sign?",
+            choices=["Text", "File"],
+        ).execute()
+
+        if not data_type:
+            return
+
+        passphrase = inquirer.secret(
+            message="Enter your private key passphrase:"
+        ).execute()
+        if not passphrase:
+            return
+
+        pgp = PGPCipher()
+
+        if data_type == "Text":
+            text = inquirer.text(message="Enter text to sign:").execute()
+            if not text:
+                return
+
+            signature_type = inquirer.select(
+                message="Signature type:",
+                choices=["Normal", "Detached", "Clear-sign"],
+            ).execute()
+
+            detach = signature_type == "Detached"
+            clearsign = signature_type == "Clear-sign"
+
+            signed_text = pgp.sign_text(
+                text, passphrase, detach=detach, clearsign=clearsign
+            )
+
+            save_to_file = inquirer.confirm(
+                message="Save signed text to file?",
+                default=False,
+            ).execute()
+
+            if save_to_file:
+                output_path = inquirer.text(
+                    message="Enter output file path:",
+                    default="signed.txt",
+                ).execute()
+                with open(output_path, "w") as f:
+                    f.write(signed_text)
+                print(colored(f"\n✓ Signed text saved to: {output_path}", "green"))
+            else:
+                print(colored("\n=== Signed Text ===", "cyan"))
+                print(colored(signed_text, "green"))
+            print()
+
+        else:  # File
+            file_path = inquirer.text(message="Enter file path to sign:").execute()
+            if not file_path:
+                return
+
+            detach = inquirer.confirm(
+                message="Create detached signature (.sig file)?",
+                default=True,
+            ).execute()
+
+            result = pgp.sign_file(file_path, passphrase, detach=detach)
+            print(colored("\n✓ " + result, "green"))
+            print()
+
+    def _pgp_verify(self) -> None:
+        """Verify a PGP signature."""
+        from encryptocli.encryption.pgp import PGPCipher
+
+        data_type = inquirer.select(
+            message="What do you want to verify?",
+            choices=["Text", "File"],
+        ).execute()
+
+        if not data_type:
+            return
+
+        pgp = PGPCipher()
+
+        if data_type == "Text":
+            signed_text = inquirer.text(
+                message="Enter signed text (or path to file containing it):"
+            ).execute()
+            if not signed_text:
+                return
+
+            # Check if it's a file path
+            import os
+
+            if os.path.exists(signed_text):
+                with open(signed_text, "r") as f:
+                    signed_text = f.read()
+
+            result = pgp.verify_text(signed_text)
+
+        else:  # File
+            file_path = inquirer.text(message="Enter file path to verify:").execute()
+            if not file_path:
+                return
+
+            has_detached_sig = inquirer.confirm(
+                message="Do you have a separate signature file (.sig)?",
+                default=False,
+            ).execute()
+
+            signature_path = None
+            if has_detached_sig:
+                signature_path = inquirer.text(
+                    message="Enter signature file path:",
+                    default=f"{file_path}.sig",
+                ).execute()
+
+            result = pgp.verify_file(file_path, signature_path=signature_path)
+
+        # Display results
+        print()
+        if result["valid"]:
+            print(colored("✓ Signature is VALID", "green"))
+            print(colored(f"Signed by: {result['username']}", "cyan"))
+            print(f"Fingerprint: {result['fingerprint']}")
+            if result.get("timestamp"):
+                print(f"Signed at: {result['timestamp']}")
+            if result.get("trust_level"):
+                print(f"Trust level: {result['trust_level']}")
+        else:
+            print(colored("✗ Signature is INVALID or cannot be verified", "red"))
+            print(
+                colored(
+                    "The signature may be corrupted, from an unknown key, or the data has been tampered with.",
+                    "yellow",
+                )
+            )
+        print()
+
+    def _pgp_sign_and_encrypt(self) -> None:
+        """Sign and encrypt text or file in one operation."""
+        from encryptocli.encryption.pgp import PGPCipher
+
+        data_type = inquirer.select(
+            message="What do you want to sign and encrypt?",
+            choices=["Text", "File"],
+        ).execute()
+
+        if not data_type:
+            return
+
+        recipient_email = inquirer.text(
+            message="Enter recipient's email address:"
+        ).execute()
+        if not recipient_email:
+            return
+
+        passphrase = inquirer.secret(
+            message="Enter your private key passphrase (for signing):"
+        ).execute()
+        if not passphrase:
+            return
+
+        pgp = PGPCipher()
+
+        if data_type == "Text":
+            text = inquirer.text(message="Enter text to sign and encrypt:").execute()
+            if not text:
+                return
+
+            signed_encrypted = pgp.sign_and_encrypt_text(
+                text, recipient_email, passphrase
+            )
+
+            save_to_file = inquirer.confirm(
+                message="Save to file?",
+                default=False,
+            ).execute()
+
+            if save_to_file:
+                output_path = inquirer.text(
+                    message="Enter output file path:",
+                    default="signed_encrypted.pgp",
+                ).execute()
+                with open(output_path, "w") as f:
+                    f.write(signed_encrypted)
+                print(
+                    colored(
+                        f"\n✓ Signed and encrypted text saved to: {output_path}",
+                        "green",
+                    )
+                )
+            else:
+                print(colored("\n=== Signed and Encrypted ===", "cyan"))
+                print(colored(signed_encrypted, "green"))
+            print()
+
+        else:  # File
+            file_path = inquirer.text(
+                message="Enter file path to sign and encrypt:"
+            ).execute()
+            if not file_path:
+                return
+
+            result = pgp.sign_and_encrypt_file(file_path, recipient_email, passphrase)
+            print(colored("\n✓ " + result, "green"))
+            print()

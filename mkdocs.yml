@@ -1,29 +1,40 @@
-site_name: EncryptoCLI Documentation
-site_description: A command-line program for encrypting, decrypting, and hashing files
+site_name: EncryptoCLI
+site_description: Secure CLI for encryption, decryption, hashing, and steganography with AES and PGP support
 site_author: Arpan Pandey
 site_url: https://arpan-206.github.io/EncryptoCLI/
 repo_url: https://github.com/Arpan-206/EncryptoCLI
 repo_name: Arpan-206/EncryptoCLI
+edit_uri: edit/master/docs/
 
 theme:
   name: material
+  logo: EncryptoCLI-Logo.svg
+  favicon: EncryptoCLI-Logo.png
   features:
     - navigation.instant
     - navigation.tracking
     - navigation.tabs
     - navigation.sections
     - navigation.expand
+    - navigation.top
+    - navigation.footer
+    - toc.follow
     - toc.integrate
     - content.code.copy
     - content.code.select
+    - content.code.annotate
+    - search.suggest
+    - search.highlight
   palette:
-    - scheme: default
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
       primary: blue
       accent: indigo
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
-    - scheme: slate
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
       primary: blue
       accent: indigo
       toggle:
@@ -31,7 +42,8 @@ theme:
         name: Switch to light mode
 
 plugins:
-  - search
+  - search:
+      separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
   - mkdocstrings:
       default_handler: python
       handlers:
@@ -39,46 +51,96 @@ plugins:
           options:
             show_source: true
             show_root_heading: true
+            show_root_toc_entry: false
+            heading_level: 2
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
             members_order: source
+            docstring_style: google
+            show_if_no_docstring: false
+            filters:
+              - "!^_"  # Exclude private members
 
 nav:
   - Home: index.md
+  - Getting Started:
+      - Installation: user-guide/getting-started.md
+      - Quick Start: user-guide/quick-start.md
   - User Guide:
-      - Getting Started: user-guide/getting-started.md
       - Hashing: user-guide/hashing.md
-      - Encryption: user-guide/encryption.md
-      - Decryption: user-guide/decryption.md
+      - AES Encryption: user-guide/encryption.md
+      - AES Decryption: user-guide/decryption.md
+      - PGP Operations: user-guide/pgp.md
+      - PGP Key Management: user-guide/pgp-key-management.md
       - Steganography: user-guide/steganography.md
   - API Reference:
-      - Services (Business Logic):
-          - Services: api/services.md
-      - Interfaces:
-          - Interfaces: api/interfaces.md
+      - Overview: api/overview.md
       - Core:
           - Main: api/main.md
           - Error Handler: api/error_handler.md
+      - Services:
+          - Encryption Service: api/services/encryption_service.md
+          - Decryption Service: api/services/decryption_service.md
+          - Hashing Service: api/services/hashing_service.md
       - Encryption:
           - AES Cipher: api/encryption/aes_cipher.md
+          - PGP Cipher: api/encryption/pgp.md
+      - Steganography:
+          - LSB Handler: api/steganography/lsb_handler.md
+          - DCT Handler: api/steganography/dct_handler.md
+      - Interfaces:
+          - CLI Handler: api/interfaces/cli_handler.md
+          - TUI Handler: api/interfaces/tui_handler.md
       - Utilities:
           - Exceptions: api/utilities/exceptions.md
           - File Handling: api/utilities/file_handling.md
           - Key Generation: api/utilities/key_gen.md
-      - Steganography:
-          - LSB Handler: api/steganography/lsb_handler.md
-  - Contributing: contributing.md
+  - Testing:
+      - Test Suite: testing/overview.md
+      - Running Tests: testing/running-tests.md
+  - Development:
+      - Contributing: contributing.md
+      - Architecture: development/architecture.md
   - License: LICENSE.md
 
 markdown_extensions:
   - pymdownx.highlight:
-      use_pygments: true
-  - pymdownx.superfences
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.inlinehilite
+  - pymdownx.snippets
   - pymdownx.details
-  - pymdownx.tasklist
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - admonition
+  - attr_list
+  - md_in_html
   - tables
+  - footnotes
+  - def_list
   - toc:
       permalink: true
+      toc_depth: 3
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Arpan-206/EncryptoCLI
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/EncryptoCLI/
+  version:
+    provider: mike
+
+extra_css:
+  - stylesheets/extra.css

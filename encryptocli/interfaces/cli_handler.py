@@ -24,9 +24,9 @@ app = typer.Typer(
     "(AES/Fernet and PGP)."
 )
 
-# PGP key management subcommands
-pgp_app = typer.Typer(help="PGP key management commands")
-app.add_typer(pgp_app, name="pgp-key")
+# PGP subcommands (key management, signing, verification)
+pgp_app = typer.Typer(help="PGP commands: key management, signing, and verification")
+app.add_typer(pgp_app, name="pgp")
 
 # Initialize services
 encryption_service = EncryptionService()
@@ -301,6 +301,180 @@ def pgp_list_keys() -> None:
             typer.echo(f"   Key ID: {keyid}")
             typer.echo(f"   Fingerprint: {fingerprint}")
             typer.echo()
+    except Exception as e:
+        handle_error(e)
+        raise typer.Exit(code=1)
+
+
+@pgp_app.command("sign")
+def pgp_sign(
+    text: Optional[str] = typer.Option(None, "--text", "-t", help="Text to sign"),
+    file: Optional[str] = typer.Option(None, "--file", "-f", help="File to sign"),
+    passphrase: str = typer.Option(
+        ...,
+        "--passphrase",
+        "-p",
+        prompt=True,
+        hide_input=True,
+        help="Passphrase for your private key",
+    ),
+    detach: bool = typer.Option(
+        False, "--detach", "-d", help="Create detached signature"
+    ),
+    clearsign: bool = typer.Option(
+        False, "--clear", "-c", help="Create clear-text signature (text only)"
+    ),
+    output: Optional[str] = typer.Option(
+        None, "--output", "-o", help="Output file for signature (text signing only)"
+    ),
+) -> None:
+    """Sign text or file with your PGP private key."""
+    if not text and not file:
+        typer.echo(colored("Error: Provide either --text or --file", "red"))
+        raise typer.Exit(code=1)
+
+    if text and file:
+        typer.echo(colored("Error: Provide either --text or --file, not both", "red"))
+        raise typer.Exit(code=1)
+
+    try:
+        from encryptocli.encryption.pgp import PGPCipher
+
+        pgp = PGPCipher()
+
+        if file:
+            if not Path(file).exists():
+                typer.echo(colored(f"Error: File not found: {file}", "red"))
+                raise typer.Exit(code=1)
+            result = pgp.sign_file(file, passphrase, detach=detach)
+            typer.echo(colored(result, "green"))
+        else:
+            signed_text = pgp.sign_text(
+                str(text), passphrase, detach=detach, clearsign=clearsign
+            )
+            if output:
+                with open(output, "w") as f:
+                    f.write(signed_text)
+                typer.echo(colored(f"Signed text saved to: {output}", "green"))
+            else:
+                typer.echo(colored("Signed text:", "white"))
+                typer.echo(colored(signed_text, "green"))
+    except Exception as e:
+        handle_error(e)
+        raise typer.Exit(code=1)
+
+
+@pgp_app.command("verify")
+def pgp_verify(
+    text: Optional[str] = typer.Option(
+        None, "--text", "-t", help="Signed text to verify"
+    ),
+    file: Optional[str] = typer.Option(
+        None, "--file", "-f", help="File to verify (or file with embedded signature)"
+    ),
+    signature: Optional[str] = typer.Option(
+        None, "--signature", "-s", help="Detached signature file path"
+    ),
+) -> None:
+    """Verify a PGP signature."""
+    if not text and not file:
+        typer.echo(colored("Error: Provide either --text or --file", "red"))
+        raise typer.Exit(code=1)
+
+    if text and file:
+        typer.echo(colored("Error: Provide either --text or --file, not both", "red"))
+        raise typer.Exit(code=1)
+
+    try:
+        from encryptocli.encryption.pgp import PGPCipher
+
+        pgp = PGPCipher()
+
+        if file:
+            if not Path(file).exists():
+                typer.echo(colored(f"Error: File not found: {file}", "red"))
+                raise typer.Exit(code=1)
+            result = pgp.verify_file(file, signature_path=signature)
+        else:
+            result = pgp.verify_text(str(text))
+
+        if result["valid"]:
+            typer.echo(colored("✓ Signature is VALID", "green"))
+            typer.echo(colored(f"Signed by: {result['username']}", "cyan"))
+            typer.echo(f"Fingerprint: {result['fingerprint']}")
+            if result.get("timestamp"):
+                typer.echo(f"Signed at: {result['timestamp']}")
+            if result.get("trust_level"):
+                typer.echo(f"Trust level: {result['trust_level']}")
+        else:
+            typer.echo(colored("✗ Signature is INVALID or cannot be verified", "red"))
+            typer.echo(
+                colored(
+                    "The signature may be corrupted, from an unknown key, or the data has been tampered with.",
+                    "yellow",
+                )
+            )
+    except Exception as e:
+        handle_error(e)
+        raise typer.Exit(code=1)
+
+
+@pgp_app.command("sign-encrypt")
+def pgp_sign_encrypt(
+    text: Optional[str] = typer.Option(
+        None, "--text", "-t", help="Text to sign and encrypt"
+    ),
+    file: Optional[str] = typer.Option(
+        None, "--file", "-f", help="File to sign and encrypt"
+    ),
+    recipient: str = typer.Option(
+        ..., "--recipient", "-r", prompt=True, help="Recipient's email address"
+    ),
+    passphrase: str = typer.Option(
+        ...,
+        "--passphrase",
+        "-p",
+        prompt=True,
+        hide_input=True,
+        help="Passphrase for your private key",
+    ),
+    output: Optional[str] = typer.Option(
+        None, "--output", "-o", help="Output file (text signing only)"
+    ),
+) -> None:
+    """Sign and encrypt text or file in one operation."""
+    if not text and not file:
+        typer.echo(colored("Error: Provide either --text or --file", "red"))
+        raise typer.Exit(code=1)
+
+    if text and file:
+        typer.echo(colored("Error: Provide either --text or --file, not both", "red"))
+        raise typer.Exit(code=1)
+
+    try:
+        from encryptocli.encryption.pgp import PGPCipher
+
+        pgp = PGPCipher()
+
+        if file:
+            if not Path(file).exists():
+                typer.echo(colored(f"Error: File not found: {file}", "red"))
+                raise typer.Exit(code=1)
+            result = pgp.sign_and_encrypt_file(file, recipient, passphrase)
+            typer.echo(colored(result, "green"))
+        else:
+            signed_encrypted = pgp.sign_and_encrypt_text(
+                str(text), recipient, passphrase
+            )
+            if output:
+                with open(output, "w") as f:
+                    f.write(signed_encrypted)
+                typer.echo(
+                    colored(f"Signed and encrypted text saved to: {output}", "green")
+                )
+            else:
+                typer.echo(colored("Signed and encrypted text:", "white"))
+                typer.echo(colored(signed_encrypted, "green"))
     except Exception as e:
         handle_error(e)
         raise typer.Exit(code=1)

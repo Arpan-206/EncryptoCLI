@@ -1,446 +1,282 @@
-# PGP Cipher API Reference
+# PGP Cipher
 
-## Overview
-
-The `PGPCipher` class provides a complete interface for PGP/GPG encryption and decryption operations. It uses the `python-gnupg` library to wrap GPG functionality.
+Asymmetric encryption using GNU Privacy Guard (GPG).
 
 ## Class: PGPCipher
 
 ```python
 from encryptocli.encryption.pgp import PGPCipher
 
-pgp = PGPCipher()
+cipher = PGPCipher()
 ```
 
-### Constructor
+## Requirements
 
-```python
-def __init__(self) -> None
-```
-
-**Description**: Initializes a new PGP cipher instance with an isolated GPG home directory.
-
-**Returns**: None
-
-**Example**:
-```python
-pgp = PGPCipher()
-# Temporary GPG home created at self.gnupg_home
-```
-
----
+- **GPG installed**: `brew install gnupg` (macOS), `apt-get install gnupg` (Linux)
+- **Key pair generated**: `gpg --gen-key`
+- **Public keys imported** for encryption targets
 
 ## Methods
 
-### generate_key_pair
+### encrypt(plaintext, recipient_email)
 
+Encrypt plaintext for specified recipient.
+
+**Parameters:**
+- `plaintext` (str): Text to encrypt
+- `recipient_email` (str): Recipient's email address (must be in keyring)
+
+**Returns:** str - Armored PGP-encrypted text
+
+**Raises:**
+- `EncryptionError` - If encryption fails or key not found
+
+**Example:**
 ```python
-def generate_key_pair(
-    self,
-    name: str,
-    email: str,
-    passphrase: str
-) -> str
+cipher = PGPCipher()
+encrypted = cipher.encrypt("secret", "alice@example.com")
+print(encrypted)
 ```
 
-**Description**: Generate a new PGP key pair (RSA 2048-bit).
+### decrypt(ciphertext, passphrase=None)
 
-**Parameters**:
-- `name` (str): Full name for the key
-- `email` (str): Email address for the key
-- `passphrase` (str): Passphrase to protect the private key
+Decrypt ciphertext using private key.
 
-**Returns**: str - Key fingerprint
+**Parameters:**
+- `ciphertext` (str): PGP-encrypted text (armored format)
+- `passphrase` (str): Private key passphrase (optional if cached)
 
-**Raises**: 
-- `FatalError` - If required parameters are missing or key generation fails
+**Returns:** str - Decrypted plaintext
 
-**Example**:
+**Raises:**
+- `DecryptionError` - If password wrong or decryption fails
+
+**Example:**
 ```python
-fingerprint = pgp.generate_key_pair(
-    name="Alice Smith",
-    email="alice@example.com",
-    passphrase="my_secure_passphrase"
+cipher = PGPCipher()
+decrypted = cipher.decrypt(encrypted, passphrase="my_passphrase")
+print(decrypted)
+```
+
+### list_keys()
+
+List all public keys in keyring.
+
+**Returns:** list - List of key information dictionaries
+
+**Example:**
+```python
+cipher = PGPCipher()
+for key in cipher.list_keys():
+    print(f"{key['keyid']}: {key['name']} <{key['email']}>")
+```
+
+### list_secret_keys()
+
+List all private keys in keyring.
+
+**Returns:** list - List of private key information dictionaries
+
+**Example:**
+```python
+cipher = PGPCipher()
+for key in cipher.list_secret_keys():
+    print(f"Key ID: {key['keyid']}")
+    print(f"User: {key['name']}")
+    print(f"Email: {key['email']}")
+```
+
+### generate_key(name, email, passphrase, key_length=4096)
+
+Generate a new PGP key pair.
+
+**Parameters:**
+- `name` (str): Real name for key
+- `email` (str): Email address for key
+- `passphrase` (str): Passphrase to protect private key
+- `key_length` (int): RSA key size in bits (default: 4096)
+
+**Returns:** dict - Generated key information
+
+**Example:**
+```python
+cipher = PGPCipher()
+key = cipher.generate_key(
+    "Alice Smith",
+    "alice@example.com",
+    "secure_passphrase",
+    key_length=4096
 )
-print(f"Generated key: {fingerprint}")
+print(f"Generated key: {key['keyid']}")
 ```
 
----
+## Key Management
 
-### encrypt_text
+### Import Public Key
 
 ```python
-def encrypt_text(
-    self,
-    secret: str,
-    recipient_email: str,
-    passphrase: Optional[str] = None
-) -> str
+import subprocess
+
+# Import from file
+subprocess.run(["gpg", "--import", "alice_public_key.asc"])
+
+# Or use Python gnupg library
+from python_gnupg import GPG
+gpg = GPG()
+with open("alice_public_key.asc") as f:
+    gpg.import_keys(f.read())
 ```
 
-**Description**: Encrypt plain text using the recipient's public key.
-
-**Parameters**:
-- `secret` (str): Plain text to encrypt
-- `recipient_email` (str): Recipient's email address (must have public key in keyring)
-- `passphrase` (Optional[str]): Optional passphrase for signing the message (not implemented by default)
-
-**Returns**: str - Encrypted ciphertext in PGP format
-
-**Raises**:
-- `FatalError` - If encryption fails or recipient key not found
-
-**Example**:
-```python
-encrypted = pgp.encrypt_text(
-    secret="This is confidential",
-    recipient_email="alice@example.com"
-)
-print(encrypted)  # PGP-encrypted message
-```
-
----
-
-### decrypt_text
+### Export Public Key
 
 ```python
-def decrypt_text(
-    self,
-    encrypted_secret: str,
-    passphrase: str
-) -> str
+import subprocess
+
+# Export key for sharing
+subprocess.run([
+    "gpg",
+    "--export",
+    "--armor",
+    "alice@example.com",
+    ">",
+    "alice_public_key.asc"
+])
 ```
 
-**Description**: Decrypt PGP-encrypted text using the private key.
-
-**Parameters**:
-- `encrypted_secret` (str): PGP-encrypted ciphertext
-- `passphrase` (str): Passphrase for the private key
-
-**Returns**: str - Decrypted plaintext
-
-**Raises**:
-- `FatalError` - If passphrase is empty or decryption fails
-
-**Example**:
-```python
-decrypted = pgp.decrypt_text(
-    encrypted_secret=encrypted,
-    passphrase="my_secure_passphrase"
-)
-print(decrypted)  # "This is confidential"
-```
-
----
-
-### encrypt_file
+### Export Private Key (Backup)
 
 ```python
-def encrypt_file(
-    self,
-    file_path: str,
-    recipient_email: str
-) -> str
+import subprocess
+
+# Backup private key
+subprocess.run([
+    "gpg",
+    "--export-secret-keys",
+    "--armor",
+    "alice@example.com",
+    ">",
+    "alice_private_key.asc"
+])
 ```
 
-**Description**: Encrypt a file using the recipient's public key. Creates a `.pgp` file.
+## Usage Examples
 
-**Parameters**:
-- `file_path` (str): Path to the file to encrypt
-- `recipient_email` (str): Recipient's email address
-
-**Returns**: str - Success message
-
-**Raises**:
-- `FatalError` - If file encryption fails
-- `MildError` - If file is already encrypted (`.pgp` or `.gpg` extension)
-
-**Example**:
-```python
-result = pgp.encrypt_file(
-    file_path="document.pdf",
-    recipient_email="alice@example.com"
-)
-print(result)  # "File encrypted successfully"
-# Creates: document.pdf.pgp
-```
-
----
-
-### decrypt_file
-
-```python
-def decrypt_file(
-    self,
-    file_path: str,
-    passphrase: str,
-    output_dir: str = "./"
-) -> str
-```
-
-**Description**: Decrypt a PGP-encrypted file. Creates `decrypted_<filename>` in the output directory.
-
-**Parameters**:
-- `file_path` (str): Path to the encrypted file
-- `passphrase` (str): Passphrase for the private key
-- `output_dir` (str, optional): Output directory for decrypted file (default: "./")
-
-**Returns**: str - Success message with output path
-
-**Raises**:
-- `FatalError` - If passphrase is empty or decryption fails
-
-**Example**:
-```python
-result = pgp.decrypt_file(
-    file_path="document.pdf.pgp",
-    passphrase="my_secure_passphrase",
-    output_dir="./decrypted/"
-)
-print(result)  # "File decrypted successfully to ./decrypted/decrypted_document.pdf"
-```
-
----
-
-### export_public_key
-
-```python
-def export_public_key(
-    self,
-    email: str,
-    output_path: str
-) -> str
-```
-
-**Description**: Export a public key to a file for sharing with others.
-
-**Parameters**:
-- `email` (str): Email address of the key to export
-- `output_path` (str): Path where the public key will be saved (typically `.asc`)
-
-**Returns**: str - Success message
-
-**Raises**:
-- `FatalError` - If export fails or key not found
-
-**Example**:
-```python
-result = pgp.export_public_key(
-    email="alice@example.com",
-    output_path="alice_public.asc"
-)
-print(result)  # "Public key exported to alice_public.asc"
-```
-
----
-
-### import_public_key
-
-```python
-def import_public_key(
-    self,
-    key_path: str
-) -> str
-```
-
-**Description**: Import a public key from a file into the keyring.
-
-**Parameters**:
-- `key_path` (str): Path to the public key file (`.asc` format)
-
-**Returns**: str - Success message with key fingerprint
-
-**Raises**:
-- `FatalError` - If import fails
-
-**Example**:
-```python
-result = pgp.import_public_key(
-    key_path="alice_public.asc"
-)
-print(result)  # "Public key imported successfully. Fingerprint: ABC123..."
-```
-
----
-
-### list_keys
-
-```python
-def list_keys(self) -> list
-```
-
-**Description**: List all available keys in the keyring.
-
-**Returns**: list - List of key information dictionaries
-
-**Raises**:
-- `FatalError` - If key listing fails
-
-**Example**:
-```python
-keys = pgp.list_keys()
-for key in keys:
-    print(f"Email: {key.get('uids', [''])[0]}")
-    print(f"Fingerprint: {key['keyid']}")
-    print(f"Type: {key['type']}")
-```
-
-Key dictionary structure:
-```python
-{
-    'keyid': '1234567890ABCDEF',
-    'type': 'pub',
-    'uids': ['Alice Smith <alice@example.com>'],
-    'expires': '0',
-    'length': '2048',
-    'algo': '1',  # RSA
-    'fingerprint': '1234567890ABCDEF1234567890ABCDEF12345678'
-}
-```
-
----
-
-## Exception Handling
-
-### FatalError
-
-Raised for critical encryption/decryption errors:
-
-```python
-from encryptocli.util.exceptions import FatalError
-
-try:
-    pgp.encrypt_text("message", "user@example.com")
-except FatalError as e:
-    print(f"Encryption failed: {e}")
-```
-
-### MildError
-
-Raised for non-critical issues (e.g., file already encrypted):
-
-```python
-from encryptocli.util.exceptions import MildError
-
-try:
-    pgp.encrypt_file("document.pgp", "user@example.com")
-except MildError as e:
-    print(f"Warning: {e}")
-```
-
----
-
-## Complete Usage Example
+### Basic Encryption and Decryption
 
 ```python
 from encryptocli.encryption.pgp import PGPCipher
 
-# Initialize
-pgp = PGPCipher()
+cipher = PGPCipher()
 
-# Step 1: Generate key pair for yourself
-my_fingerprint = pgp.generate_key_pair(
-    name="John Doe",
-    email="john@example.com",
-    passphrase="my_passphrase123"
-)
-print(f"My key: {my_fingerprint}")
+# Encrypt for Alice
+encrypted = cipher.encrypt("confidential data", "alice@example.com")
+print(f"Encrypted message:\n{encrypted}")
 
-# Step 2: Generate key pair for recipient (or import theirs)
-recipient_fingerprint = pgp.generate_key_pair(
-    name="Alice Smith",
-    email="alice@example.com",
-    passphrase="alice_passphrase456"
-)
-
-# Step 3: Encrypt a message for Alice
-message = "This is a secret message"
-encrypted = pgp.encrypt_text(message, "alice@example.com")
-print(f"Encrypted: {encrypted[:50]}...")
-
-# Step 4: Alice decrypts the message
-decrypted = pgp.decrypt_text(encrypted, "alice_passphrase456")
+# Alice decrypts with her passphrase
+decrypted = cipher.decrypt(encrypted, passphrase="alice_passphrase")
 print(f"Decrypted: {decrypted}")
-
-# Step 5: Encrypt a file for Alice
-encrypted_file = pgp.encrypt_file("report.pdf", "alice@example.com")
-print(encrypted_file)
-
-# Step 6: Export public key for sharing
-pgp.export_public_key("john@example.com", "john_public.asc")
-
-# Step 7: List all keys
-keys = pgp.list_keys()
-for key in keys:
-    print(f"Key: {key['uids']}")
 ```
 
----
-
-## Integration with Services
-
-Use PGP through the service layer:
+### Workflow with Multiple Users
 
 ```python
-from encryptocli.services import EncryptionService, DecryptionService
+from encryptocli.encryption.pgp import PGPCipher
 
-# Create services
-encryption_service = EncryptionService()
-decryption_service = DecryptionService()
+cipher = PGPCipher()
 
-# Encrypt with PGP method
-encrypted = encryption_service.encrypt_text(
-    secret="Sensitive data",
-    password="recipient@example.com",
-    method="pgp"
+# Alice generates her key
+alice_key = cipher.generate_key(
+    "Alice Smith",
+    "alice@example.com",
+    "alice_passphrase"
 )
 
-# Decrypt with PGP method
-decrypted = decryption_service.decrypt_text(
-    data=encrypted,
-    password="your_passphrase",
-    method="pgp"
+# Bob generates his key
+bob_key = cipher.generate_key(
+    "Bob Johnson",
+    "bob@example.com",
+    "bob_passphrase"
 )
 
-# Encrypt file with PGP
-encryption_service.encrypt_file(
-    file_path="document.pdf",
-    password="recipient@example.com",
-    method="pgp"
-)
+# Alice encrypts for Bob
+message = "Meet me at noon"
+encrypted_for_bob = cipher.encrypt(message, "bob@example.com")
 
-# Decrypt file with PGP
-decryption_service.decrypt_file(
-    file_path="document.pdf.pgp",
-    password="your_passphrase",
-    method="pgp",
-    output_dir="./"
-)
+# Bob receives and decrypts
+decrypted = cipher.decrypt(encrypted_for_bob, "bob_passphrase")
+assert decrypted == message
 ```
 
----
+### List Available Keys
 
-## Performance Characteristics
+```python
+from encryptocli.encryption.pgp import PGPCipher
 
-- **Key Generation**: ~5-10 seconds (2048-bit RSA)
-- **Text Encryption**: Milliseconds to seconds depending on message size
-- **File Encryption**: Depends on file size (typically fast)
-- **Decryption**: Slightly slower than encryption
+cipher = PGPCipher()
 
----
+print("Public Keys:")
+for key in cipher.list_keys():
+    print(f"  {key['keyid']}: {key['name']} <{key['email']}>")
 
-## Security Notes
+print("\nPrivate Keys:")
+for key in cipher.list_secret_keys():
+    print(f"  {key['keyid']}: {key['name']} <{key['email']}>")
+```
 
-1. **Key Storage**: Keys stored in temporary directory (isolated per instance)
-2. **Passphrase**: Never hardcode or log passphrases
-3. **Key Trust**: Uses `always_trust=True` for convenience (override for production)
-4. **Message Signing**: Not enabled by default
-5. **Key Backup**: Export and securely backup important keys
+## Error Handling
 
----
+```python
+from encryptocli.encryption.pgp import PGPCipher
+from encryptocli.util.exceptions import (
+    EncryptionError,
+    DecryptionError
+)
 
-## See Also
+cipher = PGPCipher()
 
-- [Parent Module Documentation](../api/encryption/pgp.md)
-- [User Guide - PGP](../user-guide/pgp.md)
-- [python-gnupg Documentation](https://python-gnupg.readthedocs.io/)
+# Encryption error (key not found)
+try:
+    encrypted = cipher.encrypt("data", "unknown@example.com")
+except EncryptionError as e:
+    print(f"Encryption failed: {e}")
+
+# Decryption error (wrong passphrase)
+try:
+    decrypted = cipher.decrypt(encrypted, "wrong_passphrase")
+except DecryptionError as e:
+    print(f"Decryption failed: {e}")
+```
+
+## Security Best Practices
+
+- Use strong passphrases (20+ characters)
+- Store private keys securely
+- Backup private keys in secure location
+- Never share private keys
+- Verify key fingerprints before use
+- Keep GPG software updated
+- Rotate keys periodically
+
+## Performance
+
+PGP operations involve cryptographic processing that may take time depending on key size and operation complexity.
+
+## Compatibility
+
+- Works with any GPG-compatible software
+- Can decrypt emails encrypted with standard PGP tools
+- Can encrypt for recipients using any PGP implementation
+- Output is industry-standard armored format
+
+## Limitations
+
+- Requires GPG installation
+- Key management overhead
+- Slower than symmetric encryption
+- Recipient must have public key in keyring
+
+## Related Classes
+
+- [AES Cipher](aes_cipher.md)
+- [Services - EncryptionService](../services.md)
+- [Utilities - Exceptions](../utilities/exceptions.md)
