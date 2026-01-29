@@ -224,9 +224,6 @@ You can access the video demo at [https://youtu.be/Zmf2EK9jPCw](https://youtu.be
 <a href="https://github.com/Arpan-206/EncryptoCLI/graphs/contributors">
 <img src="https://contrib.rocks/image?repo=Arpan-206/EncryptoCLI" />
 
-### MY BLOG
-https://hackersreboot.tech/
-
 #### Thank You!
 Thanks a lot to the team at CS50 for teaching me so much about the fascinating world of computer science and program.
 
